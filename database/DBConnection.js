@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
 
-const DBConnection = () => {
-  const connectionString = "mongodb://localhost:27017/Alaml";
+const dbConnection = () => {
+  const connectionString =
+    "mongodb+srv://abdelrahmanmohammed851:boda12345@cluster0.o9chdll.mongodb.net/Alamal";
 
   mongoose
     .connect(connectionString, {
@@ -14,4 +15,4 @@ const DBConnection = () => {
     .catch((err) => console.error(`Database connection error: ${err.message}`));
 };
 
-export default DBConnection;
+export default dbConnection;
