@@ -15,7 +15,11 @@ app.use(express.urlencoded({ extended: true }));
 dbConnection();
 
 init(app);
-
+app.use((err, req, res, next) => {
+  res
+    .status(err.statusCode)
+    .json({ message: err.message, statusCode: err.statusCode });
+});
 app.listen(process.env.PORT || 8000, () =>
   console.log(`Server is running on port ${process.env.PORT || 8000}!`)
 );
