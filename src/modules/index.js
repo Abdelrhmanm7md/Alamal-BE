@@ -17,16 +17,20 @@ export function init(app) {
   app.use("/trans", transRouter);
   app.use("/visit", visitRouter);
   app.use("/product", productRouter);
+  
+  // app.use("/", (req, res, next) => {
+  //   res.send("hello world");
+  // });
 
-  app.use("/", (req, res, next) => {
-    res.send("hello world");
-  });
-  app.all("*", (req, res, next) => {
-    next(new AppError(`not found `, 404));
-  });
-  app.use((err, req, res, next) => {
-    res
-      .status(err.statusCode)
-      .json({ message: err.message, statusCode: err.statusCode });
-  });
+  // app.all("*", (req, res, next) => {
+  //   next(new AppError(`not found `, 404));
+  // });
+
+  // app.use((err, req, res, next) => {
+  //   res
+  //     .status(err.statusCode)
+  //     .json({ message: err.message, statusCode: err.statusCode });
+  // });
+
+
 }

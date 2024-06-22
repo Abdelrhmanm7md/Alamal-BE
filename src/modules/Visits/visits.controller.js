@@ -17,7 +17,7 @@ const createVisit = catchAsync(async (req, res, next) => {
 });
 
 const editVisit = catchAsync(async (req, res, next) => {
-  const visitId = req.params;
+  const {visitId} = req.params;
 
   const updatedVisit = await visitModel.findByIdAndUpdate(
     visitId,
@@ -36,7 +36,7 @@ const editVisit = catchAsync(async (req, res, next) => {
 });
 
 const deleteVisit = catchAsync(async (req, res, next) => {
-  const visitId = req.params;
+  const {visitId} = req.params;
 
   const deletedVisit = await visitModel.findByIdAndDelete(visitId);
 

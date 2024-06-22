@@ -6,7 +6,7 @@ import * as usersController from "./users.controller.js";
 usersRouter.get("/", usersController.getAllUsers);
 usersRouter.post("/", usersController.createUser);
 usersRouter.get("/:id", usersController.getUserById);
-usersRouter.put("/", usersController.updateUser);
-usersRouter.delete("/", usersController.deleteUser);
+usersRouter.put("/:id", usersController.updateUser);
+usersRouter.delete("/:id", usersController.deleteUser);
 
 export default usersRouter;

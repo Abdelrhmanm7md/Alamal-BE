@@ -1,6 +1,5 @@
 import { userModel } from "../../../database/models/user.model.js";
 
-import slugify from "slugify";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 import AppError from "../../utils/appError.js";
@@ -49,25 +48,20 @@ const getUserById = catchAsync(async (req, res, next) => {
 });
 
 const updateUser = catchAsync(async (req, res, next) => {
-  let { userId } = req.params;
+  let { id } = req.params;
 
-  let updatedUser = await userModel.findByIdAndUpdate(userId, req.body, {
-    new: true,
-  });
-
-  if (!updatedUser) {
-    return res
-      .status(404)
-      .json({ message: "Couldn't update! User not found!", updatedUser });
-  }
-
-  res.status(200).json({ message: "User updated successfully!" });
+  let results = await userModel.findByIdAndUpdate(
+    id,req.body,
+    { new: true }
+  );
+  !results && next(new AppError(`not found `, 404));
+  results && res.json({ message: "updatedd", results });
 });
 
 const deleteUser = catchAsync(async (req, res, next) => {
-  let { userId } = req.params;
+  let { id } = req.params;
 
-  let deletedUser = await userModel.findByIdAndDelete(userId);
+  let deletedUser = await userModel.findByIdAndDelete(id);
 
   if (!deletedUser) {
     return res

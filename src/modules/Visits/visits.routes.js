@@ -5,7 +5,7 @@ const visitRouter = express.Router();
 
 visitRouter.get("/", visitController.getAllVisits);
 visitRouter.post("/", visitController.createVisit);
-visitRouter.put("/", visitController.editVisit);
-visitRouter.delete("/", visitController.deleteVisit);
+visitRouter.put("/:id", visitController.editVisit);
+visitRouter.delete("/:id", visitController.deleteVisit);
 
 export default visitRouter;

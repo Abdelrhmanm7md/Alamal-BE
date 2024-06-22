@@ -9,9 +9,6 @@ const getAllNotification = catchAsync(async (req, res, next) => {
 });
 
 const createNotification = catchAsync(async (req, res, next) => {
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
 
   const newNotif = new notificationModel(req.body);
   const savedNotif = await newNotif.save();
@@ -22,18 +19,19 @@ const createNotification = catchAsync(async (req, res, next) => {
   });
 });
 
-const deleteNotification = catchAsync(async (req, res, next) => {
-  const notifId = req.params.notifId;
+const deleteNotification =
+// catchAsync(
+  async (req, res, next) => {
+  const {id} = req.params;
 
-  const deletedNotification = await notificationModel.findByIdAndDelete(
-    notifId
-  );
+  const deletedNotification = await notificationModel.findByIdAndDelete(id);
 
   if (!deletedNotification) {
     return res.status(404).json({ message: "notification not found!" });
   }
 
   res.status(200).json({ message: "notification deleted successfully!" });
-});
+}
+// );
 
 export { createNotification, deleteNotification, getAllNotification };

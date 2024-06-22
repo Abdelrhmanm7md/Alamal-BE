@@ -32,11 +32,13 @@ const getAllTrans = catchAsync(async (req, res, next) => {
   }
 });
 
-const editTrans = catchAsync(async (req, res, next) => {
-  const TransId = req.params;
+const editTrans = 
+// catchAsync(
+  async (req, res, next) => {
+  const {id} = req.params;
 
-  const updatedTrans = await findByIdAndUpdate(
-    TransId,
+  const updatedTrans = await transModel.findByIdAndUpdate(
+    id,
     req.body,
     { new: true }
   );
@@ -49,12 +51,13 @@ const editTrans = catchAsync(async (req, res, next) => {
     message: "Trans updated successfully!",
     updatedTrans,
   });
-});
+}
+// );
 
 const deleteTrans = catchAsync(async (req, res, next) => {
-  const TransId = req.params;
+  const {id}  = req.params;
 
-  const deletedTrans = await findByIdAndDelete(TransId);
+  const deletedTrans = await transModel.findByIdAndDelete(id);
 
   if (!deletedTrans) {
     return res.status(404).json({ message: "Trans not found!" });
