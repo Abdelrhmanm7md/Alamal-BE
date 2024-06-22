@@ -19,7 +19,7 @@ export const signIn = catchAsync(async (req, res, next) => {
   const match = await bcrypt.compare(password, isFound.password);
   if (match && isFound) {
     let token = jwt.sign(
-      { name: isFound.name, userId: isFound._id, role: isFound.role },
+      { name: isFound.name, userId: isFound._id },
       process.env.JWT_SECRET_KEY
     );
     return res.json({ message: "success", token,role: isFound.role });
