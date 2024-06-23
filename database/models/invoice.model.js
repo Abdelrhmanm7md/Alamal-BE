@@ -42,7 +42,6 @@ const invoiceSchema = mongoose.Schema(
           qty: Number,
         },
       ],
-      ref: "product",
       required: true,
     },
   },
