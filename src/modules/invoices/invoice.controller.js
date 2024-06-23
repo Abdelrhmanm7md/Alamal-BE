@@ -5,11 +5,16 @@ import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 const createInvoice = catchAsync(async (req, res, next) => {
   // req.body.image = req.files.image[0].filename;
   // console.log(req.files, "req.files");
+  var message = "";
   let newInvoice = new invoiceModel(req.body);
+  if (req.body.amount < 0) {
+    message = "amount must be greater than 0";
+    return res.status(400).json({ message });
+  }
   let addedInvoice = await newInvoice.save();
   // console.log(req.body);
   res.status(201).json({
-    message: "Job Invoice has been created successfully!",
+    message: "Invoice has been created successfully!",
     addedInvoice,
   });
 });
