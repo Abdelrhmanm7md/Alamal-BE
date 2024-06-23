@@ -104,7 +104,6 @@ const deleteInovice = catchAsync(async (req, res, next) => {
 // const deleteAllInovice =
 // catchAsync(
 //   async (req, res, next) => {
-//   let { id } = req.params;
 
 //   let deletedInvoice = await invoiceModel.deleteMany();
 
