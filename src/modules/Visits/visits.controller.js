@@ -5,10 +5,10 @@ import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createVisit = catchAsync(async (req, res, next) => {
   
-  const { title, content, tags } = req.body;
-  const author = req.user._id;
+  const { title, content, tags ,author} = req.body;
+  // const { author} = req.user._id;
 
-  const newVisit = new visitModel({ title, content, author, tags });
+  const newVisit = new visitModel({ title, content,tags, author });
   const savedVisit = await newVisit.save();
   res.status(201).json({
     message: "Visit created successfully!",
@@ -17,10 +17,10 @@ const createVisit = catchAsync(async (req, res, next) => {
 });
 
 const editVisit = catchAsync(async (req, res, next) => {
-  const {visitId} = req.params;
+  const {id} = req.params;
 
   const updatedVisit = await visitModel.findByIdAndUpdate(
-    visitId,
+    id,
     req.body,
     { new: true }
   );
@@ -36,9 +36,9 @@ const editVisit = catchAsync(async (req, res, next) => {
 });
 
 const deleteVisit = catchAsync(async (req, res, next) => {
-  const {visitId} = req.params;
+  const {id} = req.params;
 
-  const deletedVisit = await visitModel.findByIdAndDelete(visitId);
+  const deletedVisit = await visitModel.findByIdAndDelete(id);
 
   if (!deletedVisit) {
     return res.status(404).json({ message: "Visit not found!" });

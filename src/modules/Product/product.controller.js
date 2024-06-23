@@ -4,9 +4,11 @@ import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 
 
-const createProduct = catchAsync(async (req, res, next) => {
-  req.body.pic = req.files.image[0].filename;
-  console.log(req.files, "req.files");
+const createProduct =
+catchAsync(
+  async (req, res, next) => {
+    // req.body.pic = req.file.filename;
+    console.log(req.files, "req.files");
   let newProduct = new productModel(req.body);
   let addedProduct = await newProduct.save();
 
@@ -14,7 +16,8 @@ const createProduct = catchAsync(async (req, res, next) => {
     message: "Product has been created successfully!",
     addedProduct,
   });
-});
+}
+);
 
 const getAllProduct = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(productModel.find(), req.query)
@@ -51,11 +54,6 @@ const searchProduct = catchAsync(async (req, res, next) => {
         break;
     }
   }
-  const numOfProductPerPage = req.query.n || 5;
-  Product = await productModel
-    .find({ jobTitle: { $regex: `${ProductTitle}`, $options: "i" } })
-    .skip(page * numOfProductPerPage)
-    .limit(numOfProductPerPage);
   if (!Product) {
     return res.status(404).json({
       message: "No Product was found!",

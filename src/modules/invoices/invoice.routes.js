@@ -4,7 +4,7 @@ const invoiceRouter = express.Router();
 import * as invoiceController from "./invoice.controller.js";
 
 invoiceRouter.get("/", invoiceController.getAllInvoice);
-invoiceRouter.get("/:invoiceId", invoiceController.getInvoiceById);
+invoiceRouter.get("/:id", invoiceController.getInvoiceById);
 invoiceRouter.delete("/:id", invoiceController.deleteInovice);
 invoiceRouter.put("/:id", invoiceController.updateInvoice);
 invoiceRouter.post("/", invoiceController.createInvoice);

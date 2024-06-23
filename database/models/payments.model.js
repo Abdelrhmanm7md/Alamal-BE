@@ -38,12 +38,6 @@ const paymentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-paymentSchema.post("init", (doc) => {
-  doc.logo = process.env.BASE_URL + "photos/" + doc.logo;
-  if (doc.images)
-    doc.images = doc.images.map(
-      (path) => process.env.BASE_URL + "photos/" + path
-    );
-});
+
 
 export const paymentModel = mongoose.model("payment", paymentSchema);

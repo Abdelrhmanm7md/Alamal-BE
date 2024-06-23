@@ -2,15 +2,12 @@ import { invoiceModel } from "../../../database/models/invoice.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
-
-
 const createInvoice = catchAsync(async (req, res, next) => {
-  req.body.image = req.files.image[0].filename;
-  console.log(req.files, "req.files");
+  // req.body.image = req.files.image[0].filename;
+  // console.log(req.files, "req.files");
   let newInvoice = new invoiceModel(req.body);
   let addedInvoice = await newInvoice.save();
-  console.log(req.body);
-
+  // console.log(req.body);
   res.status(201).json({
     message: "Job Invoice has been created successfully!",
     addedInvoice,
@@ -32,7 +29,6 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
       message: "No Invoice was found!",
     });
   }
-
 });
 
 const searchInvoice = catchAsync(async (req, res, next) => {
@@ -105,7 +101,7 @@ const deleteInovice = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ message: "Invoice deleted successfully!" });
 });
-// const deleteAllInovice = 
+// const deleteAllInovice =
 // catchAsync(
 //   async (req, res, next) => {
 //   let { id } = req.params;

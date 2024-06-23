@@ -2,36 +2,24 @@ import mongoose from "mongoose";
 
 const visitSchema = mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    email: {
+    content: {
       type: String,
       required: true,
     },
-    phone: {
-      type: Date,
-      required: true,
-    },
-    pervJobTitle: {
+    tags: {
       type: String,
       required: true,
     },
-    linkedinUrl: {
-      type: String,
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
-    protfolioUrl: {
-      type: String,
-    },
-    addInfo: {
-      type: String,
-    },
-    attachedResume: {
-      type: String,
-      required: true,
-    },
+  
   },
   { timestamps: true }
 );

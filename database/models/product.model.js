@@ -12,7 +12,6 @@ const productSchema = mongoose.Schema(
     },
     pic: {
       type: String,
-      required: true,
     },
     unitPrice: {
       type: Number,

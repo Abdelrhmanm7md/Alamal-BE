@@ -4,13 +4,13 @@ const paymentRouter = express.Router();
 import * as paymentController from "./payment.controller.js";
 
 paymentRouter.get("/", paymentController.getAllpayment);
-paymentRouter.get("/:paymentId", paymentController.getpaymentById);
+paymentRouter.get("/:id", paymentController.getpaymentById);
 paymentRouter.post(
   "/",
   paymentController.createpayment
 );
 paymentRouter.get("/search/:payment", paymentController.searchpayment);
-paymentRouter.put("/", paymentController.updatePayment);
-paymentRouter.delete("/", paymentController.deletePayment);
+paymentRouter.put("/:id", paymentController.updatePayment);
+paymentRouter.delete("/:id", paymentController.deletePayment);
 
 export default paymentRouter;
