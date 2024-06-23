@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 const transSchema = mongoose.Schema(
   {
     amount: {
-      type: String,
+      type: Number,
       required: true,
     },
-    userName: {
+    note: {
       type: String,
       required: true,
     },
@@ -16,7 +16,12 @@ const transSchema = mongoose.Schema(
       default: "no",
       required: true,
     },
-    userId: {
+    sender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    receiver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,

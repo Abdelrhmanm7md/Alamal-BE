@@ -9,6 +9,10 @@ const userSchema = mongoose.Schema(
       required: [true, "Name is a required field."],
       minLength: [2, "Name is too short."],
     },
+    bakance: {
+      type: Number,
+      default: 0,
+    },
     email: {
       type: String,
       trim: true,
