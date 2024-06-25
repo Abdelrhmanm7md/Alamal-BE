@@ -3,8 +3,6 @@ import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createInvoice = catchAsync(async (req, res, next) => {
-  // req.body.image = req.files.image[0].filename;
-  // console.log(req.files, "req.files");
   var message = "";
   let newInvoice = new invoiceModel(req.body);
   if (req.body.amount < 0) {
@@ -17,6 +15,30 @@ const createInvoice = catchAsync(async (req, res, next) => {
     message: "Invoice has been created successfully!",
     addedInvoice,
   });
+});
+const createPhoto = catchAsync(async (req, res, next) => {
+  let { id } = req.params;
+  if (req.file) req.body.image = req.file.filename;
+  console.log(req, "ddddd");
+  let image = "";
+  if (req.body.image) {
+   image= req.body.image;
+  }
+  let updatedInvoice = await invoiceModel.findByIdAndUpdate(
+    id,
+    { image: req.body.image },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedInvoice) {
+    return res.status(404).json({ message: "Couldn't update!  not found!" });
+  }
+
+  res
+    .status(200)
+    .json({ message: "Photo updated successfully!", image });
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
@@ -127,4 +149,5 @@ export {
   getInvoiceById,
   deleteInovice,
   updateInvoice,
+  createPhoto,
 };

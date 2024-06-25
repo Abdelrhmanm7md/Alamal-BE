@@ -48,8 +48,8 @@ const invoiceSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-invoiceSchema.post("init", (doc) => {
-  doc.image = process.env.BASE_URL + "Invoices/" + doc.image;
-});
+// invoiceSchema.post("init", (doc) => {
+//   doc.image = process.env.BASE_URL + "invoices/" + doc.image;
+// });
 
 export const invoiceModel = mongoose.model("invoice", invoiceSchema);

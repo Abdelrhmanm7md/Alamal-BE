@@ -2,28 +2,24 @@ import { visitModel } from "../../../database/models/visit.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
-
 const createVisit = catchAsync(async (req, res, next) => {
-  
-  const { title, content, tags ,author} = req.body;
+  const { title, content, tags, author } = req.body;
   // const { author} = req.user._id;
 
-  const newVisit = new visitModel({ title, content,tags, author });
+  const newVisit = new visitModel({ title, content, tags, author });
   const savedVisit = await newVisit.save();
   res.status(201).json({
     message: "Visit created successfully!",
-     savedVisit
+    savedVisit,
   });
 });
 
 const editVisit = catchAsync(async (req, res, next) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
-  const updatedVisit = await visitModel.findByIdAndUpdate(
-    id,
-    req.body,
-    { new: true }
-  );
+  const updatedVisit = await visitModel.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
 
   if (!updatedVisit) {
     return res.status(404).json({ message: "Visit not found!" });
@@ -31,12 +27,12 @@ const editVisit = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     message: "Visit updated successfully!",
-    updatedVisit
+    updatedVisit,
   });
 });
 
 const deleteVisit = catchAsync(async (req, res, next) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
   const deletedVisit = await visitModel.findByIdAndDelete(id);
 
@@ -64,4 +60,4 @@ const getAllVisits = catchAsync(async (req, res, next) => {
   }
 });
 
-export { createVisit, editVisit, deleteVisit,getAllVisits };
+export { createVisit, editVisit, deleteVisit, getAllVisits };

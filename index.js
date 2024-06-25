@@ -7,10 +7,10 @@ const app = express();
 import cors from "cors";
 import dbConnection from "./database/DBConnection.js";
 import { init } from "./src/modules/index.js";
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static("uploads"));
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
 
 dbConnection();
 
