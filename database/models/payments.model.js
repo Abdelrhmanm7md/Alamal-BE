@@ -11,27 +11,32 @@ const paymentSchema = mongoose.Schema(
       required: true,
     },
     invoice: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "invoice",
       required: true,
     },
     createdBy: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
     pharm: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
     rep: {
-      type: String,
-      required: true,
-    },
-    company: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
     paymentDate: {
       type: Date,
+      required: true,
+    },
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "company",
       required: true,
     },
   },

@@ -6,6 +6,12 @@ const invoiceSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    invoiceType: {
+      type: String,
+      enum: ["normal", "return"],
+      default: "normal",
+      required: true,
+    },
     pharmacy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
@@ -13,10 +19,14 @@ const invoiceSchema = mongoose.Schema(
     },
     invoiceStatus: {
       type: String,
+      enum: ["notPaid","partiallyPaid", "totallyPaid"],
+      default : "notPaid",
       required: true,
     },
     orderStatus: {
       type: String,
+      enum: ["preparing","delivered", "derlivering"],
+      default : "preparing",
       required: true,
     },
     date: {
@@ -33,6 +43,11 @@ const invoiceSchema = mongoose.Schema(
     payments: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "payment",
+      required: true,
+    },
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "company",
       required: true,
     },
     productLines: {

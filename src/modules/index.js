@@ -26,9 +26,9 @@ export function init(app) {
     next(new AppError(`not found `, 404));
   });
 
-  app.use((err, req, res, next) => {
-    res
-      .status(err.statusCode)
-      .json({ message: err.message, statusCode: err.statusCode });
-  });
+  // app.use((err, req, res, next) => {
+  //   res
+  //     .status(err.statusCode)
+  //     .json({ message: err.message, statusCode: err.statusCode });
+  // });
 }

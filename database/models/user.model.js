@@ -28,7 +28,7 @@ const userSchema = mongoose.Schema(
     profilePic: String,
     role: {
       type: String,
-      enum: ["pharm", "rep", "admin","driver","supervisor","Smanger"],
+      enum: ["pharm", "rep", "admin", "driver", "supervisor", "Smanger"],
       default: "pharm",
     },
     isActive: {
@@ -51,8 +51,8 @@ userSchema.pre("save", function () {
   this.password = bcrypt.hashSync(this.password, 10);
 });
 userSchema.pre("findOneAndUpdate", function () {
-  if(this._update.password){
-  this._update.password = bcrypt.hashSync(this._update.password, 10);
+  if (this._update.password) {
+    this._update.password = bcrypt.hashSync(this._update.password, 10);
   }
 });
 

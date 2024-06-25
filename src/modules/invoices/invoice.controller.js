@@ -10,6 +10,9 @@ const createInvoice = catchAsync(async (req, res, next) => {
     return res.status(400).json({ message });
   }
   let addedInvoice = await newInvoice.save();
+  addedInvoice.productLines.map((element) => {
+    element.invoiceId = addedInvoice._id;
+  });
   // console.log(req.body);
   res.status(201).json({
     message: "Invoice has been created successfully!",
@@ -39,7 +42,16 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     .search()
     .fields();
 
-  let results = await ApiFeat.mongooseQuery.populate("payments");
+  let results = await ApiFeat.mongooseQuery
+    .populate("payments")
+    .populate("productLines.product");
+
+  for (let j = 0; j < results.length; j++) {
+    for (let i = 0; i < results[j].productLines.length; i++) {
+      results[j].productLines[i].total =
+        results[j].productLines[i].qty * results[j].productLines[i].product.unitPrice;
+    }
+  }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({
