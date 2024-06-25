@@ -10,7 +10,7 @@ invoiceRouter.delete("/:id", invoiceController.deleteInovice);
 invoiceRouter.put("/:id", invoiceController.updateInvoice);
 invoiceRouter.post("/", invoiceController.createInvoice);
 invoiceRouter.post(
-  "/photo/:id",
+  "/photo",
   uploadSingleFile("invoices", "image"),
   // uploadMixFile("/invoices", [{name:"image",maxCount:1}]),
   invoiceController.createPhoto

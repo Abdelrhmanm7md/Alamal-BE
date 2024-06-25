@@ -17,28 +17,18 @@ const createInvoice = catchAsync(async (req, res, next) => {
   });
 });
 const createPhoto = catchAsync(async (req, res, next) => {
-  let { id } = req.params;
   if (req.file) req.body.image = req.file.filename;
   console.log(req, "ddddd");
   let image = "";
   if (req.body.image) {
-   image= req.body.image;
+    image = req.body.image;
   }
-  let updatedInvoice = await invoiceModel.findByIdAndUpdate(
-    id,
-    { image: req.body.image },
-    {
-      new: true,
-    }
-  );
 
-  if (!updatedInvoice) {
+  if (!req.body.image) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
   }
 
-  res
-    .status(200)
-    .json({ message: "Photo updated successfully!", image });
+  res.status(200).json({ message: "Photo updated successfully!", image });
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
