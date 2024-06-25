@@ -39,7 +39,7 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     .search()
     .fields();
 
-  let results = await ApiFeat.mongooseQuery;
+  let results = await ApiFeat.mongooseQuery.populate("payments");
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({
