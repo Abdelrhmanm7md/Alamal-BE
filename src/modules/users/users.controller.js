@@ -38,6 +38,105 @@ const getAllUsers = catchAsync(async (req, res, next) => {
     });
   }
 });
+const getAllRep = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(userModel.find({ role: "rep" }), req.query)
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
+const getAllPharm = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(userModel.find({ role: "pharm" }), req.query)
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
+const getAllAdmin = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(userModel.find({ role: "admin" }), req.query)
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
+const getAllSaleManger = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(userModel.find({ role: "Smanger" }), req.query)
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
+const getAllSuper = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(
+    userModel.find({ role: "supervisor" }),
+    req.query
+  )
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
+const getAllDriver = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(userModel.find({ role: "driver" }), req.query)
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
 
 const getUserById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
@@ -50,10 +149,7 @@ const getUserById = catchAsync(async (req, res, next) => {
 const updateUser = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let results = await userModel.findByIdAndUpdate(
-    id,req.body,
-    { new: true }
-  );
+  let results = await userModel.findByIdAndUpdate(id, req.body, { new: true });
   !results && next(new AppError(`not found `, 404));
   results && res.json({ message: "updatedd", results });
 });
@@ -72,4 +168,16 @@ const deleteUser = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "User deleted successfully!" });
 });
 
-export { createUser, getAllUsers, getUserById, updateUser, deleteUser };
+export {
+  createUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
+  getAllPharm,
+  getAllRep,
+  getAllAdmin,
+  getAllDriver,
+  getAllSaleManger,
+  getAllSuper,
+};
