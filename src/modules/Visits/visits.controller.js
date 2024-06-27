@@ -51,13 +51,13 @@ const getAllVisits = catchAsync(async (req, res, next) => {
     .search()
     .fields();
 
+    if (!ApiFeat) {
+      return res.status(404).json({
+        message: "No visits was found!",
+      });
+    }
   let results = await ApiFeat.mongooseQuery;
   res.json({ message: "done", page: ApiFeat.page, results });
-  if (!ApiFeat) {
-    return res.status(404).json({
-      message: "No visit was found!",
-    });
-  }
 });
 
 export { createVisit, editVisit, deleteVisit, getAllVisits };

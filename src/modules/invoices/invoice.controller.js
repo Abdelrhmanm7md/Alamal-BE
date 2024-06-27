@@ -21,7 +21,7 @@ const createInvoice = catchAsync(async (req, res, next) => {
 });
 const createPhoto = catchAsync(async (req, res, next) => {
   if (req.file) req.body.image = req.file.filename;
-  console.log(req, "ddddd");
+  // console.log(req, "ddddd");
   let image = "";
   if (req.body.image) {
     image = req.body.image;
@@ -49,7 +49,8 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
   for (let j = 0; j < results.length; j++) {
     for (let i = 0; i < results[j].productLines.length; i++) {
       results[j].productLines[i].total =
-        results[j].productLines[i].qty * results[j].productLines[i].product.unitPrice;
+        results[j].productLines[i].qty *
+        results[j].productLines[i].product.unitPrice;
     }
   }
   res.json({ message: "done", page: ApiFeat.page, results });
