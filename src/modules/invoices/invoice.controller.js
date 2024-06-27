@@ -35,7 +35,7 @@ const createPhoto = catchAsync(async (req, res, next) => {
 
   res
     .status(200)
-    .json({ message: "Photo updated successfully!",image: `http://localhost:8000/invoices/${image}` });
+    .json({ message: "Photo updated successfully!",image: `${process.env.BASE_URL}invoices/${image}` });
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
