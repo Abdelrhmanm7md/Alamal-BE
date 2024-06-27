@@ -10,9 +10,6 @@ const createInvoice = catchAsync(async (req, res, next) => {
     return res.status(400).json({ message });
   }
 
-  if (req.body.image) {
-    req.body.image = req.file.filename;
-  }
   let addedInvoice = await newInvoice.save();
   addedInvoice.productLines.map((element) => {
     element.invoiceId = addedInvoice._id;
