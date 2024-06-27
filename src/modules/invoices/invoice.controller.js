@@ -9,6 +9,10 @@ const createInvoice = catchAsync(async (req, res, next) => {
     message = "amount must be greater than 0";
     return res.status(400).json({ message });
   }
+
+  if (req.body.image) {
+    req.body.image = req.file.filename;
+  }
   let addedInvoice = await newInvoice.save();
   addedInvoice.productLines.map((element) => {
     element.invoiceId = addedInvoice._id;
@@ -21,17 +25,22 @@ const createInvoice = catchAsync(async (req, res, next) => {
 });
 const createPhoto = catchAsync(async (req, res, next) => {
   // console.log(req, "ddddd");
-  if (req.file) req.body.image = req.file.filename;
-  let image = "";
-  if (req.body.image) {
-    image = req.body.image;
-  }
+  let newInvoice = new invoiceModel(req.body.image);
 
-  if (!req.body.image) {
-    return res.status(404).json({ message: "Couldn't update!  not found!" });
-  }
+  let addedInvoice = await newInvoice.save();
+  // if (req.file) req.body.image = req.file.filename;
+  // // let image = "";
+  // // if (req.body.image) {
+  // //   image = req.body.image;
+  // // }
 
-  res.status(200).json({ message: "Photo updated successfully!", image });
+  // if (!req.body.image) {
+  //   return res.status(404).json({ message: "Couldn't update!  not found!" });
+  // }
+
+  res
+    .status(200)
+    .json({ message: "Photo updated successfully!", addedInvoice });
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
