@@ -12,7 +12,6 @@ invoiceRouter.post("/", invoiceController.createInvoice);
 invoiceRouter.post(
   "/photo",
   uploadSingleFile("invoices", "image"),
-  // uploadMixFile("/invoices", [{name:"image",maxCount:1}]),
   invoiceController.createPhoto
 );
 invoiceRouter.get("/search/:invoiceName", invoiceController.searchInvoice);

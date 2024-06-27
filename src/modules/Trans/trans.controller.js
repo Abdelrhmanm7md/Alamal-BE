@@ -33,7 +33,7 @@ const getAllTrans = catchAsync(async (req, res, next) => {
 });
 
 const editTrans = 
-// catchAsync(
+catchAsync(
   async (req, res, next) => {
   const {id} = req.params;
 
@@ -52,7 +52,7 @@ const editTrans =
     updatedTrans,
   });
 }
-// );
+);
 
 const deleteTrans = catchAsync(async (req, res, next) => {
   const {id}  = req.params;

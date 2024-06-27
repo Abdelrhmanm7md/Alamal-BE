@@ -20,8 +20,8 @@ const createInvoice = catchAsync(async (req, res, next) => {
   });
 });
 const createPhoto = catchAsync(async (req, res, next) => {
-  if (req.file) req.body.image = req.file.filename;
   // console.log(req, "ddddd");
+  if (req.file) req.body.image = req.file.filename;
   let image = "";
   if (req.body.image) {
     image = req.body.image;

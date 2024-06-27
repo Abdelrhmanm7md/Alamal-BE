@@ -4,7 +4,6 @@ const companySchema = mongoose.Schema(
   {
     name: {
       type: String,
-      trim: true,
       required: true
     },
     desc: {

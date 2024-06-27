@@ -1,4 +1,5 @@
 import AppError from "../utils/appError.js";
+import companyRouter from "./Company/company.routes.js";
 import notiticationRouter from "./Notification/notification.routes.js";
 import paymentRouter from "./Payments/payment.routes.js";
 import productRouter from "./Product/product.routes.js";
@@ -17,6 +18,7 @@ export function init(app) {
   app.use("/trans", transRouter);
   app.use("/visit", visitRouter);
   app.use("/product", productRouter);
+  app.use("/company", companyRouter);
 
   app.use("/", (req, res, next) => {
     res.send("hello world");
@@ -26,9 +28,9 @@ export function init(app) {
     next(new AppError(`not found `, 404));
   });
 
-  // app.use((err, req, res, next) => {
-  //   res
-  //     .status(err.statusCode)
-  //     .json({ message: err.message, statusCode: err.statusCode });
-  // });
+  app.use((err, req, res, next) => {
+    res
+      .status(err.statusCode)
+      .json({ message: err.message, statusCode: err.statusCode });
+  });
 }
