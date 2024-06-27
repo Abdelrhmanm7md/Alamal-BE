@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 const photoSchema = mongoose.Schema(
   {
     image: String,
-    name: String,
   },
   { timestamps: true }
 );
