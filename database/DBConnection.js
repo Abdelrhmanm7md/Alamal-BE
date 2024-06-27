@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const dbConnection = () => {
-  const connectionString = "mongodb+srv://abdelrahmanmohammed851:boda12345@cluster0.o9chdll.mongodb.net/almal";
-
+  const connectionString =
+    "mongodb+srv://abdelrahmanmohammed851:boda12345@cluster0.o9chdll.mongodb.net/almal";
 
   mongoose
     .connect(connectionString, {
