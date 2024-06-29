@@ -21,6 +21,21 @@ const createUser = catchAsync(async (req, res, next) => {
     addedUser,
   });
 });
+const createPhoto = catchAsync(async (req, res, next) => {
+  // console.log(req, "ddddd");
+
+  if (req.file) req.body.profilePic = req.file.filename;
+  let profilePic = "";
+  if (req.body.profilePic) {
+    profilePic = req.body.profilePic;
+  }
+  if (!req.body.profilePic) {
+    return res.status(404).json({ message: "Couldn't update!  not found!" });
+  }
+  res
+    .status(200)
+    .json({ message: "Photo updated successfully!",profilePic: `${process.env.BASE_URL}invoices/${profilePic}` });
+});
 
 const getAllUsers = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find(), req.query)
@@ -197,4 +212,5 @@ export {
   getAllDriver,
   getAllSaleManger,
   getAllSuper,
+  createPhoto
 };

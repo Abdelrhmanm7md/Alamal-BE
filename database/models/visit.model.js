@@ -2,19 +2,43 @@ import mongoose from "mongoose";
 
 const visitSchema = mongoose.Schema(
   {
-    title: {
+    status: {
       type: String,
       required: true,
     },
-    content: {
+    hasPayment: {
+      type: Boolean,
+      required: true,
+    },
+    payment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "payment",
+      required: true,
+    },
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "company",
+      required: true,
+    },
+    location: {
       type: String,
       required: true,
     },
-    tags: {
+    comment: {
       type: String,
       required: true,
     },
-    author: {
+    pharm: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    rep: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    driver: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,

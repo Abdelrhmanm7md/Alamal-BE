@@ -10,8 +10,12 @@ productRouter.delete("/:id", productController.deleteProduct);
 productRouter.put("/:id", productController.updateProduct);
 productRouter.post(
   "/",
-  uploadSingleFile("Product", "pic"),
   productController.createProduct
+);
+productRouter.post(
+  "/photo",
+  uploadSingleFile("photo", "pic"),
+  productController.createPhoto
 );
 productRouter.get("/search/:productName", productController.searchProduct);
 

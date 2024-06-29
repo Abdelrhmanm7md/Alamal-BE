@@ -15,6 +15,22 @@ const createCompany = catchAsync(async (req, res, next) => {
     savedCompany,
   });
 });
+const createPhoto = catchAsync(async (req, res, next) => {
+  // console.log(req, "ddddd");
+
+  if (req.file) req.body.logo = req.file.filename;
+  let logo = "";
+  if (req.body.logo) {
+    logo = req.body.logo;
+  }
+
+  if (!req.body.logo) {
+    return res.status(404).json({ message: "Couldn't update!  not found!" });
+  }
+  res
+    .status(200)
+    .json({ message: "Photo updated successfully!",logo: `${process.env.BASE_URL}invoices/${logo}` });
+});
 const getAllCompany = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(companyModel.find(), req.query)
     .pagination()
@@ -66,4 +82,4 @@ const deleteCompany = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Company deleted successfully!" });
 });
 
-export { createCompany, editCompany, deleteCompany, getAllCompany };
+export { createCompany, editCompany, deleteCompany, getAllCompany ,createPhoto };

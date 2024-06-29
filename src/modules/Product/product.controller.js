@@ -18,6 +18,22 @@ catchAsync(
   });
 }
 );
+const createPhoto = catchAsync(async (req, res, next) => {
+  // console.log(req, "ddddd");
+
+  if (req.file) req.body.pic = req.file.filename;
+  let pic = "";
+  if (req.body.pic) {
+    pic = req.body.pic;
+  }
+
+  if (!req.body.pic) {
+    return res.status(404).json({ message: "Couldn't update!  not found!" });
+  }
+  res
+    .status(200)
+    .json({ message: "Photo updated successfully!",pic: `${process.env.BASE_URL}invoices/${pic}` });
+});
 
 const getAllProduct = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(productModel.find(), req.query)
@@ -109,4 +125,5 @@ export {
   getProductById,
   deleteProduct,
   updateProduct,
+  createPhoto
 };
