@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema(
       required: [true, "Name is a required field."],
       minLength: [2, "Name is too short."],
     },
-    bakance: {
+    balance: {
       type: Number,
       default: 0,
     },
@@ -24,6 +24,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
       minLength: [6, "Password must be at least 6 characters long."],
+    },
+    location: {
+      type: String,
     },
     profilePic: String,
     role: {

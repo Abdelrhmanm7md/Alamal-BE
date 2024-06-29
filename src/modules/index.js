@@ -2,7 +2,6 @@ import AppError from "../utils/appError.js";
 import companyRouter from "./Company/company.routes.js";
 import notiticationRouter from "./Notification/notification.routes.js";
 import paymentRouter from "./Payments/payment.routes.js";
-import photoRouter from "./Photo/photo.routes.js";
 import productRouter from "./Product/product.routes.js";
 import transRouter from "./Trans/trans.routes.js";
 import visitRouter from "./Visits/visits.routes.js";
@@ -20,7 +19,6 @@ export function init(app) {
   app.use("/visit", visitRouter);
   app.use("/product", productRouter);
   app.use("/company", companyRouter);
-  app.use("/photo", photoRouter);
 
   app.use("/", (req, res, next) => {
     res.send("hello world");

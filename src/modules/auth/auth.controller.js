@@ -22,7 +22,7 @@ export const signIn = catchAsync(async (req, res, next) => {
       { name: isFound.name, userId: isFound._id },
       process.env.JWT_SECRET_KEY
     );
-    return res.json({ message: "success", token,role: isFound.role });
+    return res.json({ message: "success", token, isFound });
   }
   next(new AppError(`wrong email or password`, 401));
 });

@@ -6,5 +6,6 @@ const notiticationRouter = express.Router();
 notiticationRouter.get("/", notiticationController.getAllNotification);
 notiticationRouter.post("/", notiticationController.createNotification);
 notiticationRouter.delete("/:id", notiticationController.deleteNotification);
+notiticationRouter.delete("/", notiticationController.clearNotification);
 
 export default notiticationRouter;

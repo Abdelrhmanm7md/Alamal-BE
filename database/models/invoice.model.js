@@ -40,6 +40,14 @@ const invoiceSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
+    dropComment: {
+      type: String,
+      required: true,
+    },
+    dropStatus: {
+      type: String,
+      required: true,
+    },
     payments: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "payment",

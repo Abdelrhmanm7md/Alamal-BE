@@ -100,11 +100,13 @@ const searchInvoice = catchAsync(async (req, res, next) => {
 const getInvoiceById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let Invoice = await invoiceModel.findById(id);
+  let Invoice = await invoiceModel.findById(id).populate("pyments");
 
   if (!Invoice) {
     return res.status(404).json({ message: "Invoice not found!" });
   }
+
+let amountPaid = 
 
   res.status(200).json({ Invoice });
 });

@@ -6,6 +6,10 @@ const visitSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      required: true,
+    },
     hasPayment: {
       type: Boolean,
       required: true,

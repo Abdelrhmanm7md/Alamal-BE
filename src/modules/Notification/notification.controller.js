@@ -1,15 +1,12 @@
 import { notificationModel } from "../../../database/models/notification.model.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
-
-
 const getAllNotification = catchAsync(async (req, res, next) => {
   let results = await notificationModel.find();
   res.json({ message: "done", results });
 });
 
 const createNotification = catchAsync(async (req, res, next) => {
-
   const newNotif = new notificationModel(req.body);
   const savedNotif = await newNotif.save();
 
@@ -19,10 +16,8 @@ const createNotification = catchAsync(async (req, res, next) => {
   });
 });
 
-const deleteNotification =
-// catchAsync(
-  async (req, res, next) => {
-  const {id} = req.params;
+const deleteNotification = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
   const deletedNotification = await notificationModel.findByIdAndDelete(id);
 
@@ -31,7 +26,15 @@ const deleteNotification =
   }
 
   res.status(200).json({ message: "notification deleted successfully!" });
-}
-// );
+});
+const clearNotification = catchAsync(async (req, res, next) => {
+  let deletedInvoice = await notificationModel.deleteMany();
 
-export { createNotification, deleteNotification, getAllNotification };
+  if (!deletedInvoice) {
+    return res.status(404).json({ message: "Couldn't delete!  not found!" });
+  }
+
+  res.status(200).json({ message: "Invoice deleted successfully!" });
+});
+
+export { createNotification, deleteNotification, getAllNotification,clearNotification };
