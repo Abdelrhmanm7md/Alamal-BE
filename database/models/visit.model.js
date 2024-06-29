@@ -24,8 +24,6 @@ const visitSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-visitSchema.post("init", (doc) => {
-  doc.attachedResume = process.env.BASE_URL + "resumes/" + doc.attachedResume;
-});
+
 
 export const visitModel = mongoose.model("visit", visitSchema);

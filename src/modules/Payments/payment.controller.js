@@ -54,17 +54,17 @@ const searchpayment = catchAsync(async (req, res, next) => {
   res.status(200).json({ payment });
 });
 
-const getpaymentById = catchAsync(async (req, res, next) => {
-  let { id } = req.params;
+// const getpaymentById = catchAsync(async (req, res, next) => {
+//   let { id } = req.params;
 
-  let payment = await paymentModel.findById(id);
+//   let payment = await paymentModel.findById(id);
 
-  if (!payment) {
-    return res.status(404).json({ message: "payment not found!" });
-  }
+//   if (!payment) {
+//     return res.status(404).json({ message: "payment not found!" });
+//   }
 
-  res.status(200).json({ payment });
-});
+//   res.status(200).json({ payment });
+// });
 const updatePayment = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
@@ -95,4 +95,4 @@ const deletePayment = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ message: "Payment deleted successfully!" });
 });
-export { createpayment, getAllpayment, searchpayment, getpaymentById, updatePayment, deletePayment };
+export { createpayment, getAllpayment, searchpayment, updatePayment, deletePayment };

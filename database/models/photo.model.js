@@ -8,7 +8,6 @@ const photoSchema = mongoose.Schema(
 );
 
 photoSchema.post("init", (doc) => {
-  // console.log(doc , "docccccccccccc");
   doc.image = process.env.BASE_URL + "photo/" + doc.image;
 });
 

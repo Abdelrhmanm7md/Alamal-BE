@@ -32,7 +32,6 @@ const createPhoto = catchAsync(async (req, res, next) => {
   if (!req.body.image) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
   }
-
   res
     .status(200)
     .json({ message: "Photo updated successfully!",image: `${process.env.BASE_URL}invoices/${image}` });

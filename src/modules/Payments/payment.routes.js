@@ -4,7 +4,6 @@ const paymentRouter = express.Router();
 import * as paymentController from "./payment.controller.js";
 
 paymentRouter.get("/", paymentController.getAllpayment);
-paymentRouter.get("/:id", paymentController.getpaymentById);
 paymentRouter.post(
   "/",
   paymentController.createpayment

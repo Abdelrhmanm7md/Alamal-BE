@@ -10,6 +10,7 @@ usersRouter.get("/admin", usersController.getAllAdmin);
 usersRouter.get("/supervisor", usersController.getAllSuper);
 usersRouter.get("/driver", usersController.getAllDriver);
 usersRouter.get("/sale", usersController.getAllSaleManger);
+usersRouter.get("/acc", usersController.getAllAcc);
 usersRouter.post("/", usersController.createUser);
 usersRouter.get("/:id", usersController.getUserById);
 usersRouter.put("/:id", usersController.updateUser);

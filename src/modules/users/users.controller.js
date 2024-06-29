@@ -70,6 +70,22 @@ const getAllPharm = catchAsync(async (req, res, next) => {
     });
   }
 });
+const getAllAcc = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(userModel.find({ role: "accountant" }), req.query)
+    .pagination()
+    .filter()
+    .sort()
+    .search()
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!results) {
+    return res.status(404).json({
+      message: "No users was found! Create a new user to get started!",
+    });
+  }
+});
 const getAllAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "admin" }), req.query)
     .pagination()
@@ -176,6 +192,7 @@ export {
   deleteUser,
   getAllPharm,
   getAllRep,
+  getAllAcc,
   getAllAdmin,
   getAllDriver,
   getAllSaleManger,
