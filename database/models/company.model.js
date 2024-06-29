@@ -20,9 +20,9 @@ const companySchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-companySchema.post("init", (doc) => {
-  doc.logo = process.env.BASE_URL + "company/" + doc.logo;
-});
+// companySchema.post("init", (doc) => {
+//   doc.logo = process.env.BASE_URL + "company/" + doc.logo;
+// });
 
 
 

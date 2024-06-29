@@ -46,9 +46,9 @@ const userSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.post("init", (doc) => {
-  doc.profilePic = process.env.BASE_URL + "profilePic/" + doc.profilePic;
-});
+// userSchema.post("init", (doc) => {
+//   doc.profilePic = process.env.BASE_URL + "profilePic/" + doc.profilePic;
+// });
 
 userSchema.pre("save", function () {
   this.password = bcrypt.hashSync(this.password, 10);

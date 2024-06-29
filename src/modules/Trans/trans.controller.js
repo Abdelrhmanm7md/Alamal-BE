@@ -11,7 +11,7 @@ const createTrans = catchAsync(async (req, res, next) => {
   const savedTrans = await newTrans.save();
 
   res.status(201).json({
-    message: "Trans created successfully!",
+    message: "Transction created successfully!",
     savedTrans,
   });
 });
@@ -27,7 +27,7 @@ const getAllTrans = catchAsync(async (req, res, next) => {
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({
-      message: "No Trans was found!",
+      message: "No Transction was found!",
     });
   }
 });
@@ -44,11 +44,11 @@ catchAsync(
   );
 
   if (!updatedTrans) {
-    return res.status(404).json({ message: "Trans not found!" });
+    return res.status(404).json({ message: "Transction not found!" });
   }
 
   res.status(200).json({
-    message: "Trans updated successfully!",
+    message: "Transction updated successfully!",
     updatedTrans,
   });
 }
@@ -60,10 +60,10 @@ const deleteTrans = catchAsync(async (req, res, next) => {
   const deletedTrans = await transModel.findByIdAndDelete(id);
 
   if (!deletedTrans) {
-    return res.status(404).json({ message: "Trans not found!" });
+    return res.status(404).json({ message: "Transction not found!" });
   }
 
-  res.status(200).json({ message: "Trans deleted successfully!" });
+  res.status(200).json({ message: "Transcation deleted successfully!" });
 });
 
 export { createTrans, editTrans, deleteTrans, getAllTrans };

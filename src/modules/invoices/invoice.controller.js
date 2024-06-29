@@ -34,27 +34,44 @@ const createPhoto = catchAsync(async (req, res, next) => {
   }
   res
     .status(200)
-    .json({ message: "Photo updated successfully!",image: `${process.env.BASE_URL}invoices/${image}` });
+    .json({
+      message: "Photo updated successfully!",
+      image: `${process.env.BASE_URL}invoices/${image}`,
+    });
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
+  // let ApiFeat = invoiceModel.find()
+
   let ApiFeat = new ApiFeature(invoiceModel.find(), req.query)
     .pagination()
     .filter()
     .sort()
-    .search()
+    .search(req.query.key)
     .fields();
 
+  // let results = await ApiFeat
   let results = await ApiFeat.mongooseQuery
-    .populate("payments")
-    .populate("productLines.product");
+    // .populate("payments")
+    // .populate("productLines.product");
+
+    results = JSON.stringify(results);
+    results = JSON.parse(results);
 
   for (let j = 0; j < results.length; j++) {
     for (let i = 0; i < results[j].productLines.length; i++) {
-      results[j].productLines[i].total =
+      results[j].productLines[i].total=
         results[j].productLines[i].qty *
         results[j].productLines[i].product.unitPrice;
     }
+  let totalAmt = 0;
+  for (let i = 0; i < results[j].payments.length; i++) {
+    totalAmt +=
+      results[j].payments[i].amount
+  }
+  results[j].totalPaid = totalAmt;
+  results[j].amountDue = results[j].amount - results[j].totalPaid
+  console.log(results[j].amountDue);
   }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
@@ -90,7 +107,7 @@ const searchInvoice = catchAsync(async (req, res, next) => {
   if (!Invoice) {
     return res.status(404).json({
       message: "No Invoice was found!",
-      s,
+      
     });
   }
 
@@ -100,13 +117,29 @@ const searchInvoice = catchAsync(async (req, res, next) => {
 const getInvoiceById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let Invoice = await invoiceModel.findById(id).populate("pyments");
+  let Invoice = await invoiceModel.findById(id).populate("payments").populate("productLines.product");
+  ;
+  Invoice = JSON.stringify(Invoice);
+  Invoice = JSON.parse(Invoice);
 
   if (!Invoice) {
     return res.status(404).json({ message: "Invoice not found!" });
   }
 
-let amountPaid = 
+    for (let i = 0; i < Invoice.productLines.length; i++) {
+      Invoice.productLines[i].total=
+      Invoice.productLines[i].qty *
+      Invoice.productLines[i].product.unitPrice;
+    }
+  let totalAmt = 0;
+  for (let i = 0; i < Invoice.payments.length; i++) {
+    totalAmt +=
+    Invoice.payments[i].amount
+  }
+  Invoice.totalPaid = totalAmt;
+  Invoice.amountDue = Invoice.amount - Invoice.totalPaid
+
+  
 
   res.status(200).json({ Invoice });
 });
@@ -136,19 +169,7 @@ const deleteInovice = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ message: "Invoice deleted successfully!" });
 });
-// const deleteAllInovice =
-// catchAsync(
-//   async (req, res, next) => {
 
-//   let deletedInvoice = await invoiceModel.deleteMany();
-
-//   if (!deletedInvoice) {
-//     return res.status(404).json({ message: "Couldn't delete!  not found!" });
-//   }
-
-//   res.status(200).json({ message: "Invoice deleted successfully!" });
-// }
-// );
 
 export {
   createInvoice,

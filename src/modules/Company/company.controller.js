@@ -25,11 +25,11 @@ const createPhoto = catchAsync(async (req, res, next) => {
   }
 
   if (!req.body.logo) {
-    return res.status(404).json({ message: "Couldn't update!  not found!" });
+    return res.status(404).json({ message: "Logo not found!" });
   }
   res
     .status(200)
-    .json({ message: "Photo updated successfully!",logo: `${process.env.BASE_URL}invoices/${logo}` });
+    .json({ message: "Photo uploaded successfully!",logo: `${process.env.BASE_URL}invoices/${logo}` });
 });
 const getAllCompany = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(companyModel.find(), req.query)
@@ -48,8 +48,7 @@ const getAllCompany = catchAsync(async (req, res, next) => {
   }
 });
 
-const editCompany = 
-catchAsync(
+const editCompany = catchAsync(
   async (req, res, next) => {
   const {id} = req.params;
 
@@ -67,8 +66,7 @@ catchAsync(
     message: "Company updated successfully!",
     updatedCompany,
   });
-}
-);
+});
 
 const deleteCompany = catchAsync(async (req, res, next) => {
   const {id}  = req.params;

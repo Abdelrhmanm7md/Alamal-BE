@@ -21,11 +21,11 @@ export function init(app) {
   app.use("/company", companyRouter);
 
   app.use("/", (req, res, next) => {
-    res.send("hello world");
+    res.send("Hello world");
   });
 
   app.all("*", (req, res, next) => {
-    next(new AppError(`not found `, 404));
+    next(new AppError(`Not found `, 404));
   });
 
   // app.use((err, req, res, next) => {

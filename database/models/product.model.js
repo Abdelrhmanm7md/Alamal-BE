@@ -22,8 +22,8 @@ const productSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-productSchema.post("init", (doc) => {
-  doc.pic = process.env.BASE_URL + "Product/" + doc.pic;
-});
+// productSchema.post("init", (doc) => {
+//   doc.pic = process.env.BASE_URL + "Product/" + doc.pic;
+// });
 
 export const productModel = mongoose.model("product", productSchema);

@@ -37,8 +37,7 @@ export default class ApiFeature {
     if (this.queryStr.keyword) {
       this.mongooseQuery.find({
         $or: [
-          { title: { $regex: this.queryStr.keyword, $options: "i" } },
-          { description: { $regex: this.queryStr.keyword, $options: "i" } },
+          { key: { $regex: this.queryStr.keyword, $options: "i" } },
         ],
       });
     }
