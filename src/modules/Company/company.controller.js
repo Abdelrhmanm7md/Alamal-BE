@@ -39,6 +39,31 @@ const getAllCompany = catchAsync(async (req, res, next) => {
     .fields();
 
   let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if(filterType != ''&& filterValue!=''){
+
+    results = results.filter(function (item) {
+      // if(filterType.("pharmacy")){
+        if (filterType == "pharmacy") {
+          return item.pharmacy.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "company") {
+          return item.company.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "medicalRep") {
+          return item.medicalRep.name == filterValue;
+        }
+        if (filterType == "date") {
+          return item.date == filterValue;
+        }
+        if (filterType == "location") {
+          return item.pharmacy.location == filterValue;
+        }
+      });
+    }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({

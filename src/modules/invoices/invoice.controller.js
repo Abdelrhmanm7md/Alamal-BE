@@ -41,8 +41,7 @@ const createPhoto = catchAsync(async (req, res, next) => {
 const getAllInvoice = catchAsync(async (req, res, next) => {
   // let ApiFeat = invoiceModel.find().populate("pharmacy productLines.product payments");
 
-  //,match: {name: new RegExp('.*m.*', 'i')}}).find({'pharmacy': {$ne: null}}).exec();
-  // let ApiFeat = null;
+
   let ApiFeat = new ApiFeature(
     invoiceModel
       .find()
@@ -85,7 +84,7 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
   //   .countDocuments();
   // console.log(numPages);
   let results = await ApiFeat.mongooseQuery;
-  console.log(ApiFeat);
+  // console.log(ApiFeat);
   results = JSON.stringify(results);
   results = JSON.parse(results);
   // console.log(req);

@@ -17,6 +17,11 @@ const productSchema = mongoose.Schema(
     unitPrice: {
       type: Number,
       required: true,
+    },  
+      company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "company",
+      required: true,
     },
   },
   { timestamps: true }
