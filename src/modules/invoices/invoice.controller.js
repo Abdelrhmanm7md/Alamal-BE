@@ -52,36 +52,37 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     .sort()
     .search(req.query.key)
     .fields();
-  // switch (req.user.role) {
-  //   case "pharm":
-  //   case "rep":
-  //     case "diver":
-  //       ApiFeat = new ApiFeature(
-  //         invoiceModel.find({ $or: [{ medicalRep: req.user._id }, { pharmacy: req.user._id }] }).populate("pharmacy productLines.product payments"),
-  //         req.query
-  //       )
-  //         .pagination()
-  //         .sort()
-  //         .search(req.query.key)
-  //         .fields();
-  //         break;
-  //         default:
 
-  //       ApiFeat = new ApiFeature(
-  //         invoiceModel.find().populate("pharmacy productLines.product payments"),
-  //         req.query
-  //       )
-  //         .pagination()
-  //         .sort()
-  //         .search(req.query.key)
-  //         .fields();
-  //     break;
-  // }
+  switch (req.user.role) {
+    case "pharm":
+    case "rep":
+      case "diver":
+        ApiFeat = new ApiFeature(
+          invoiceModel.find({ $or: [{ medicalRep: req.user._id }, { pharmacy: req.user._id }] }).populate("pharmacy productLines.product payments"),
+          req.query
+        )
+          .pagination()
+          .sort()
+          .search(req.query.key)
+          .fields();
+          break;
+          default:
 
-  // let numPages = invoiceModel
-  //   .find()
-  //   .populate("pharmacy productLines.product payments")
-  //   .countDocuments();
+        ApiFeat = new ApiFeature(
+          invoiceModel.find().populate("pharmacy productLines.product payments"),
+          req.query
+        )
+          .pagination()
+          .sort()
+          .search(req.query.key)
+          .fields();
+      break;
+  }
+
+  let numPages = invoiceModel
+    .find()
+    .populate("pharmacy productLines.product payments")
+    .countDocuments();
   // console.log(numPages);
   let results = await ApiFeat.mongooseQuery;
   // console.log(ApiFeat);
@@ -208,6 +209,33 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ Invoice });
 });
+const getInvByUserId = catchAsync(async (req, res, next) => {
+  let { id } = req.query;
+
+  let Invoice = await invoiceModel
+    .find({createdBy:id})
+    .populate("payments")
+    .populate("productLines.product");
+  Invoice = JSON.stringify(Invoice);
+  Invoice = JSON.parse(Invoice);
+
+  if (!Invoice) {
+    return res.status(404).json({ message: "Invoice not found!" });
+  }
+
+  for (let i = 0; i < Invoice.productLines.length; i++) {
+    Invoice.productLines[i].total =
+      Invoice.productLines[i].qty * Invoice.productLines[i].product.unitPrice;
+  }
+  let totalAmt = 0;
+  for (let i = 0; i < Invoice.payments.length; i++) {
+    totalAmt += Invoice.payments[i].amount;
+  }
+  Invoice.totalPaid = totalAmt;
+  Invoice.amountDue = Invoice.amount - Invoice.totalPaid;
+
+  res.status(200).json({ Invoice });
+});
 const updateInvoice = catchAsync(async (req, res, next) => {
   let { id } = req.query;
 
@@ -243,4 +271,5 @@ export {
   deleteInovice,
   updateInvoice,
   createPhoto,
+  getInvByUserId
 };

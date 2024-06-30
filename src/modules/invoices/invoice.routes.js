@@ -6,6 +6,7 @@ import { uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUplo
 
 invoiceRouter.get("/", invoiceController.getAllInvoice);
 invoiceRouter.get("/:id", invoiceController.getInvoiceById);
+invoiceRouter.get("/:id", invoiceController.getInvByUserId);
 invoiceRouter.delete("/:id", invoiceController.deleteInovice);
 invoiceRouter.put("/:id", invoiceController.updateInvoice);
 invoiceRouter.post("/", invoiceController.createInvoice);

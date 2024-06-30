@@ -17,6 +17,11 @@ const invoiceSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
     locationX: {
       type: String,
     },
