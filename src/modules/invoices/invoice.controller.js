@@ -90,27 +90,30 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
   results = JSON.parse(results);
   // console.log(req);
   let { filterType, filterValue } = req.query;
-  
+
   // console.log(filterType, filterValue);
   // console.log(results);
-  results = results.filter(function (item) {
-    // if(filterType.("pharmacy")){
-    if (filterType == "pharmacy") {
-      return item.pharmacy.name.toLowerCase().includes(filterValue);
+  if(filterType&&filterValue){
+
+    results = results.filter(function (item) {
+      // if(filterType.("pharmacy")){
+        if (filterType == "pharmacy") {
+          return item.pharmacy.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "company") {
+          return item.company.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "medicalRep") {
+          return item.medicalRep.name == filterValue;
+        }
+        if (filterType == "date") {
+          return item.date == filterValue;
+        }
+        if (filterType == "location") {
+          return item.pharmacy.location == filterValue;
+        }
+      });
     }
-    if (filterType == "company") {
-      return item.company.name.toLowerCase().includes(filterValue);
-    }
-    if (filterType == "medicalRep") {
-      return item.medicalRep.name == filterValue;
-    }
-    if (filterType == "date") {
-      return item.date == filterValue;
-    }
-    if (filterType == "location") {
-      return item.pharmacy.location == filterValue;
-    }
-  });
   //   switch (req.query.filterType) {
   //     case req.query.filterType == "pharmacy":
   //       console.log(req.query.filterValue);
