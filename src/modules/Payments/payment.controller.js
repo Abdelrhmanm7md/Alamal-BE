@@ -18,13 +18,41 @@ const createpayment = catchAsync(async (req, res, next) => {
 });
 
 const getAllpayment = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(paymentModel.find(), req.query)
+  let ApiFeat = new ApiFeature(paymentModel.find().populate(), req.query)
     .pagination()
     .sort()
     .search()
     .fields();
 
   let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if(filterType != ''&& filterValue!=''){
+
+    results = results.filter(function (item) {
+      // if(filterType.("pharmacy")){
+        if (filterType == "pharmacy") {
+          return item.pharm.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "rep") {
+          return item.rep.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "company") {
+          return item.company.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "createdBy") {
+          return item.createdBy.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "date") {
+          return item.paymentDate == filterValue;
+        }
+        if (filterType == "location") {
+          return item.pharmacy.location.toLowerCase().includes(filterValue);
+        }
+      });
+    }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({

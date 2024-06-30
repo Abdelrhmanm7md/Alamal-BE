@@ -45,6 +45,22 @@ const getAllUsers = catchAsync(async (req, res, next) => {
     .fields();
 
   let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if(filterType != ''&& filterValue!=''){
+
+    results = results.filter(function (item) {
+      // if(filterType.("pharmacy")){
+        if (filterType == "name") {
+          return item.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "location") {
+          return item.location.toLowerCase().includes(filterValue);
+        }
+      });
+    }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!results) {
     return res.status(404).json({

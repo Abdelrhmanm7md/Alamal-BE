@@ -16,7 +16,6 @@ const createCompany = catchAsync(async (req, res, next) => {
   });
 });
 const createPhoto = catchAsync(async (req, res, next) => {
-  // console.log(req, "ddddd");
 
   if (req.file) req.body.logo = req.file.filename;
   let logo = "";
@@ -32,7 +31,7 @@ const createPhoto = catchAsync(async (req, res, next) => {
     .json({ message: "Photo uploaded successfully!",logo: `${process.env.BASE_URL}invoices/${logo}` });
 });
 const getAllCompany = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(companyModel.find(), req.query)
+  let ApiFeat = new ApiFeature(companyModel.find().populate("pharmacy productLines.product payments company"), req.query)
     .pagination()
     .sort()
     .search()
@@ -41,29 +40,6 @@ const getAllCompany = catchAsync(async (req, res, next) => {
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
-
-  let { filterType, filterValue } = req.query;
-  if(filterType != ''&& filterValue!=''){
-
-    results = results.filter(function (item) {
-      // if(filterType.("pharmacy")){
-        if (filterType == "pharmacy") {
-          return item.pharmacy.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "medicalRep") {
-          return item.medicalRep.name == filterValue;
-        }
-        if (filterType == "date") {
-          return item.date == filterValue;
-        }
-        if (filterType == "location") {
-          return item.pharmacy.location == filterValue;
-        }
-      });
-    }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({

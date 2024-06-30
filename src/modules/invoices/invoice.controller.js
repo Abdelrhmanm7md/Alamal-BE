@@ -103,13 +103,13 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
           return item.company.name.toLowerCase().includes(filterValue);
         }
         if (filterType == "medicalRep") {
-          return item.medicalRep.name == filterValue;
+          return item.medicalRep.name.toLowerCase().includes(filterValue);
         }
         if (filterType == "date") {
           return item.date == filterValue;
         }
         if (filterType == "location") {
-          return item.pharmacy.location == filterValue;
+          return item.pharmacy.location.toLowerCase().includes(filterValue);
         }
       });
     }
