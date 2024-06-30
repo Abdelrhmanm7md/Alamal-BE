@@ -34,7 +34,7 @@ const createPhoto = catchAsync(async (req, res, next) => {
 });
 
 const getAllProduct = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(productModel.find(), req.query)
+  let ApiFeat = new ApiFeature(productModel.find().populate("company"), req.query)
     .pagination()
     .sort()
     .search()
@@ -45,10 +45,9 @@ const getAllProduct = catchAsync(async (req, res, next) => {
   results = JSON.parse(results);
 
   let { filterType, filterValue } = req.query;
-  if(filterType != ''&& filterValue!=''){
+  if(filterType&& filterValue){
 
     results = results.filter(function (item) {
-      // if(filterType.("pharmacy")){
         if (filterType == "name") {
           return item.name.toLowerCase().includes(filterValue);
         }

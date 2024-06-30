@@ -22,8 +22,6 @@ const createUser = catchAsync(async (req, res, next) => {
   });
 });
 const createPhoto = catchAsync(async (req, res, next) => {
-  // console.log(req, "ddddd");
-
   if (req.file) req.body.profilePic = req.file.filename;
   let profilePic = "";
   if (req.body.profilePic) {
@@ -34,7 +32,10 @@ const createPhoto = catchAsync(async (req, res, next) => {
   }
   res
     .status(200)
-    .json({ message: "Photo updated successfully!",profilePic: `${process.env.BASE_URL}invoices/${profilePic}` });
+    .json({
+      message: "Photo updated successfully!",
+      profilePic: `${process.env.BASE_URL}invoices/${profilePic}`,
+    });
 });
 
 const getAllUsers = catchAsync(async (req, res, next) => {
@@ -49,18 +50,16 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   results = JSON.parse(results);
 
   let { filterType, filterValue } = req.query;
-  if(filterType != ''&& filterValue!=''){
-
+  if(filterType&& filterValue){
     results = results.filter(function (item) {
-      // if(filterType.("pharmacy")){
-        if (filterType == "name") {
-          return item.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "location") {
-          return item.location.toLowerCase().includes(filterValue);
-        }
-      });
-    }
+      if (filterType == "name") {
+        return item.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "location") {
+        return item.location.toLowerCase().includes(filterValue);
+      }
+    });
+  }
   res.json({ message: "done", page: ApiFeat.page, results });
   if (!results) {
     return res.status(404).json({
@@ -99,7 +98,10 @@ const getAllPharm = catchAsync(async (req, res, next) => {
   }
 });
 const getAllAcc = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(userModel.find({ role: "accountant" }), req.query)
+  let ApiFeat = new ApiFeature(
+    userModel.find({ role: "accountant" }),
+    req.query
+  )
     .pagination()
     .sort()
     .search()
@@ -220,5 +222,5 @@ export {
   getAllDriver,
   getAllSaleManger,
   getAllSuper,
-  createPhoto
+  createPhoto,
 };

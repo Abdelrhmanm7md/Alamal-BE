@@ -12,13 +12,13 @@ const productSchema = mongoose.Schema(
     },
     pic: {
       type: String,
-      required: true,  
+      required: true,
     },
     unitPrice: {
       type: Number,
       required: true,
-    },  
-      company: {
+    },
+    company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "company",
       required: true,

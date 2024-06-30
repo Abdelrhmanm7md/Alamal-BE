@@ -92,7 +92,7 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
 
   // console.log(filterType, filterValue);
   // console.log(results);
-  if(filterType&&filterValue){
+  if(filterType&& filterValue){
 
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){

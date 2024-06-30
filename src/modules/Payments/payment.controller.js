@@ -18,7 +18,7 @@ const createpayment = catchAsync(async (req, res, next) => {
 });
 
 const getAllpayment = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(paymentModel.find().populate(), req.query)
+  let ApiFeat = new ApiFeature(paymentModel.find().populate("pharm rep company createdBy"), req.query)
     .pagination()
     .sort()
     .search()
@@ -29,7 +29,7 @@ const getAllpayment = catchAsync(async (req, res, next) => {
   results = JSON.parse(results);
 
   let { filterType, filterValue } = req.query;
-  if(filterType != ''&& filterValue!=''){
+  if(filterType&& filterValue){
 
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
@@ -49,7 +49,7 @@ const getAllpayment = catchAsync(async (req, res, next) => {
           return item.paymentDate == filterValue;
         }
         if (filterType == "location") {
-          return item.pharmacy.location.toLowerCase().includes(filterValue);
+          return item.pharm.location.toLowerCase().includes(filterValue);
         }
       });
     }

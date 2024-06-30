@@ -31,7 +31,7 @@ const createPhoto = catchAsync(async (req, res, next) => {
     .json({ message: "Photo uploaded successfully!",logo: `${process.env.BASE_URL}invoices/${logo}` });
 });
 const getAllCompany = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(companyModel.find().populate("pharmacy productLines.product payments company"), req.query)
+  let ApiFeat = new ApiFeature(companyModel.find(), req.query)
     .pagination()
     .sort()
     .search()

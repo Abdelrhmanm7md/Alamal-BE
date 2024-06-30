@@ -44,49 +44,51 @@ const deleteVisit = catchAsync(async (req, res, next) => {
 });
 
 const getAllVisits = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(visitModel.find(), req.query)
+  let ApiFeat = new ApiFeature(
+    visitModel.find().populate("pharm rep driver company"),
+    req.query
+  )
     .pagination()
     .sort()
     .search()
     .fields();
 
-    if (!ApiFeat) {
-      return res.status(404).json({
-        message: "No visits was found!",
-      });
-    }
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No visits was found!",
+    });
+  }
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
 
   let { filterType, filterValue } = req.query;
-  if(filterType != ''&& filterValue!=''){
-
+  if(filterType&& filterValue){
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
-        if (filterType == "pharmacy") {
-          return item.pharm.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "rep") {
-          return item.rep.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "driver") {
-          return item.driver.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "location") {
-          return item.location.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "status") {
-          return item.status.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "hasPayment") {
-          return item.hasPayment.toLowerCase().includes(filterValue);
-        }
-      });
-    }
+      if (filterType == "pharmacy") {
+        return item.pharm.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "driver") {
+        return item.driver.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "company") {
+        return item.company.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "location") {
+        return item.location.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "status") {
+        return item.status.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "hasPayment") {
+        return item.hasPayment.toLowerCase().includes(filterValue);
+      }
+    });
+  }
   res.json({ message: "done", page: ApiFeat.page, results });
 });
 

@@ -17,11 +17,12 @@ const invoiceSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
-    // deiver: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "user",
-    //   required: true,
-    // },
+    locationX: {
+      type: String,
+    },
+    locationY: {
+      type: String,
+    },
     invoiceStatus: {
       type: String,
       enum: ["notPaid","partiallyPaid", "totallyPaid"],
