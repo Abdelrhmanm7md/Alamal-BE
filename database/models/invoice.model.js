@@ -17,6 +17,11 @@ const invoiceSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
+    // deiver: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "user",
+    //   required: true,
+    // },
     invoiceStatus: {
       type: String,
       enum: ["notPaid","partiallyPaid", "totallyPaid"],
@@ -51,7 +56,6 @@ const invoiceSchema = mongoose.Schema(
     payments: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "payment",
-      required: true,
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,
@@ -68,8 +72,9 @@ const invoiceSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },{strict: false}
+  { timestamps: true },
 );
+
 
 // invoiceSchema.post("init", (doc) => {
 //   doc.image = process.env.BASE_URL + "invoices/" + doc.image;

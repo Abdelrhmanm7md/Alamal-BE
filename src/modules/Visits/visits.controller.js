@@ -46,7 +46,6 @@ const deleteVisit = catchAsync(async (req, res, next) => {
 const getAllVisits = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(visitModel.find(), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();

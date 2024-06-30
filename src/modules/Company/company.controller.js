@@ -34,7 +34,6 @@ const createPhoto = catchAsync(async (req, res, next) => {
 const getAllCompany = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(companyModel.find(), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();

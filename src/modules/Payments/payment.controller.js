@@ -20,7 +20,6 @@ const createpayment = catchAsync(async (req, res, next) => {
 const getAllpayment = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(paymentModel.find(), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();

@@ -18,7 +18,6 @@ const createTrans = catchAsync(async (req, res, next) => {
 const getAllTrans = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(transModel.find(), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();

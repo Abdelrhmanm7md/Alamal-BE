@@ -40,7 +40,6 @@ const createPhoto = catchAsync(async (req, res, next) => {
 const getAllUsers = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find(), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -56,7 +55,6 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 const getAllRep = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "rep" }), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -72,7 +70,6 @@ const getAllRep = catchAsync(async (req, res, next) => {
 const getAllPharm = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "pharm" }), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -88,7 +85,6 @@ const getAllPharm = catchAsync(async (req, res, next) => {
 const getAllAcc = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "accountant" }), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -104,7 +100,6 @@ const getAllAcc = catchAsync(async (req, res, next) => {
 const getAllAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "admin" }), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -120,7 +115,6 @@ const getAllAdmin = catchAsync(async (req, res, next) => {
 const getAllSaleManger = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "Smanger" }), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -139,7 +133,6 @@ const getAllSuper = catchAsync(async (req, res, next) => {
     req.query
   )
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();
@@ -155,7 +148,6 @@ const getAllSuper = catchAsync(async (req, res, next) => {
 const getAllDriver = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find({ role: "driver" }), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();

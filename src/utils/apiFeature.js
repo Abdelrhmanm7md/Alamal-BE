@@ -12,20 +12,20 @@ export default class ApiFeature {
     this.mongooseQuery.skip(skip).limit(10);
     return this;
   }
-  filter() {
-    let filterObj = { ...this.queryStr };
-    let excludeFields = ["page", "sort", "limit", "fields", "keyword"];
-    excludeFields.forEach((el) => delete filterObj[el]);
-    filterObj = JSON.stringify(filterObj);
-    filterObj = filterObj.replace(
-      /\b(gte|gt|lte|lt)\b/g,
-      (match) => `$${match}`
-    );
-    filterObj = JSON.parse(filterObj);
+  // filter() {
+  //   let filterObj = { ...this.queryStr };
+  //   let excludeFields = ["page", "sort", "limit", "fields", "keyword"];
+  //   excludeFields.forEach((el) => delete filterObj[el]);
+  //   filterObj = JSON.stringify(filterObj);
+  //   filterObj = filterObj.replace(
+  //     /\b(gte|gt|lte|lt)\b/g,
+  //     (match) => `$${match}`
+  //   );
+  //   filterObj = JSON.parse(filterObj);
 
-    this.mongooseQuery.find(filterObj);
-    return this;
-  }
+  //   this.mongooseQuery.find(filterObj);
+  //   return this;
+  // }
   sort() {
     if (this.queryStr.sort) {
       let sortBy = this.queryStr.sort.split(",").join(" ");

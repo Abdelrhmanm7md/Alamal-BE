@@ -36,7 +36,6 @@ const createPhoto = catchAsync(async (req, res, next) => {
 const getAllProduct = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(productModel.find(), req.query)
     .pagination()
-    .filter()
     .sort()
     .search()
     .fields();

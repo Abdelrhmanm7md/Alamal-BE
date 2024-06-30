@@ -31,7 +31,15 @@ const userSchema = mongoose.Schema(
     profilePic: String,
     role: {
       type: String,
-      enum: ["pharm", "rep", "admin", "driver", "supervisor", "Smanger","accountant"],
+      enum: [
+        "pharm",
+        "rep",
+        "admin",
+        "driver",
+        "supervisor",
+        "Smanger",
+        "accountant",
+      ],
       default: "pharm",
     },
     isActive: {
