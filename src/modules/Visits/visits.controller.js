@@ -3,7 +3,6 @@ import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createVisit = catchAsync(async (req, res, next) => {
-
   const newVisit = new visitModel(req.body);
   const savedVisit = await newVisit.save();
   res.status(201).json({
@@ -61,7 +60,7 @@ const getAllVisits = catchAsync(async (req, res, next) => {
   results = JSON.parse(results);
 
   let { filterType, filterValue } = req.query;
-  if(filterType&& filterValue){
+  if (filterType && filterValue) {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {

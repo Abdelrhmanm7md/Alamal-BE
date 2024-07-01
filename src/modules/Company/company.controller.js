@@ -2,11 +2,7 @@ import { companyModel } from "../../../database/models/company.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
-
-
 const createCompany = catchAsync(async (req, res, next) => {
-
-
   const newCompany = new companyModel(req.body);
   const savedCompany = await newCompany.save();
 
@@ -16,7 +12,6 @@ const createCompany = catchAsync(async (req, res, next) => {
   });
 });
 const createPhoto = catchAsync(async (req, res, next) => {
-
   if (req.file) req.body.logo = req.file.filename;
   let logo = "";
   if (req.body.logo) {
@@ -28,7 +23,10 @@ const createPhoto = catchAsync(async (req, res, next) => {
   }
   res
     .status(200)
-    .json({ message: "Photo uploaded successfully!",logo: `${process.env.BASE_URL}invoices/${logo}` });
+    .json({
+      message: "Photo uploaded successfully!",
+      logo: `${process.env.BASE_URL}invoices/${logo}`,
+    });
 });
 const getAllCompany = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(companyModel.find(), req.query)
@@ -48,15 +46,12 @@ const getAllCompany = catchAsync(async (req, res, next) => {
   }
 });
 
-const editCompany = catchAsync(
-  async (req, res, next) => {
-  const {id} = req.params;
+const editCompany = catchAsync(async (req, res, next) => {
+  const { id } = req.params;
 
-  const updatedCompany = await companyModel.findByIdAndUpdate(
-    id,
-    req.body,
-    { new: true }
-  );
+  const updatedCompany = await companyModel.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
 
   if (!updatedCompany) {
     return res.status(404).json({ message: "Company not found!" });
@@ -69,7 +64,7 @@ const editCompany = catchAsync(
 });
 
 const deleteCompany = catchAsync(async (req, res, next) => {
-  const {id}  = req.params;
+  const { id } = req.params;
 
   const deletedCompany = await companyModel.findByIdAndDelete(id);
 
@@ -80,4 +75,10 @@ const deleteCompany = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Company deleted successfully!" });
 });
 
-export { createCompany, editCompany, deleteCompany, getAllCompany ,createPhoto };
+export {
+  createCompany,
+  editCompany,
+  deleteCompany,
+  getAllCompany,
+  createPhoto,
+};

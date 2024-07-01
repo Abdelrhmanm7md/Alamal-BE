@@ -8,15 +8,12 @@ productRouter.get("/", productController.getAllProduct);
 productRouter.get("/:id", productController.getProductById);
 productRouter.delete("/:id", productController.deleteProduct);
 productRouter.put("/:id", productController.updateProduct);
-productRouter.post(
-  "/",
-  productController.createProduct
-);
+productRouter.post("/", productController.createProduct);
 productRouter.post(
   "/photo",
   uploadSingleFile("photo", "pic"),
   productController.createPhoto
 );
-productRouter.get("/search/:productName", productController.searchProduct);
+// productRouter.get("/search/:productName", productController.searchProduct);
 
 export default productRouter;

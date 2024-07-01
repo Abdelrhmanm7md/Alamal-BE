@@ -6,7 +6,6 @@ import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createProduct = catchAsync(
   async (req, res, next) => {
-    // req.body.pic = req.file.filename;
     console.log(req.files, "req.files");
   let newProduct = new productModel(req.body);
   let addedProduct = await newProduct.save();
@@ -17,8 +16,7 @@ const createProduct = catchAsync(
   });
 });
 const createPhoto = catchAsync(async (req, res, next) => {
-  // console.log(req, "ddddd");
-
+  
   if (req.file) req.body.pic = req.file.filename;
   let pic = "";
   if (req.body.pic) {

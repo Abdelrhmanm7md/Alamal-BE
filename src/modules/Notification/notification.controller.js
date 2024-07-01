@@ -15,7 +15,7 @@ const createNotification = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     message: "notification created successfully!",
-    post: savedNotif,
+    savedNotif,
   });
 });
 

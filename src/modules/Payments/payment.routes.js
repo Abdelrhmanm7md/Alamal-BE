@@ -8,7 +8,7 @@ paymentRouter.post(
   "/",
   paymentController.createpayment
 );
-paymentRouter.get("/search/:payment", paymentController.searchpayment);
+// paymentRouter.get("/search/:payment", paymentController.searchpayment);
 paymentRouter.put("/:id", paymentController.updatePayment);
 paymentRouter.delete("/:id", paymentController.deletePayment);
 

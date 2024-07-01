@@ -81,17 +81,6 @@ const searchpayment = catchAsync(async (req, res, next) => {
   res.status(200).json({ payment });
 });
 
-// const getpaymentById = catchAsync(async (req, res, next) => {
-//   let { id } = req.params;
-
-//   let payment = await paymentModel.findById(id);
-
-//   if (!payment) {
-//     return res.status(404).json({ message: "payment not found!" });
-//   }
-
-//   res.status(200).json({ payment });
-// });
 const updatePayment = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 

@@ -9,9 +9,9 @@ companyRouter.get("/", companyController.getAllCompany);
 companyRouter.put("/:id", companyController.editCompany);
 companyRouter.delete("/:id", companyController.deleteCompany);
 companyRouter.post(
-    "/photo",
-    uploadSingleFile("photo", "logo"),
-    companyController.createPhoto
-  );
+  "/photo",
+  uploadSingleFile("photo", "logo"),
+  companyController.createPhoto
+);
 
 export default companyRouter;

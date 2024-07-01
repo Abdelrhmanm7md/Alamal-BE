@@ -15,6 +15,6 @@ invoiceRouter.post(
   uploadSingleFile("invoices", "image"),
   invoiceController.createPhoto
 );
-invoiceRouter.get("/search/:invoiceName", invoiceController.searchInvoice);
+// invoiceRouter.get("/search/:invoiceName", invoiceController.searchInvoice);
 
 export default invoiceRouter;
