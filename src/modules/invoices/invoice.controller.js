@@ -52,33 +52,33 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
 
   // let ApiFeat = null;
 
-  switch (req.user.role) {
-    case "pharm":
-    case "rep":
-    case "diver":
-    case "createdBy":
-      ApiFeat = new ApiFeature(
-        invoiceModel
-          .find({ createdBy: req.user._id })
-          .populate("pharmacy productLines.product payments"),
-        req.query
-      )
-        .pagination()
-        .sort()
-        .search(req.query.key)
-        .fields();
-      break;
-    default:
-      ApiFeat = new ApiFeature(
-        invoiceModel.find().populate("pharmacy productLines.product payments"),
-        req.query
-      )
-        .pagination()
-        .sort()
-        .search(req.query.key)
-        .fields();
-      break;
-  }
+  // switch (req.user.role) {
+  //   case "pharm":
+  //   case "rep":
+  //   case "diver":
+  //   case "createdBy":
+  //     ApiFeat = new ApiFeature(
+  //       invoiceModel
+  //         .find({ createdBy: req.user._id })
+  //         .populate("pharmacy productLines.product payments"),
+  //       req.query
+  //     )
+  //       .pagination()
+  //       .sort()
+  //       .search(req.query.key)
+  //       .fields();
+  //     break;
+  //   default:
+  //     ApiFeat = new ApiFeature(
+  //       invoiceModel.find().populate("pharmacy productLines.product payments"),
+  //       req.query
+  //     )
+  //       .pagination()
+  //       .sort()
+  //       .search(req.query.key)
+  //       .fields();
+  //     break;
+  // }
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);

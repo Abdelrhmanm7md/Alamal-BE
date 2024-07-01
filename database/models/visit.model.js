@@ -17,7 +17,6 @@ const visitSchema = mongoose.Schema(
     payment: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "payment",
-      required: true,
     },
     company: {
       type: mongoose.Schema.Types.ObjectId,
@@ -47,11 +46,8 @@ const visitSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
-  
   },
   { timestamps: true }
 );
-
-
 
 export const visitModel = mongoose.model("visit", visitSchema);

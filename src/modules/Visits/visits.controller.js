@@ -62,7 +62,6 @@ const getAllVisits = catchAsync(async (req, res, next) => {
   let { filterType, filterValue } = req.query;
   if (filterType && filterValue) {
     results = results.filter(function (item) {
-      // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
         return item.pharm.name.toLowerCase().includes(filterValue);
       }
