@@ -53,31 +53,31 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     .search(req.query.key)
     .fields();
 
-  switch (req.user.role) {
-    case "pharm":
-    case "rep":
-      case "diver":
-        ApiFeat = new ApiFeature(
-          invoiceModel.find({ $or: [{ medicalRep: req.user._id }, { pharmacy: req.user._id }] }).populate("pharmacy productLines.product payments"),
-          req.query
-        )
-          .pagination()
-          .sort()
-          .search(req.query.key)
-          .fields();
-          break;
-          default:
+  // switch (req.user.role) {
+  //   case "pharm":
+  //   case "rep":
+  //     case "diver":
+  //       ApiFeat = new ApiFeature(
+  //         invoiceModel.find({ $or: [{ medicalRep: req.user._id }, { pharmacy: req.user._id }] }).populate("pharmacy productLines.product payments"),
+  //         req.query
+  //       )
+  //         .pagination()
+  //         .sort()
+  //         .search(req.query.key)
+  //         .fields();
+  //         break;
+  //         default:
 
-        ApiFeat = new ApiFeature(
-          invoiceModel.find().populate("pharmacy productLines.product payments"),
-          req.query
-        )
-          .pagination()
-          .sort()
-          .search(req.query.key)
-          .fields();
-      break;
-  }
+  //       ApiFeat = new ApiFeature(
+  //         invoiceModel.find().populate("pharmacy productLines.product payments"),
+  //         req.query
+  //       )
+  //         .pagination()
+  //         .sort()
+  //         .search(req.query.key)
+  //         .fields();
+  //     break;
+  // }
 
   let numPages = invoiceModel
     .find()
@@ -242,6 +242,10 @@ const updateInvoice = catchAsync(async (req, res, next) => {
   let updatedInvoice = await invoiceModel.findByIdAndUpdate(id, req.body, {
     new: true,
   });
+  if (req.body.amount < 0) {
+   let message = "amount must be greater than 0";
+    return res.status(400).json({ message });
+  }
 
   if (!updatedInvoice) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
