@@ -32,10 +32,10 @@ const getAllTrans = catchAsync(async (req, res, next) => {
   let { filterType, filterValue } = req.query;
   if (filterType && filterValue) {
     results = results.filter(function (item) {
-      if (filterType == "name") {
+      if (filterType == "sender") {
         return item.sender.name.toLowerCase().includes(filterValue);
       }
-      if (filterType == "name") {
+      if (filterType == "receiver") {
         return item.receiver.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "confirmed") {

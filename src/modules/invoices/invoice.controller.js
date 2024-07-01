@@ -39,9 +39,6 @@ const createPhoto = catchAsync(async (req, res, next) => {
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
-  // let ApiFeat = invoiceModel.find().populate("pharmacy productLines.product payments");
-
-
   let ApiFeat = new ApiFeature(
     invoiceModel
       .find()
@@ -53,75 +50,65 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     .search(req.query.key)
     .fields();
 
-  // switch (req.user.role) {
-  //   case "pharm":
-  //   case "rep":
-  //     case "diver":
-  //       ApiFeat = new ApiFeature(
-  //         invoiceModel.find({ $or: [{ medicalRep: req.user._id }, { pharmacy: req.user._id }] }).populate("pharmacy productLines.product payments"),
-  //         req.query
-  //       )
-  //         .pagination()
-  //         .sort()
-  //         .search(req.query.key)
-  //         .fields();
-  //         break;
-  //         default:
+  // let ApiFeat = null;
 
-  //       ApiFeat = new ApiFeature(
-  //         invoiceModel.find().populate("pharmacy productLines.product payments"),
-  //         req.query
-  //       )
-  //         .pagination()
-  //         .sort()
-  //         .search(req.query.key)
-  //         .fields();
-  //     break;
-  // }
+  switch (req.user.role) {
+    case "pharm":
+    case "rep":
+    case "diver":
+    case "createdBy":
+      ApiFeat = new ApiFeature(
+        invoiceModel
+          .find({ createdBy: req.user._id })
+          .populate("pharmacy productLines.product payments"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
+      break;
+    default:
+      ApiFeat = new ApiFeature(
+        invoiceModel.find().populate("pharmacy productLines.product payments"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
+      break;
+  }
 
-  let numPages = invoiceModel
-    .find()
-    .populate("pharmacy productLines.product payments")
-    .countDocuments();
-  // console.log(numPages);
   let results = await ApiFeat.mongooseQuery;
-  // console.log(ApiFeat);
   results = JSON.stringify(results);
   results = JSON.parse(results);
-  // console.log(req);
   let { filterType, filterValue } = req.query;
 
-  // console.log(filterType, filterValue);
-  // console.log(results);
-  if(filterType&& filterValue){
-
+  if (filterType && filterValue) {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
-        if (filterType == "pharmacy") {
-          return item.pharmacy.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "medicalRep") {
-          return item.medicalRep.name.toLowerCase().includes(filterValue);
-        }
-        if (filterType == "date") {
-          return item.date == filterValue;
-        }
-        if (filterType == "location") {
-          return item.pharmacy.location.toLowerCase().includes(filterValue);
-        }
-      });
-    }
-  //   switch (req.query.filterType) {
-  //     case req.query.filterType == "pharmacy":
-  //       console.log(req.query.filterValue);
-  //       return item.pharmacy.name.includes(req.query.filterValue);
-  //     case "company":
-  //       return item.company.name == req.query.filterValue;
-  //   }
-  //   return item.pharmacy.name == req.query.filter;
+      if (filterType == "pharmacy") {
+        return item.pharmacy.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "company") {
+        return item.company.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "createdBy") {
+        return item.createdBy.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "medicalRep") {
+        return item.medicalRep.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "date") {
+        return item.date == filterValue;
+      }
+      if (filterType == "location") {
+        return item.pharmacy.location.toLowerCase().includes(filterValue);
+      }
+    });
+  }
+
   for (let j = 0; j < results.length; j++) {
     for (let i = 0; i < results[j].productLines.length; i++) {
       if (results[j].productLines[i].product) {
@@ -136,7 +123,6 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     }
     results[j].totalPaid = totalAmt;
     results[j].amountDue = results[j].amount - results[j].totalPaid;
-    // console.log(results[j].amountDue);
   }
   res.json({
     message: "done",
@@ -213,7 +199,7 @@ const getInvByUserId = catchAsync(async (req, res, next) => {
   let { id } = req.query;
 
   let Invoice = await invoiceModel
-    .find({createdBy:id})
+    .find({ createdBy: id })
     .populate("payments")
     .populate("productLines.product");
   Invoice = JSON.stringify(Invoice);
@@ -243,14 +229,13 @@ const updateInvoice = catchAsync(async (req, res, next) => {
     new: true,
   });
   if (req.body.amount < 0) {
-   let message = "amount must be greater than 0";
+    let message = "amount must be greater than 0";
     return res.status(400).json({ message });
   }
 
   if (!updatedInvoice) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
   }
-
   res
     .status(200)
     .json({ message: "Invoice updated successfully!", updatedInvoice });
@@ -275,5 +260,5 @@ export {
   deleteInovice,
   updateInvoice,
   createPhoto,
-  getInvByUserId
+  getInvByUserId,
 };

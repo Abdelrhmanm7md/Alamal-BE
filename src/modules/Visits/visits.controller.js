@@ -3,10 +3,8 @@ import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createVisit = catchAsync(async (req, res, next) => {
-  const { title, content, tags, author } = req.body;
-  // const { author} = req.user._id;
 
-  const newVisit = new visitModel({ title, content, tags, author });
+  const newVisit = new visitModel(req.body);
   const savedVisit = await newVisit.save();
   res.status(201).json({
     message: "Visit created successfully!",
