@@ -5,6 +5,7 @@ import * as invoiceController from "./invoice.controller.js";
 import { uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 invoiceRouter.get("/", invoiceController.getAllInvoice);
+invoiceRouter.get("/user/:id", invoiceController.getAllInvoice);
 invoiceRouter.get("/:id", invoiceController.getInvoiceById);
 invoiceRouter.get("/:id", invoiceController.getInvByUserId);
 invoiceRouter.delete("/:id", invoiceController.deleteInovice);

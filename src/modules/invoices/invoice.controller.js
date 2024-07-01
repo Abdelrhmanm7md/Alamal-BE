@@ -39,34 +39,26 @@ const createPhoto = catchAsync(async (req, res, next) => {
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(
-    invoiceModel
-      .find()
-      .populate("pharmacy productLines.product payments company"),
-    req.query
-  )
-    .pagination()
-    .sort()
-    .search(req.query.key)
-    .fields();
 
-  // let ApiFeat = null;
+  let ApiFeat = null;
+console.log(req.params.id,"req.params.id");
+if(req.params.id){
 
-  // switch (req.user.role) {
+  // switch (req.params.id) {
   //   case "pharm":
   //   case "rep":
   //   case "diver":
   //   case "createdBy":
-  //     ApiFeat = new ApiFeature(
-  //       invoiceModel
-  //         .find({ createdBy: req.user._id })
-  //         .populate("pharmacy productLines.product payments"),
-  //       req.query
-  //     )
-  //       .pagination()
-  //       .sort()
-  //       .search(req.query.key)
-  //       .fields();
+      ApiFeat = new ApiFeature(
+        invoiceModel
+          .find({ createdBy: req.params.id })
+          .populate("pharmacy productLines.product payments"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
   //     break;
   //   default:
   //     ApiFeat = new ApiFeature(
@@ -79,6 +71,20 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
   //       .fields();
   //     break;
   // }
+}else{
+  let ApiFeat = new ApiFeature(
+    invoiceModel
+      .find()
+      .populate("pharmacy productLines.product payments company"),
+    req.query
+  )
+    .pagination()
+    .sort()
+    .search(req.query.key)
+    .fields();
+
+
+}
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
