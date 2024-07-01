@@ -30,14 +30,14 @@ const invoiceSchema = mongoose.Schema(
     },
     invoiceStatus: {
       type: String,
-      enum: ["notPaid","partiallyPaid", "totallyPaid"],
-      default : "notPaid",
+      enum: ["notPaid", "partiallyPaid", "totallyPaid"],
+      default: "notPaid",
       required: true,
     },
     orderStatus: {
       type: String,
-      enum: ["preparing","delivered", "derlivering"],
-      default : "preparing",
+      enum: ["preparing", "delivered", "derlivering"],
+      default: "preparing",
       required: true,
     },
     date: {
@@ -78,9 +78,8 @@ const invoiceSchema = mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
-
 
 // invoiceSchema.post("init", (doc) => {
 //   doc.image = process.env.BASE_URL + "invoices/" + doc.image;
