@@ -206,7 +206,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
       return res.status(400).json({ message });
     }
     if (Invoice[i].amountDue < 0) {
-      message = "amountDue must be greater than 0";
+      message = "amount Due must be greater than 0";
       return res.status(400).json({ message });
     }
     if (Invoice[i].totalPaid < 0) {
