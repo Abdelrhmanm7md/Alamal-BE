@@ -5,6 +5,7 @@ const transRouter = express.Router();
 
 transRouter.post("/", transController.createTrans);
 transRouter.get("/", transController.getAllTrans);
+transRouter.get("/user/:id", transController.getAllTrans);
 transRouter.put("/:id", transController.editTrans);
 transRouter.delete("/:id", transController.deleteTrans);
 
