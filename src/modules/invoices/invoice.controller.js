@@ -207,7 +207,7 @@ const getInvByUserId = catchAsync(async (req, res, next) => {
   res.status(200).json({ Invoice });
 });
 const updateInvoice = catchAsync(async (req, res, next) => {
-  let { id } = req.query;
+  let { id } = req.params;
 
   let updatedInvoice = await invoiceModel.findByIdAndUpdate(id, req.body, {
     new: true,
