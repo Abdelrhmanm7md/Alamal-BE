@@ -209,7 +209,7 @@ const getInvByUserId = catchAsync(async (req, res, next) => {
 const updateInvoice = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let updatedInvoice = await invoiceModel.findByIdAndUpdate(id, req.body, {
+  let addedInvoice = await invoiceModel.findByIdAndUpdate(id, req.body, {
     new: true,
   });
   if (req.body.amount < 0) {
@@ -217,12 +217,12 @@ const updateInvoice = catchAsync(async (req, res, next) => {
     return res.status(400).json({ message });
   }
 
-  if (!updatedInvoice) {
+  if (!addedInvoice) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
   }
   res
     .status(200)
-    .json({ message: "Invoice updated successfully!", updatedInvoice });
+    .json({ message: "Invoice updated successfully!", addedInvoice });
 });
 const deleteInovice = catchAsync(async (req, res, next) => {
   let { id } = req.query;
