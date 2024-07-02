@@ -6,6 +6,7 @@ const companyRouter = express.Router();
 
 companyRouter.post("/", companyController.createCompany);
 companyRouter.get("/", companyController.getAllCompany);
+companyRouter.get("/user/:id", companyController.getAllCompany);
 companyRouter.put("/:id", companyController.editCompany);
 companyRouter.delete("/:id", companyController.deleteCompany);
 companyRouter.post(
