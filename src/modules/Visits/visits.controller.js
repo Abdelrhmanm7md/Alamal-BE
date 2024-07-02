@@ -41,14 +41,28 @@ const deleteVisit = catchAsync(async (req, res, next) => {
 });
 
 const getAllVisits = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(
-    visitModel.find().populate("pharm rep driver company"),
-    req.query
-  )
-    .pagination()
-    .sort()
-    .search()
-    .fields();
+  let ApiFeat = null;
+  if (req.params.id) {
+    ApiFeat = new ApiFeature(
+      visitModel
+        .find({ createdBy: req.params.id })
+        .populate("pharm rep driver company"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  } else {
+    ApiFeat = new ApiFeature(
+      visitModel.find().populate("pharm rep driver company"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  }
 
   if (!ApiFeat) {
     return res.status(404).json({
