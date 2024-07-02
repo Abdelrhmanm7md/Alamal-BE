@@ -108,16 +108,40 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
     results[j].totalPaid = totalAmt;
     results[j].amountDue = results[j].amount - results[j].totalPaid;
   }
-  res.json({
-    message: "done",
-    page: ApiFeat.page,
-    results,
-  });
+
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Invoice was found!",
     });
   }
+
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].amount < 0) {
+      message = "amount must be greater than 0";
+      return res.status(400).json({ message });
+    }
+    if (results[i].amountDue < 0) {
+      message = "amountDue must be greater than 0";
+      return res.status(400).json({ message });
+    }
+    if (results[i].totalPaid < 0) {
+      message = "total Paid must be greater than 0";
+      return res.status(400).json({ message });
+    }
+
+    for (let index = 0; index < results[i].payments.length; index++) {
+      if (results[index].payments[index].amount < 0) {
+        return res
+          .status(400)
+          .json({ message: "amount must be greater than 0" });
+      }
+    }
+  }
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    results,
+  });
 });
 
 const searchInvoice = catchAsync(async (req, res, next) => {
@@ -153,7 +177,7 @@ const searchInvoice = catchAsync(async (req, res, next) => {
 });
 
 const getInvoiceById = catchAsync(async (req, res, next) => {
-  let { id } = req.query;
+  let { id } = req.params;
 
   let Invoice = await invoiceModel
     .findById(id)
@@ -176,6 +200,28 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
   }
   Invoice.totalPaid = totalAmt;
   Invoice.amountDue = Invoice.amount - Invoice.totalPaid;
+  for (let i = 0; i < results.length; i++) {
+    if (Invoice[i].amount < 0) {
+      message = "amount must be greater than 0";
+      return res.status(400).json({ message });
+    }
+    if (Invoice[i].amountDue < 0) {
+      message = "amountDue must be greater than 0";
+      return res.status(400).json({ message });
+    }
+    if (Invoice[i].totalPaid < 0) {
+      message = "total Paid must be greater than 0";
+      return res.status(400).json({ message });
+    }
+
+    for (let index = 0; index < Invoice[i].payments.length; index++) {
+      if (Invoice[index].payments[index].amount < 0) {
+        return res
+          .status(400)
+          .json({ message: "amount must be greater than 0" });
+      }
+    }
+  }
 
   res.status(200).json({ Invoice });
 });

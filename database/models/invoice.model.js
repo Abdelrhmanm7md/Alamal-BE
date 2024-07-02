@@ -59,10 +59,10 @@ const invoiceSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    payments: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "payment",
-    },
+    // payments: {
+    //   type: [mongoose.Schema.Types.ObjectId],
+    //   ref: "payment",
+    // },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "company",

@@ -5,11 +5,10 @@ import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 
 const createpayment = catchAsync(async (req, res, next) => {
-  // req.body.attachedResume = req.files.attachedResume[0].filename;
-  // console.log(req.files, "req.files");
   let newpayment = new paymentModel(req.body);
+
   let addedpayment = await newpayment.save();
-  console.log(req.body);
+
 
   res.status(201).json({
     message: " payment has been created successfully!",
