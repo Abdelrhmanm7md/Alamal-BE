@@ -39,52 +39,48 @@ const createPhoto = catchAsync(async (req, res, next) => {
 });
 
 const getAllInvoice = catchAsync(async (req, res, next) => {
-
   let ApiFeat = null;
-console.log(req.params.id,"req.params.id");
-if(req.params.id){
-
-  // switch (req.params.id) {
-  //   case "pharm":
-  //   case "rep":
-  //   case "diver":
-  //   case "createdBy":
-      ApiFeat = new ApiFeature(
-        invoiceModel
-          .find({ createdBy: req.params.id })
-          .populate("pharmacy productLines.product payments"),
-        req.query
-      )
-        .pagination()
-        .sort()
-        .search(req.query.key)
-        .fields();
-  //     break;
-  //   default:
-  //     ApiFeat = new ApiFeature(
-  //       invoiceModel.find().populate("pharmacy productLines.product payments"),
-  //       req.query
-  //     )
-  //       .pagination()
-  //       .sort()
-  //       .search(req.query.key)
-  //       .fields();
-  //     break;
-  // }
-}else{
-  ApiFeat = new ApiFeature(
-    invoiceModel
-      .find()
-      .populate("pharmacy productLines.product payments company"),
-    req.query
-  )
-    .pagination()
-    .sort()
-    .search(req.query.key)
-    .fields();
-
-
-}
+  // console.log(req.params.id,"req.params.id");
+  if (req.params.id) {
+    // switch (req.params.id) {
+    //   case "pharm":
+    //   case "rep":
+    //   case "diver":
+    //   case "createdBy":
+    ApiFeat = new ApiFeature(
+      invoiceModel
+        .find({ createdBy: req.params.id })
+        .populate("pharmacy productLines.product payments company"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+    //     break;
+    //   default:
+    //     ApiFeat = new ApiFeature(
+    //       invoiceModel.find().populate("pharmacy productLines.product payments"),
+    //       req.query
+    //     )
+    //       .pagination()
+    //       .sort()
+    //       .search(req.query.key)
+    //       .fields();
+    //     break;
+    // }
+  } else {
+    ApiFeat = new ApiFeature(
+      invoiceModel
+        .find()
+        .populate("pharmacy productLines.product payments company"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  }
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
