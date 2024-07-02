@@ -32,11 +32,30 @@ const createPhoto = catchAsync(async (req, res, next) => {
 });
 
 const getAllProduct = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(productModel.find().populate("company"), req.query)
-    .pagination()
-    .sort()
-    .search()
-    .fields();
+    let ApiFeat = null;
+    if (req.params.id) {
+      ApiFeat = new ApiFeature(
+        productModel
+          .find({ company: req.params.id })
+          .populate("company"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
+    } else {
+      ApiFeat = new ApiFeature(
+        productModel
+          .find()
+          .populate("company"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
+    }
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);

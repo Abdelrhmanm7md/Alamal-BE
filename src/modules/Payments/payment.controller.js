@@ -18,12 +18,30 @@ const createpayment = catchAsync(async (req, res, next) => {
 });
 
 const getAllpayment = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(paymentModel.find().populate("pharm rep company createdBy"), req.query)
-    .pagination()
-    .sort()
-    .search()
-    .fields();
-
+    let ApiFeat = null;
+  if (req.params.id) {
+    ApiFeat = new ApiFeature(
+      paymentModel
+        .find({ createdBy: req.params.id })
+        .populate("pharm rep company createdBy"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  } else {
+    ApiFeat = new ApiFeature(
+      paymentModel
+        .find()
+        .populate("pharm rep company createdBy"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  }
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);

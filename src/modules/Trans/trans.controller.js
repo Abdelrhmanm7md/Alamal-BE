@@ -16,14 +16,32 @@ const createTrans = catchAsync(async (req, res, next) => {
   });
 });
 const getAllTrans = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(
-    transModel.find().populate("sender receiver"),
-    req.query
-  )
-    .pagination()
-    .sort()
-    .search()
-    .fields();
+    let ApiFeat = null;
+    if (req.params.id) {
+      ApiFeat = new ApiFeature(
+        transModel
+          .find({ $or:[ 
+            {receiver:req.params.id}, {sender:req.params.id} 
+          ]})
+          .populate("sender receiver"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
+    } else {
+      ApiFeat = new ApiFeature(
+        transModel
+          .find()
+          .populate("sender receiver"),
+        req.query
+      )
+        .pagination()
+        .sort()
+        .search(req.query.key)
+        .fields();
+    }
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
