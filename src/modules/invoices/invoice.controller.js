@@ -72,7 +72,7 @@ if(req.params.id){
   //     break;
   // }
 }else{
-  let ApiFeat = new ApiFeature(
+  ApiFeat = new ApiFeature(
     invoiceModel
       .find()
       .populate("pharmacy productLines.product payments company"),
