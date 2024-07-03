@@ -2,12 +2,13 @@ import express from "express";
 const invoiceRouter = express.Router();
 
 import * as invoiceController from "./invoice.controller.js";
-import { uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
+import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 invoiceRouter.get("/", invoiceController.getAllInvoice);
 invoiceRouter.get("/user/:id", invoiceController.getAllInvoice);
 invoiceRouter.get("/:id", invoiceController.getInvoiceById);
 invoiceRouter.get("/:id", invoiceController.getInvByUserId);
+invoiceRouter.get("/product/:id", invoiceController.createProductLines);
 invoiceRouter.delete("/:id", invoiceController.deleteInovice);
 invoiceRouter.put("/:id", invoiceController.updateInvoice);
 invoiceRouter.post("/", invoiceController.createInvoice);

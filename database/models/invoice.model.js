@@ -75,7 +75,7 @@ const invoiceSchema = mongoose.Schema(
           qty: Number,
         },
       ],
-      required: true,
+      // required: true,
     },
   },
   { timestamps: true }

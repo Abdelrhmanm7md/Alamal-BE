@@ -20,6 +20,20 @@ const createInvoice = catchAsync(async (req, res, next) => {
     addedInvoice,
   });
 });
+const createProductLines = catchAsync(async (req, res, next) => {
+
+  let { id } = req.params;
+
+  let addedInvoice = await invoiceModel.findByIdAndUpdate({ _id: id },{$push:{productLines:req.body}} , {
+    new: true,
+  });
+
+
+  res.status(201).json({
+    message: "product lines has been created successfully!",
+    addedInvoice,
+  });
+});
 const createPhoto = catchAsync(async (req, res, next) => {
   // console.log(req, "ddddd");
 
@@ -287,4 +301,5 @@ export {
   updateInvoice,
   createPhoto,
   getInvByUserId,
+  createProductLines,
 };
