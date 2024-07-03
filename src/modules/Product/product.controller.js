@@ -80,6 +80,47 @@ const getAllProduct = catchAsync(async (req, res, next) => {
     });
   }
 });
+const getAllProductByCompany = catchAsync(async (req, res, next) => {
+    let ApiFeat = null;
+    if (req.params.id) {
+      ApiFeat = new ApiFeature(
+        productModel
+          .find({ company: req.params.id })
+          .populate("company"),
+        req.query
+      )
+    } else {
+      ApiFeat = new ApiFeature(
+        productModel
+          .find()
+          .populate("company"),
+        req.query
+      )
+    }
+
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if(filterType&& filterValue){
+
+    results = results.filter(function (item) {
+        if (filterType == "name") {
+          return item.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "company") {
+          return item.company.name.toLowerCase().includes(filterValue);
+        }
+      });
+    }
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No Product was found!",
+    });
+  }
+});
 
 const searchProduct = catchAsync(async (req, res, next) => {
   let { ProductTitle, filterType, filterValue } = req.params;
@@ -154,5 +195,6 @@ export {
   getProductById,
   deleteProduct,
   updateProduct,
-  createPhoto
+  createPhoto,
+  getAllProductByCompany,
 };

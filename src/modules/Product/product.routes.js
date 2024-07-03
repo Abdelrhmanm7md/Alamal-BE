@@ -6,6 +6,7 @@ import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 productRouter.get("/", productController.getAllProduct);
 productRouter.get("/user/:id", productController.getAllProduct);
+productRouter.get("/line/:id", productController.getAllProductByCompany);
 productRouter.get("/:id", productController.getProductById);
 productRouter.delete("/:id", productController.deleteProduct);
 productRouter.put("/:id", productController.updateProduct);
