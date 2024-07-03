@@ -25,7 +25,7 @@ const createProductLines = catchAsync(async (req, res, next) => {
 
   let addedInvoice = await invoiceModel.findByIdAndUpdate(
     { _id: id },
-    { "$push": { productLines: req.body } },
+    { $push: { productLines: req.body.productLines } },
     {
       new: true,
     }
