@@ -29,7 +29,7 @@ const createProductLines = catchAsync(async (req, res, next) => {
     {
       new: true,
     }
-  );
+  ).populate("productLines.product");
 
   if (!addedInvoice) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
