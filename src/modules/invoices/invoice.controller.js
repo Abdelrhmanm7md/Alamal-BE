@@ -21,13 +21,19 @@ const createInvoice = catchAsync(async (req, res, next) => {
   });
 });
 const createProductLines = catchAsync(async (req, res, next) => {
-
   let { id } = req.params;
 
-  let addedInvoice = await invoiceModel.findByIdAndUpdate({ _id: id },{$push:{productLines:req.body}} , {
-    new: true,
-  });
+  let addedInvoice = await invoiceModel.findByIdAndUpdate(
+    { _id: id },
+    { "$push": { productLines: req.body } },
+    {
+      new: true,
+    }
+  );
 
+  if (!addedInvoice) {
+    return res.status(404).json({ message: "Couldn't update!  not found!" });
+  }
 
   res.status(201).json({
     message: "product lines has been created successfully!",
