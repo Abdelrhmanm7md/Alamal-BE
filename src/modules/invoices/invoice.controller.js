@@ -119,12 +119,12 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
           results[j].productLines[i].product.unitPrice;
       }
     }
-    let totalAmt = 0;
-    for (let i = 0; i < results[j].payments.length; i++) {
-      totalAmt += results[j].payments[i].amount;
-    }
-    results[j].totalPaid = totalAmt;
-    results[j].amountDue = results[j].amount - results[j].totalPaid;
+    // let totalAmt = 0;
+    // for (let i = 0; i < results[j].payments.length; i++) {
+    //   totalAmt += results[j].payments[i].amount;
+    // }
+    // results[j].totalPaid = totalAmt;
+    // results[j].amountDue = results[j].amount - results[j].totalPaid;
   }
 
   if (!ApiFeat) {
@@ -147,13 +147,13 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
       return res.status(400).json({ message });
     }
 
-    for (let index = 0; index < results[i].payments.length; index++) {
-      if (results[index].payments[index].amount < 0) {
-        return res
-          .status(400)
-          .json({ message: "amount must be greater than 0" });
-      }
-    }
+    // for (let index = 0; index < results[i].payments.length; index++) {
+    //   if (results[index].payments[index].amount < 0) {
+    //     return res
+    //       .status(400)
+    //       .json({ message: "amount must be greater than 0" });
+    //   }
+    // }
   }
   res.json({
     message: "done",
