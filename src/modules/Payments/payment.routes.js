@@ -5,6 +5,7 @@ import * as paymentController from "./payment.controller.js";
 
 paymentRouter.get("/", paymentController.getAllpayment);
 paymentRouter.get("/user/:id", paymentController.getAllpayment);
+paymentRouter.get("/invoice/:id", paymentController.getAllpaymentByInvoice);
 paymentRouter.post(
   "/",
   paymentController.createpayment

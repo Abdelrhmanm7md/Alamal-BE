@@ -71,6 +71,64 @@ const getAllpayment = catchAsync(async (req, res, next) => {
     });
   }
 });
+const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
+  let ApiFeat = null;
+  if (req.params.id) {
+    ApiFeat = new ApiFeature(
+      paymentModel
+        .find({ invoice: req.params.id })
+        .populate("pharm rep company createdBy"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  } else {
+    ApiFeat = new ApiFeature(
+      paymentModel.find().populate("pharm rep company createdBy"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  }
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if (filterType && filterValue) {
+    results = results.filter(function (item) {
+      // if(filterType.("pharmacy")){
+      if (filterType == "pharmacy") {
+        return item.pharm.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "company") {
+        return item.company.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "createdBy") {
+        return item.createdBy.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "date") {
+        return item.paymentDate == filterValue;
+      }
+      if (filterType == "location") {
+        return item.pharm.location.toLowerCase().includes(filterValue);
+      }
+    });
+  }
+  res.json({ message: "done", page: ApiFeat.page, results });
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No Payment was found!",
+    });
+  }
+});
 
 const searchpayment = catchAsync(async (req, res, next) => {
   let { paymentTitle } = req.params;
@@ -123,4 +181,5 @@ export {
   searchpayment,
   updatePayment,
   deletePayment,
+  getAllpaymentByInvoice,
 };
