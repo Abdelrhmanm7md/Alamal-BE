@@ -287,7 +287,7 @@ const updateInvoice = catchAsync(async (req, res, next) => {
     .json({ message: "Invoice updated successfully!", addedInvoice });
 });
 const deleteInovice = catchAsync(async (req, res, next) => {
-  let { id } = req.query;
+  let { id } = req.params;
 
   let deletedInvoice = await invoiceModel.findByIdAndDelete({ _id: id });
 

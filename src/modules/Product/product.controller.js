@@ -1,3 +1,4 @@
+import { invoiceModel } from "../../../database/models/invoice.model.js";
 import { productModel } from "../../../database/models/product.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
@@ -178,14 +179,19 @@ const updateProduct = catchAsync(async (req, res, next) => {
 });
 const deleteProduct = catchAsync(async (req, res, next) => {
   let { id } = req.params;
+  let productLines = await invoiceModel.find({productLines: {$elemMatch: {product: id}}});  
+  if(productLines){
+    return res.status(403).json({ message: "Couldn't delete! already in use " });
+  }else{
 
-  let deletedProduct = await productModel.findByIdAndDelete({ _id: id });
-
-  if (!deletedProduct) {
-    return res.status(404).json({ message: "Couldn't delete!  not found!" });
+    let deletedProduct = await productModel.findByIdAndDelete({ _id: id });
+  
+    if (!deletedProduct) {
+      return res.status(404).json({ message: "Couldn't delete!  not found!" });
+    }
+  
+    res.status(200).json({ message: "Product deleted successfully!" });
   }
-
-  res.status(200).json({ message: "Product deleted successfully!" });
 });
 
 export {
