@@ -61,18 +61,12 @@ const getAllTrans = catchAsync(async (req, res, next) => {
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page, results });
-  if (!ApiFeat) {
-    return res.status(404).json({
-      message: "No Product was found!",
-    });
-  }
-  res.json({ message: "done", page: ApiFeat.page, results });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Transction was found!",
     });
   }
+  res.json({ message: "done", page: ApiFeat.page, results });
 });
 
 const editTrans = catchAsync(async (req, res, next) => {

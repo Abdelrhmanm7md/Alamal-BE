@@ -36,7 +36,7 @@ const invoiceSchema = mongoose.Schema(
     },
     orderStatus: {
       type: String,
-      enum: ["preparing", "delivered", "derlivering"],
+      enum: ["preparing", "delivered", "delivering"],
       default: "preparing",
       required: true,
     },
