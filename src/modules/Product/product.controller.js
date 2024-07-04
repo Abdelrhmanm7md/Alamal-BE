@@ -180,7 +180,7 @@ const updateProduct = catchAsync(async (req, res, next) => {
 const deleteProduct = catchAsync(async (req, res, next) => {
   let { id } = req.params;
   let productLines = await invoiceModel.find({productLines: {$elemMatch: {product: id}}});  
-  if(productLines){
+  if(productLines && productLines.length>0){
     return res.status(403).json({ message: "Couldn't delete! already in use " });
   }else{
 
