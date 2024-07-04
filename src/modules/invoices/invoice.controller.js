@@ -40,6 +40,25 @@ const createProductLines = catchAsync(async (req, res, next) => {
     addedInvoice,
   });
 });
+const deleteProductLines = catchAsync(async (req, res, next) => {
+  let { id } = req.params;
+
+  let deletedInvoice = await invoiceModel.findOneAndUpdate(
+    { _id: id },
+    { $pull: { productLines: { _id: req.body.productLines } } },
+    {
+      new: true,
+    }
+  );
+
+  if (!deletedInvoice) {
+    return res.status(404).json({ message: "Couldn't delete!  not found!" });
+  }
+
+  res.status(201).json({
+    message: "product lines has been deleted successfully!",
+  });
+});
 const createPhoto = catchAsync(async (req, res, next) => {
   // console.log(req, "ddddd");
 
@@ -308,4 +327,5 @@ export {
   createPhoto,
   getInvByUserId,
   createProductLines,
+  deleteProductLines,
 };

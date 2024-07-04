@@ -10,6 +10,7 @@ invoiceRouter.get("/:id", invoiceController.getInvoiceById);
 invoiceRouter.get("/:id", invoiceController.getInvByUserId);
 invoiceRouter.post("/product/:id", invoiceController.createProductLines);
 invoiceRouter.delete("/:id", invoiceController.deleteInovice);
+invoiceRouter.delete("/line/:id", invoiceController.deleteProductLines);
 invoiceRouter.put("/:id", invoiceController.updateInvoice);
 invoiceRouter.post("/", invoiceController.createInvoice);
 invoiceRouter.post(
