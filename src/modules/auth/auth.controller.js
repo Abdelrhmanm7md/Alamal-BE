@@ -7,7 +7,8 @@ import { userModel } from "../../../database/models/user.model.js";
 export const signUp = catchAsync(async (req, res, next) => {
   let existUser = await userModel.findOne({ email: req.body.email });
   if (existUser) {
-    return next(new AppError(`this email already exist`, 409));
+    // return next(new AppError(`this email already exist`, 409));
+    return res.status(409).json({ message: "this email already exist" });
   }
   let results = new userModel(req.body);
   await results.save();
@@ -24,7 +25,7 @@ export const signIn = catchAsync(async (req, res, next) => {
     );
     return res.json({ message: "success", token, isFound });
   }
-  next(new AppError(`wrong email or password`, 401));
+  return res.status(401).json({ message: "worng email or password" });
 });
 
 // 1- check we have token or not

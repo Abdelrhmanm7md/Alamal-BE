@@ -4,15 +4,14 @@ const companySchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: true
+      required: true,
     },
     desc: {
       type: String,
     },
     location: {
       type: String,
-      required: true
-
+      required: true,
     },
     logo: {
       type: String,
@@ -23,7 +22,5 @@ const companySchema = mongoose.Schema(
 // companySchema.post("init", (doc) => {
 //   doc.logo = process.env.BASE_URL + "company/" + doc.logo;
 // });
-
-
 
 export const companyModel = mongoose.model("company", companySchema);
