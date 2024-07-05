@@ -40,7 +40,7 @@ const createPhoto = catchAsync(async (req, res, next) => {
 
 const getAllUsers = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(userModel.find(), req.query)
-    .pagination()
+    // .pagination()
     .sort()
     .search()
     .fields();
