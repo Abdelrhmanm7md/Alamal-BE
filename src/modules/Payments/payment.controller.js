@@ -22,8 +22,8 @@ const getAllpayment = catchAsync(async (req, res, next) => {
   if (req.params.id) {
     ApiFeat = new ApiFeature(
       paymentModel
-        .find({ createdBy: req.params.id })
-        .populate("pharm rep company createdBy"),
+      .find({ $or: [{ createdBy: req.params.id }, { pharmacy: req.params.id },{ rep: req.params.id }] })
+      .populate("pharm rep company createdBy"),
       req.query
     )
       .pagination()

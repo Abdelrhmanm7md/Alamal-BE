@@ -21,7 +21,7 @@ const paymentSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
-    pharm: {
+    pharmcy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
