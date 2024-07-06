@@ -8,7 +8,6 @@ const transSchema = mongoose.Schema(
     },
     note: {
       type: String,
-      required: true,
     },
     confirmed: {
       type: String,
