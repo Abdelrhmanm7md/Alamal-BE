@@ -23,13 +23,15 @@ const createInvoice = catchAsync(async (req, res, next) => {
 const createProductLines = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let addedInvoice = await invoiceModel.findByIdAndUpdate(
-    { _id: id },
-    { $push: { productLines: req.body.productLines } },
-    {
-      new: true,
-    }
-  ).populate("productLines.product");
+  let addedInvoice = await invoiceModel
+    .findByIdAndUpdate(
+      { _id: id },
+      { $push: { productLines: req.body.productLines } },
+      {
+        new: true,
+      }
+    )
+    .populate("productLines.product");
 
   if (!addedInvoice) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
@@ -126,6 +128,9 @@ const getAllInvoice = catchAsync(async (req, res, next) => {
       }
       if (filterType == "location") {
         return item.pharmacy.location.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "type") {
+        return item.invoiceType.toLowerCase().includes(filterValue);
       }
     });
   }
