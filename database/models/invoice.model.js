@@ -22,6 +22,11 @@ const invoiceSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
+    driver: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
     locationX: {
       type: String,
     },
