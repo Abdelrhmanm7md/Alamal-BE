@@ -3,6 +3,10 @@ import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createpayment = catchAsync(async (req, res, next) => {
+  if (req.body.amount < 0) {
+    let message = "amount must be greater than 0";
+    return res.status(400).json({ message });
+  }
   let newpayment = new paymentModel(req.body);
 
   let addedpayment = await newpayment.save();
@@ -151,6 +155,10 @@ const searchpayment = catchAsync(async (req, res, next) => {
 
 const updatePayment = catchAsync(async (req, res, next) => {
   let { id } = req.params;
+  if (req.body.amount < 0) {
+    let message = "amount must be greater than 0";
+    return res.status(400).json({ message });
+  }
 
   let updatedPayment = await paymentModel.findByIdAndUpdate(id, req.body, {
     new: true,
