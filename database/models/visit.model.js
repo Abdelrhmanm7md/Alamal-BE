@@ -4,6 +4,8 @@ const visitSchema = mongoose.Schema(
   {
     status: {
       type: String,
+      enum: ["single", "double"],
+      default: "single",
       required: true,
     },
     type: {
