@@ -175,7 +175,6 @@ const getProductlineById = catchAsync(async (req, res, next) => {
       message: "Done",
       count: await productModel.countDocuments({
         _id: id,
-        productLines: req.body.id,
       }),
       results,
     });
