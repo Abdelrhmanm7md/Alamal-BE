@@ -7,14 +7,12 @@ import { userModel } from "../../../database/models/user.model.js";
 export const signUp = catchAsync(async (req, res, next) => {
   let existUser = await userModel.findOne({ email: req.body.email });
   if (existUser) {
-    // return next(new AppError(`this email already exist`, 409));
     return res.status(409).json({ message: "this email already exist" });
   }
   if (req.body.role == 'pharmacy') {
     if(req.body.name){
       let existUser = await userModel.findOne({ name: req.body.name });
       if (existUser) {
-        // return next(new AppError(`this email already exist`, 409));
         return res.status(409).json({ message: "this name already exist" });
       }
     }
@@ -26,6 +24,7 @@ export const signUp = catchAsync(async (req, res, next) => {
 export const signIn = catchAsync(async (req, res, next) => {
   let { email, password } = req.body;
   let isFound = await userModel.findOne({ email });
+  if(!isFound) return res.status(404).json({ message: "Not Found" });
   const match = await bcrypt.compare(password, isFound.password);
   if (match && isFound) {
     let token = jwt.sign(
