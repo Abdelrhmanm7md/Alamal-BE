@@ -2,25 +2,25 @@ import mongoose from "mongoose";
 
 const tokenSchema = mongoose.Schema(
   {
-    name: {
+    kAccessToken: {
       type: String,
       required: true,
     },
-    desc: {
-      type: String,
+    kRefreshToken: {
+        type: String,
+        required: true,
     },
-    location: {
-      type: String,
+    kUserId: {
+      type: Number,
       required: true,
     },
-    logo: {
-      type: String,
+    kAccessTokenExpirationMsSinceEpoch: {
+        type: Number,
+        required: true,
     },
   },
   { timestamps: true }
 );
-// tokenSchema.post("init", (doc) => {
-//   doc.logo = process.env.BASE_URL + "token/" + doc.logo;
-// });
+
 
 export const tokenModel = mongoose.model("token", tokenSchema);

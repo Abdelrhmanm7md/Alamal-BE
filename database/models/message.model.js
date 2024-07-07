@@ -25,8 +25,5 @@ const messageSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-// messageSchema.post("init", (doc) => {
-//   doc.logo = process.env.BASE_URL + "message/" + doc.logo;
-// });
 
 export const messageModel = mongoose.model("message", messageSchema);

@@ -5,35 +5,46 @@ import AppError from "../../utils/appError.js";
 import { userModel } from "../../../database/models/user.model.js";
 
 export const signUp = catchAsync(async (req, res, next) => {
-  let existUser = await userModel.findOne({ email: req.body.email });
-  if (existUser) {
-    return res.status(409).json({ message: "this email already exist" });
-  }
-  if (req.body.role == 'pharmacy') {
-    if(req.body.name){
-      let existUser = await userModel.findOne({ name: req.body.name });
-      if (existUser) {
-        return res.status(409).json({ message: "this name already exist" });
+  let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  if (req.body.email !== "" && req.body.email.match(emailFormat)) {
+    let existUser = await userModel.findOne({ email: req.body.email });
+    if (existUser) {
+      return res.status(409).json({ message: "this email already exist" });
+    }
+    if (req.body.role == "pharmacy") {
+      if (req.body.name) {
+        let existUser = await userModel.findOne({ name: req.body.name });
+        if (existUser) {
+          return res.status(409).json({ message: "this name already exist" });
+        }
       }
     }
+  } else {
+    return res.status(409).json({ message: "this email is not valid" });
   }
   let results = new userModel(req.body);
   await results.save();
   res.json({ message: "added", results });
 });
+
 export const signIn = catchAsync(async (req, res, next) => {
-  let { email, password } = req.body;
-  let isFound = await userModel.findOne({ email });
-  if(!isFound) return res.status(404).json({ message: "Not Found" });
-  const match = await bcrypt.compare(password, isFound.password);
-  if (match && isFound) {
-    let token = jwt.sign(
-      { name: isFound.name, userId: isFound._id },
-      process.env.JWT_SECRET_KEY
-    );
-    return res.json({ message: "success", token, isFound });
+  let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  if (req.body.email !== "" && req.body.email.match(emailFormat)) {
+    let { email, password } = req.body;
+    let isFound = await userModel.findOne({ email });
+    if (!isFound) return res.status(404).json({ message: "Not Found" });
+    const match = await bcrypt.compare(password, isFound.password);
+    if (match && isFound) {
+      let token = jwt.sign(
+        { name: isFound.name, userId: isFound._id },
+        process.env.JWT_SECRET_KEY
+      );
+      return res.json({ message: "success", token, isFound });
+    }
+    return res.status(401).json({ message: "worng email or password" });
+  } else {
+    return res.status(409).json({ message: "this email is not valid" });
   }
-  return res.status(401).json({ message: "worng email or password" });
 });
 
 // 1- check we have token or not

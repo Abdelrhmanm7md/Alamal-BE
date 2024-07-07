@@ -107,13 +107,13 @@ const getAllProductByCompany = catchAsync(async (req, res, next) => {
 const getProductById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let Product = await productModel.findById(id);
+  let results = await productModel.findById(id);
 
-  if (!Product) {
+  if (!results) {
     return res.status(404).json({ message: "Product not found!" });
   }
 
-  res.status(200).json({ Product });
+  res.status(200).json({ results });
 });
 const getProductlineById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
@@ -127,7 +127,7 @@ const getProductlineById = catchAsync(async (req, res, next) => {
     return res.status(404).json({ message: "Product not found!" });
   }
 
-  res.status(200).json({ Product });
+  res.status(200).json({message: "Done", Product });
 });
 const updateProduct = catchAsync(async (req, res, next) => {
   let { id } = req.params;

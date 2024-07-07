@@ -2,25 +2,26 @@ import mongoose from "mongoose";
 
 const chatSchema = mongoose.Schema(
   {
-    name: {
-      type: String,
+    kMessages: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "message",
       required: true,
     },
-    desc: {
-      type: String,
-    },
-    location: {
-      type: String,
+    sender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
-    logo: {
-      type: String,
+    receiver: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    isTyping: {
+      type: Boolean,
     },
   },
   { timestamps: true }
 );
-// chatSchema.post("init", (doc) => {
-//   doc.logo = process.env.BASE_URL + "company/" + doc.logo;
-// });
 
 export const chatModel = mongoose.model("chat", chatSchema);
