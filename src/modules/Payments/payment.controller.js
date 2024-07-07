@@ -163,7 +163,7 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({ message: "done", page: ApiFeat.page,count: await paymentModel.countDocuments({ invoice: req.params.id }), results });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Payment was found!",
