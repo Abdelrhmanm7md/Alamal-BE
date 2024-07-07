@@ -163,7 +163,7 @@ const getProductlineById = catchAsync(async (req, res, next) => {
     return res.status(404).json({ message: "invoice not found!" });
   }
 
-  let results = await productModel.find({ _id: id, productLines: req.body.id });
+  let results = await productModel.find({ _id: id });
 
   if (!results) {
     return res.status(404).json({ message: "Product not found!" });
