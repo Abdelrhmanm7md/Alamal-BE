@@ -60,7 +60,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   //     }
   //   });
   // }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({ message: "done", page: ApiFeat.page,count: await userModel.countDocuments(), results });
   if (!results) {
     return res.status(404).json({
       message: "No users was found! Create a new user to get started!",
