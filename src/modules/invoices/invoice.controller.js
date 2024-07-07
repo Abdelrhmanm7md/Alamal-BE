@@ -180,22 +180,28 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
   res.json({
     message: "done",
     page: ApiFeat.page,
-    count: await invoiceModel.countDocuments({ company: req.params.id }),
+    count: await invoiceModel.countDocuments({
+      $or: [
+        { createdBy: req.params.id },
+        { pharmacy: req.params.id },
+        { medicalRep: req.params.id },
+        { driver: req.params.id },
+      ],
+    }),
     results,
   });
 });
 const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
-  
-    ApiFeat = new ApiFeature(
-      invoiceModel.find().populate("pharmacy productLines.product company"),
-      req.query
-    )
-      .pagination()
-      .sort()
-      .search(req.query.key)
-      .fields();
-  
+
+  ApiFeat = new ApiFeature(
+    invoiceModel.find().populate("pharmacy productLines.product company"),
+    req.query
+  )
+    .pagination()
+    .sort()
+    .search(req.query.key)
+    .fields();
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
@@ -281,7 +287,6 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
   });
   // count: await invoiceModel.countDocuments({ company: req.params.id }),
 });
-
 
 const getInvoiceById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
