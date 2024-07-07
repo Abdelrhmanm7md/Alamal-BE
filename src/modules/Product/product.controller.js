@@ -32,20 +32,9 @@ const createPhoto = catchAsync(async (req, res, next) => {
     .json({ message: "Photo updated successfully!",pic: `${process.env.BASE_URL}invoices/${pic}` });
 });
 
-const getAllProduct = catchAsync(async (req, res, next) => {
+const getAllProductByAdmin = catchAsync(async (req, res, next) => {
     let ApiFeat = null;
-    if (req.params.id) {
-      ApiFeat = new ApiFeature(
-        productModel
-          .find({ company: req.params.id })
-          .populate("company"),
-        req.query
-      )
-        .pagination()
-        .sort()
-        .search(req.query.key)
-        .fields();
-    } else {
+  
       ApiFeat = new ApiFeature(
         productModel
           .find()
@@ -56,7 +45,7 @@ const getAllProduct = catchAsync(async (req, res, next) => {
         .sort()
         .search(req.query.key)
         .fields();
-    }
+    
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
@@ -74,7 +63,7 @@ const getAllProduct = catchAsync(async (req, res, next) => {
         }
       });
     }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({ message: "done", page: ApiFeat.page,count: await productModel.countDocuments(), results });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Product was found!",
@@ -90,15 +79,7 @@ const getAllProductByCompany = catchAsync(async (req, res, next) => {
           .populate("company"),
         req.query
       )
-    } else {
-      ApiFeat = new ApiFeature(
-        productModel
-          .find()
-          .populate("company"),
-        req.query
-      )
-    }
-
+    } 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
@@ -115,7 +96,7 @@ const getAllProductByCompany = catchAsync(async (req, res, next) => {
         }
       });
     }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({ message: "done", page: ApiFeat.page,count: await productModel.countDocuments({ company: req.params.id }), results });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Product was found!",
@@ -196,7 +177,7 @@ const deleteProduct = catchAsync(async (req, res, next) => {
 
 export {
   createProduct,
-  getAllProduct,
+  getAllProductByAdmin,
   searchProduct,
   getProductById,
   deleteProduct,

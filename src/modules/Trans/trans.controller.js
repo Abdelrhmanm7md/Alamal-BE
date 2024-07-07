@@ -15,7 +15,7 @@ const createTrans = catchAsync(async (req, res, next) => {
     savedTrans,
   });
 });
-const getAllTrans = catchAsync(async (req, res, next) => {
+const getAllTransByUser = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
   if (req.params.id) {
     ApiFeat = new ApiFeature(
@@ -24,12 +24,6 @@ const getAllTrans = catchAsync(async (req, res, next) => {
         .populate("receiver"),
       req.query
     )
-      .pagination()
-      .sort()
-      .search(req.query.key)
-      .fields();
-  } else {
-    ApiFeat = new ApiFeature(transModel.find().populate("receiver"), req.query)
       .pagination()
       .sort()
       .search(req.query.key)
@@ -59,7 +53,53 @@ const getAllTrans = catchAsync(async (req, res, next) => {
       message: "No Transction was found!",
     });
   }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await transModel.countDocuments({
+      $or: [{ receiver: req.params.id }, { sender: req.params.id }],
+    }),
+    results,
+  });
+});
+const getAllTransByAdmin = catchAsync(async (req, res, next) => {
+  let ApiFeat = null;
+
+  ApiFeat = new ApiFeature(transModel.find().populate("receiver"), req.query)
+    .pagination()
+    .sort()
+    .search(req.query.key)
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if (filterType && filterValue) {
+    results = results.filter(function (item) {
+      if (filterType == "sender") {
+        return item.sender.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "receiver") {
+        return item.receiver.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "confirmed") {
+        return item.confirmed.toLowerCase().includes(filterValue);
+      }
+    });
+  }
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No Transction was found!",
+    });
+  }
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await transModel.countDocuments(),
+    results,
+  });
 });
 
 const editTrans = catchAsync(async (req, res, next) => {
@@ -95,4 +135,10 @@ const deleteTrans = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Transcation deleted successfully!" });
 });
 
-export { createTrans, editTrans, deleteTrans, getAllTrans };
+export {
+  createTrans,
+  editTrans,
+  deleteTrans,
+  getAllTransByUser,
+  getAllTransByAdmin,
+};

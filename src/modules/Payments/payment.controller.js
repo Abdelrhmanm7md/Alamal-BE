@@ -17,29 +17,20 @@ const createpayment = catchAsync(async (req, res, next) => {
   });
 });
 
-const getAllpayment = catchAsync(async (req, res, next) => {
+const getAllpaymentByUser = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
   if (req.params.id) {
     ApiFeat = new ApiFeature(
       paymentModel
       .find({ $or: [{ createdBy: req.params.id }, { pharmacy: req.params.id },{ rep: req.params.id }] })
-      .populate("pharm rep company createdBy"),
+      .populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
       .sort()
       .search(req.query.key)
       .fields();
-  } else {
-    ApiFeat = new ApiFeature(
-      paymentModel.find().populate("pharm rep company createdBy"),
-      req.query
-    )
-      .pagination()
-      .sort()
-      .search(req.query.key)
-      .fields();
-  }
+  } 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
@@ -68,7 +59,53 @@ const getAllpayment = catchAsync(async (req, res, next) => {
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({ message: "done", page: ApiFeat.page,count: await paymentModel.countDocuments({$or: [{ createdBy: req.params.id }, { rep: req.params.id },{ pharmacy: req.params.id }]}), results });
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No Payment was found!",
+    });
+  }
+});
+const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
+  let ApiFeat = null;
+
+    ApiFeat = new ApiFeature(
+      paymentModel.find().populate("pharmacy rep company createdBy"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if (filterType && filterValue) {
+    results = results.filter(function (item) {
+      // if(filterType.("pharmacy")){
+      if (filterType == "pharmacy") {
+        return item.pharm.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "company") {
+        return item.company.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "createdBy") {
+        return item.createdBy.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "date") {
+        return item.paymentDate == filterValue;
+      }
+      if (filterType == "location") {
+        return item.pharm.location.toLowerCase().includes(filterValue);
+      }
+    });
+  }
+  res.json({ message: "done", page: ApiFeat.page,count: await paymentModel.countDocuments(), results });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Payment was found!",
@@ -185,9 +222,10 @@ const deletePayment = catchAsync(async (req, res, next) => {
 });
 export {
   createpayment,
-  getAllpayment,
+  getAllpaymentByUser,
   searchpayment,
   updatePayment,
   deletePayment,
   getAllpaymentByInvoice,
+  getAllpaymentByAdmin,
 };

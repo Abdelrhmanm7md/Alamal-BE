@@ -40,7 +40,7 @@ const deleteVisit = catchAsync(async (req, res, next) => {
   res.status(200).json({ message: "Visit deleted successfully!" });
 });
 
-const getAllVisits = catchAsync(async (req, res, next) => {
+const getAllVisitsByUser = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
   if (req.params.id) {
     ApiFeat = new ApiFeature(
@@ -53,16 +53,7 @@ const getAllVisits = catchAsync(async (req, res, next) => {
       .sort()
       .search(req.query.key)
       .fields();
-  } else {
-    ApiFeat = new ApiFeature(
-      visitModel.find().populate("pharm rep driver company"),
-      req.query
-    )
-      .pagination()
-      .sort()
-      .search(req.query.key)
-      .fields();
-  }
+  } 
 
   if (!ApiFeat) {
     return res.status(404).json({
@@ -99,7 +90,57 @@ const getAllVisits = catchAsync(async (req, res, next) => {
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({ message: "done", page: ApiFeat.page,count: await visitModel.countDocuments({ createdBy: req.params.id }), results });
+});
+const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
+  let ApiFeat = null;
+  
+    ApiFeat = new ApiFeature(
+      visitModel.find().populate("pharm rep driver company"),
+      req.query
+    )
+      .pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+  
+
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No visits was found!",
+    });
+  }
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if (filterType && filterValue) {
+    results = results.filter(function (item) {
+      if (filterType == "pharmacy") {
+        return item.pharm.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "driver") {
+        return item.driver.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "company") {
+        return item.company.name.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "location") {
+        return item.location.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "status") {
+        return item.status.toLowerCase().includes(filterValue);
+      }
+      if (filterType == "hasPayment") {
+        return item.hasPayment.toLowerCase().includes(filterValue);
+      }
+    });
+  }
+  res.json({ message: "done", page: ApiFeat.page,count: await visitModel.countDocuments(), results });
 });
 
-export { createVisit, editVisit, deleteVisit, getAllVisits };
+export { createVisit, editVisit, deleteVisit, getAllVisitsByAdmin,getAllVisitsByUser };

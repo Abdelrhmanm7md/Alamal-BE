@@ -21,12 +21,10 @@ const createPhoto = catchAsync(async (req, res, next) => {
   if (!req.body.logo) {
     return res.status(404).json({ message: "Logo not found!" });
   }
-  res
-    .status(200)
-    .json({
-      message: "Photo uploaded successfully!",
-      logo: `${process.env.BASE_URL}invoices/${logo}`,
-    });
+  res.status(200).json({
+    message: "Photo uploaded successfully!",
+    logo: `${process.env.BASE_URL}invoices/${logo}`,
+  });
 });
 const getAllCompany = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(companyModel.find(), req.query)
@@ -38,7 +36,12 @@ const getAllCompany = catchAsync(async (req, res, next) => {
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
-  res.json({ message: "done", page: ApiFeat.page, results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await companyModel.countDocuments(),
+    results,
+  });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Company was found!",
