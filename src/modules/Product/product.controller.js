@@ -104,38 +104,24 @@ const getAllProductByCompany = catchAsync(async (req, res, next) => {
   }
 });
 
-const searchProduct = catchAsync(async (req, res, next) => {
-  let { ProductTitle, filterType, filterValue } = req.params;
-  const page = req.query.p - 1 || 0;
-  let Product = null;
-  if (req.query.filter) {
-    switch (filterType) {
-      case "user":
-        await productModel.find({
-          id: { $regex: `${filterValue}`, $options: "i" },
-        });
-        break;
-      case "loc":
-        await productModel.find({
-          id: { $regex: `${filterValue}`, $options: "i" },
-        });
-        break;
-    }
-  }
-  if (!Product) {
-    return res.status(404).json({
-      message: "No Product was found!",
-      
-    });
-  }
-
-  res.status(200).json({ Product });
-});
-
 const getProductById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
   let Product = await productModel.findById(id);
+
+  if (!Product) {
+    return res.status(404).json({ message: "Product not found!" });
+  }
+
+  res.status(200).json({ Product });
+});
+const getProductlineById = catchAsync(async (req, res, next) => {
+  let { id } = req.params;
+  if (!id) {
+    return res.status(404).json({ message: "Product not found!" });
+  }
+
+  let Product = await productModel.find({ _id: id , productLines: req.body.id});
 
   if (!Product) {
     return res.status(404).json({ message: "Product not found!" });
@@ -178,10 +164,10 @@ const deleteProduct = catchAsync(async (req, res, next) => {
 export {
   createProduct,
   getAllProductByAdmin,
-  searchProduct,
   getProductById,
   deleteProduct,
   updateProduct,
   createPhoto,
   getAllProductByCompany,
+  getProductlineById,
 };
