@@ -70,7 +70,43 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
     });
   }
 });
-const getAllProductByCompany = catchAsync(async (req, res, next) => {
+const getAllProductByCompanyWithoutPagination = catchAsync(async (req, res, next) => {
+    let ApiFeat = null;
+    if (req.params.id) {
+      ApiFeat = new ApiFeature(
+        productModel
+          .find({ company: req.params.id })
+          .populate("company"),
+        req.query
+      ).pagination()
+      .sort()
+      .search(req.query.key)
+      .fields();
+    } 
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  let { filterType, filterValue } = req.query;
+  if(filterType&& filterValue){
+
+    results = results.filter(function (item) {
+        if (filterType == "name") {
+          return item.name.toLowerCase().includes(filterValue);
+        }
+        if (filterType == "company") {
+          return item.company.name.toLowerCase().includes(filterValue);
+        }
+      });
+    }
+  res.json({ message: "done", page: ApiFeat.page,count: await productModel.countDocuments({ company: req.params.id }), results });
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No Product was found!",
+    });
+  }
+});
+const getAllProductByCompanyWithPagination = catchAsync(async (req, res, next) => {
     let ApiFeat = null;
     if (req.params.id) {
       ApiFeat = new ApiFeature(
@@ -118,7 +154,7 @@ const getProductById = catchAsync(async (req, res, next) => {
 const getProductlineById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
   if (!id) {
-    return res.status(404).json({ message: "Product not found!" });
+    return res.status(404).json({ message: "invoice not found!" });
   }
 
   let results = await productModel.find({ _id: id , productLines: req.body.id});
@@ -168,6 +204,7 @@ export {
   deleteProduct,
   updateProduct,
   createPhoto,
-  getAllProductByCompany,
+  getAllProductByCompanyWithPagination,
+  getAllProductByCompanyWithoutPagination,
   getProductlineById,
 };
