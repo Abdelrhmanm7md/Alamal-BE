@@ -23,12 +23,10 @@ const createPhoto = catchAsync(async (req, res, next) => {
   if (!req.body.pic) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
   }
-  res
-    .status(200)
-    .json({
-      message: "Photo updated successfully!",
-      pic: `${process.env.BASE_URL}invoices/${pic}`,
-    });
+  res.status(200).json({
+    message: "Photo updated successfully!",
+    pic: `${process.env.BASE_URL}invoices/${pic}`,
+  });
 });
 
 const getAllProductByAdmin = catchAsync(async (req, res, next) => {
@@ -163,21 +161,19 @@ const getProductlineById = catchAsync(async (req, res, next) => {
     return res.status(404).json({ message: "invoice not found!" });
   }
 
-  let results = await productModel.find({ _id: id });
+  let results = await invoiceModel.find({ _id: id });
 
   if (!results) {
     return res.status(404).json({ message: "Product not found!" });
   }
 
-  res
-    .status(200)
-    .json({
-      message: "Done",
-      count: await productModel.countDocuments({
-        _id: id,
-      }),
-      results,
-    });
+  res.status(200).json({
+    message: "Done",
+    count: await productModel.countDocuments({
+      _id: id,
+    }),
+    results,
+  });
 });
 const updateProduct = catchAsync(async (req, res, next) => {
   let { id } = req.params;
