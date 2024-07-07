@@ -46,14 +46,14 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
     ApiFeat = new ApiFeature(
       visitModel
         .find({ createdBy: req.params.id })
-        .populate("pharm rep driver company"),
+        .populate("pharmacy rep driver company"),
       req.query
     )
       .pagination()
       .sort()
       .search(req.query.key)
       .fields();
-  } 
+  }
 
   if (!ApiFeat) {
     return res.status(404).json({
@@ -68,7 +68,7 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        return item.pharm.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue);
@@ -90,20 +90,24 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page,count: await visitModel.countDocuments({ createdBy: req.params.id }), results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await visitModel.countDocuments({ createdBy: req.params.id }),
+    results,
+  });
 });
 const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
-  
-    ApiFeat = new ApiFeature(
-      visitModel.find().populate("pharm rep driver company"),
-      req.query
-    )
-      .pagination()
-      .sort()
-      .search(req.query.key)
-      .fields();
-  
+
+  ApiFeat = new ApiFeature(
+    visitModel.find().populate("pharmacy rep driver company"),
+    req.query
+  )
+    .pagination()
+    .sort()
+    .search(req.query.key)
+    .fields();
 
   if (!ApiFeat) {
     return res.status(404).json({
@@ -118,7 +122,7 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        return item.pharm.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue);
@@ -140,7 +144,18 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page,count: await visitModel.countDocuments(), results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await visitModel.countDocuments(),
+    results,
+  });
 });
 
-export { createVisit, editVisit, deleteVisit, getAllVisitsByAdmin,getAllVisitsByUser };
+export {
+  createVisit,
+  editVisit,
+  deleteVisit,
+  getAllVisitsByAdmin,
+  getAllVisitsByUser,
+};

@@ -30,12 +30,10 @@ const createPhoto = catchAsync(async (req, res, next) => {
   if (!req.body.profilePic) {
     return res.status(404).json({ message: "Couldn't update!  not found!" });
   }
-  res
-    .status(200)
-    .json({
-      message: "Photo updated successfully!",
-      profilePic: `${process.env.BASE_URL}invoices/${profilePic}`,
-    });
+  res.status(200).json({
+    message: "Photo updated successfully!",
+    profilePic: `${process.env.BASE_URL}invoices/${profilePic}`,
+  });
 });
 
 const getAllUsers = catchAsync(async (req, res, next) => {
@@ -60,7 +58,12 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   //     }
   //   });
   // }
-  res.json({ message: "done", page: ApiFeat.page,count: await userModel.countDocuments(), results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await userModel.countDocuments(),
+    results,
+  });
   if (!results) {
     return res.status(404).json({
       message: "No users was found! Create a new user to get started!",
@@ -83,7 +86,7 @@ const getAllRep = catchAsync(async (req, res, next) => {
   }
 });
 const getAllPharm = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(userModel.find({ role: "pharm" }), req.query)
+  let ApiFeat = new ApiFeature(userModel.find({ role: "pharmacy" }), req.query)
     .pagination()
     .sort()
     .search()

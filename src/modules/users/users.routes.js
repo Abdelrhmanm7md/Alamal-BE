@@ -5,7 +5,7 @@ import * as usersController from "./users.controller.js";
 import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 usersRouter.get("/", usersController.getAllUsers);
-usersRouter.get("/pharm", usersController.getAllPharm);
+usersRouter.get("/pharmacy", usersController.getAllPharm);
 usersRouter.get("/rep", usersController.getAllRep);
 usersRouter.get("/admin", usersController.getAllAdmin);
 usersRouter.get("/supervisor", usersController.getAllSuper);

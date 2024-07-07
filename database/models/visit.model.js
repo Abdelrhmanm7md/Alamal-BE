@@ -33,7 +33,7 @@ const visitSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    pharm: {
+    pharmacy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,

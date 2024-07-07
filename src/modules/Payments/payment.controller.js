@@ -22,15 +22,21 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
   if (req.params.id) {
     ApiFeat = new ApiFeature(
       paymentModel
-      .find({ $or: [{ createdBy: req.params.id }, { pharmacy: req.params.id },{ rep: req.params.id }] })
-      .populate("pharmacy rep company createdBy"),
+        .find({
+          $or: [
+            { createdBy: req.params.id },
+            { pharmacy: req.params.id },
+            { rep: req.params.id },
+          ],
+        })
+        .populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
       .sort()
       .search(req.query.key)
       .fields();
-  } 
+  }
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
@@ -40,7 +46,7 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharm.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue);
@@ -55,11 +61,22 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharm.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location.toLowerCase().includes(filterValue);
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page,count: await paymentModel.countDocuments({$or: [{ createdBy: req.params.id }, { rep: req.params.id },{ pharmacy: req.params.id }]}), results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await paymentModel.countDocuments({
+      $or: [
+        { createdBy: req.params.id },
+        { rep: req.params.id },
+        { pharmacy: req.params.id },
+      ],
+    }),
+    results,
+  });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Payment was found!",
@@ -69,14 +86,14 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
 const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
 
-    ApiFeat = new ApiFeature(
-      paymentModel.find().populate("pharmacy rep company createdBy"),
-      req.query
-    )
-      .pagination()
-      .sort()
-      .search(req.query.key)
-      .fields();
+  ApiFeat = new ApiFeature(
+    paymentModel.find().populate("pharmacy rep company createdBy"),
+    req.query
+  )
+    .pagination()
+    .sort()
+    .search(req.query.key)
+    .fields();
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
@@ -86,7 +103,7 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharm.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue);
@@ -101,11 +118,16 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharm.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location.toLowerCase().includes(filterValue);
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page,count: await paymentModel.countDocuments(), results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await paymentModel.countDocuments(),
+    results,
+  });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Payment was found!",
@@ -144,7 +166,7 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharm.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue);
@@ -159,11 +181,16 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharm.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location.toLowerCase().includes(filterValue);
       }
     });
   }
-  res.json({ message: "done", page: ApiFeat.page,count: await paymentModel.countDocuments({ invoice: req.params.id }), results });
+  res.json({
+    message: "done",
+    page: ApiFeat.page,
+    count: await paymentModel.countDocuments({ invoice: req.params.id }),
+    results,
+  });
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Payment was found!",
