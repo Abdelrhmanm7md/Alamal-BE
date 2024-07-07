@@ -5,7 +5,7 @@ import * as productController from "./product.controller.js";
 import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 productRouter.get("/", productController.getAllProductByAdmin);
-productRouter.get("/user/:id", productController.getAllProductByCompany);
+productRouter.get("/invoice/:id", productController.getAllProductByCompany);
 productRouter.get("/:id", productController.getProductById);
 productRouter.delete("/:id", productController.deleteProduct);
 productRouter.put("/:id", productController.updateProduct);
