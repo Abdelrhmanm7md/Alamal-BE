@@ -11,8 +11,13 @@ export const signUp = catchAsync(async (req, res, next) => {
     return res.status(409).json({ message: "this email already exist" });
   }
   if (req.body.role == 'pharmacy') {
-    // return next(new AppError(`this email already exist`, 409));
-    return res.status(409).json({ message: "this name already exist" });
+    if(req.body.name){
+      let existUser = await userModel.findOne({ name: req.body.name });
+      if (existUser) {
+        // return next(new AppError(`this email already exist`, 409));
+        return res.status(409).json({ message: "this name already exist" });
+      }
+    }
   }
   let results = new userModel(req.body);
   await results.save();
