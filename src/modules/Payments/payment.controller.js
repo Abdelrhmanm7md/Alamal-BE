@@ -1,3 +1,4 @@
+import { invoiceModel } from "../../../database/models/invoice.model.js";
 import { paymentModel } from "../../../database/models/payments.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
@@ -8,7 +9,7 @@ const createpayment = catchAsync(async (req, res, next) => {
     return res.status(400).json({ message });
   }
   let newpayment = new paymentModel(req.body);
-
+  
   let addedpayment = await newpayment.save();
 
   res.status(201).json({
@@ -157,10 +158,12 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
       .search(req.query.key)
       .fields();
   }
+
   let results = await ApiFeat.mongooseQuery;
+  
   results = JSON.stringify(results);
   results = JSON.parse(results);
-
+  
   let { filterType, filterValue } = req.query;
   if (filterType && filterValue) {
     results = results.filter(function (item) {
