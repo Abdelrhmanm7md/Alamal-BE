@@ -121,13 +121,13 @@ const getProductlineById = catchAsync(async (req, res, next) => {
     return res.status(404).json({ message: "Product not found!" });
   }
 
-  let Product = await productModel.find({ _id: id , productLines: req.body.id});
+  let results = await productModel.find({ _id: id , productLines: req.body.id});
 
-  if (!Product) {
+  if (!results) {
     return res.status(404).json({ message: "Product not found!" });
   }
 
-  res.status(200).json({message: "Done", Product });
+  res.status(200).json({message: "Done", results });
 });
 const updateProduct = catchAsync(async (req, res, next) => {
   let { id } = req.params;
