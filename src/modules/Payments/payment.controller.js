@@ -118,7 +118,7 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
     ApiFeat = new ApiFeature(
       paymentModel
         .find({ invoice: req.params.id })
-        .populate("pharm rep company createdBy"),
+        .populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
@@ -127,7 +127,7 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
       .fields();
   } else {
     ApiFeat = new ApiFeature(
-      paymentModel.find().populate("pharm rep company createdBy"),
+      paymentModel.find().populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
