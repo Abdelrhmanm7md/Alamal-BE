@@ -32,7 +32,7 @@ export const signIn = catchAsync(async (req, res, next) => {
   if (req.body.email !== "" && req.body.email.match(emailFormat)) {
     let { email, password } = req.body;
     let isFound = await userModel.findOne({ email });
-    if (!isFound) return res.status(404).json({ message: "Not Found" });
+    if (!isFound) return res.status(404).json({ message: "User Not Found" });
     const match = await bcrypt.compare(password, isFound.password);
     if (match && isFound) {
       let token = jwt.sign(
