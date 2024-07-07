@@ -4,7 +4,6 @@ import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const createProduct = catchAsync(async (req, res, next) => {
-  console.log(req.files, "req.files");
   let newProduct = new productModel(req.body);
   let addedProduct = await newProduct.save();
 
@@ -161,11 +160,12 @@ const getProductlineById = catchAsync(async (req, res, next) => {
     return res.status(404).json({ message: "invoice not found!" });
   }
 
-  let results = await invoiceModel.find({ _id: id });
+  let results = await invoiceModel.findById(id);
 
   if (!results) {
     return res.status(404).json({ message: "Product not found!" });
   }
+  results = results.productLines;
 
   res.status(200).json({
     message: "Done",
