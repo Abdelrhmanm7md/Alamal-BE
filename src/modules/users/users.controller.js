@@ -72,7 +72,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
 });
 const getAllRep = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(
-    userModel.find({ role: "medicalRep" }),
+    userModel.find({ role: "rep" }),
     req.query
   )
     .pagination()

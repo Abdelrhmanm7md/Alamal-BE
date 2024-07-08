@@ -26,7 +26,7 @@ const paymentSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
-    medicalRep: {
+    rep: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,

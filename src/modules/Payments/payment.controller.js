@@ -27,10 +27,10 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
           $or: [
             { createdBy: req.params.id },
             { pharmacy: req.params.id },
-            { medicalRep: req.params.id },
+            { rep: req.params.id },
           ],
         })
-        .populate("pharmacy medicalRep company createdBy"),
+        .populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
@@ -49,8 +49,8 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
       if (filterType == "pharmacy") {
         return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue);
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "company") {
         return item.company.name.toLowerCase().includes(filterValue);
@@ -72,7 +72,7 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
     count: await paymentModel.countDocuments({
       $or: [
         { createdBy: req.params.id },
-        { medicalRep: req.params.id },
+        { rep: req.params.id },
         { pharmacy: req.params.id },
       ],
     }),
@@ -88,7 +88,7 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
 
   ApiFeat = new ApiFeature(
-    paymentModel.find().populate("pharmacy medicalRep company createdBy"),
+    paymentModel.find().populate("pharmacy rep company createdBy"),
     req.query
   )
     .pagination()
@@ -106,8 +106,8 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
       if (filterType == "pharmacy") {
         return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue);
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "company") {
         return item.company.name.toLowerCase().includes(filterValue);
@@ -141,7 +141,7 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
     ApiFeat = new ApiFeature(
       paymentModel
         .find({ invoice: req.params.id })
-        .populate("pharmacy medicalRep company createdBy"),
+        .populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
@@ -150,7 +150,7 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
       .fields();
   } else {
     ApiFeat = new ApiFeature(
-      paymentModel.find().populate("pharmacy medicalRep company createdBy"),
+      paymentModel.find().populate("pharmacy rep company createdBy"),
       req.query
     )
       .pagination()
@@ -171,8 +171,8 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
       if (filterType == "pharmacy") {
         return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue);
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "company") {
         return item.company.name.toLowerCase().includes(filterValue);

@@ -46,7 +46,7 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
     ApiFeat = new ApiFeature(
       visitModel
         .find({ createdBy: req.params.id })
-        .populate("pharmacy medicalRep driver company"),
+        .populate("pharmacy rep driver company"),
       req.query
     )
       .pagination()
@@ -70,8 +70,8 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
       if (filterType == "pharmacy") {
         return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue);
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "driver") {
         return item.driver.name.toLowerCase().includes(filterValue);
@@ -101,7 +101,7 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
 
   ApiFeat = new ApiFeature(
-    visitModel.find().populate("pharmacy medicalRep driver company"),
+    visitModel.find().populate("pharmacy rep driver company"),
     req.query
   )
     .pagination()
@@ -124,8 +124,8 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
       if (filterType == "pharmacy") {
         return item.pharmacy.name.toLowerCase().includes(filterValue);
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue);
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue);
       }
       if (filterType == "driver") {
         return item.driver.name.toLowerCase().includes(filterValue);

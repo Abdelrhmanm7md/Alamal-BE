@@ -33,7 +33,7 @@ const userSchema = mongoose.Schema(
       type: String,
       enum: [
         "pharmacy",
-        "medicalRep",
+        "rep",
         "admin",
         "driver",
         "supervisor",

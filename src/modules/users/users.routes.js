@@ -6,7 +6,7 @@ import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 usersRouter.get("/", usersController.getAllUsers);
 usersRouter.get("/pharmacy", usersController.getAllPharm);
-usersRouter.get("/medicalRep", usersController.getAllRep);
+usersRouter.get("/rep", usersController.getAllRep);
 usersRouter.get("/admin", usersController.getAllAdmin);
 usersRouter.get("/supervisor", usersController.getAllSuper);
 usersRouter.get("/driver", usersController.getAllDriver);
