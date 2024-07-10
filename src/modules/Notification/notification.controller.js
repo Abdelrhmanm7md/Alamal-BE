@@ -1,4 +1,5 @@
 import { notificationModel } from "../../../database/models/notification.model.js";
+import { sio } from "../../../index.js"
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
 const getAllNotification = catchAsync(async (req, res, next) => {
@@ -12,6 +13,8 @@ const getAllNotification = catchAsync(async (req, res, next) => {
 const createNotification = catchAsync(async (req, res, next) => {
   const newNotif = new notificationModel(req.body);
   const savedNotif = await newNotif.save();
+  let message = req.body.content
+  sio.emit(`notification_${req.body.receiver}`, { message });
 
   res.status(201).json({
     message: "notification created successfully!",
