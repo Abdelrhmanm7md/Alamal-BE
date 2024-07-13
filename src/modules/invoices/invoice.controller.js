@@ -210,7 +210,6 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
     .pagination()
     .sort()
     .search(req.query.key)
-    .fields();
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
@@ -300,36 +299,38 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
 const getInvoiceById = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let Invoice = await invoiceModel
+  let results = await invoiceModel
     .findById(id)
     .populate("productLines.product");
-  Invoice = JSON.stringify(Invoice);
-  Invoice = JSON.parse(Invoice);
+    results = JSON.stringify(results);
+  results = JSON.parse(results);
 
-  if (!Invoice) {
+  if (!results) {
     return res.status(404).json({ message: "Invoice not found!" });
   }
 
-  for (let i = 0; i < Invoice.productLines.length; i++) {
-    Invoice.productLines[i].total =
-      Invoice.productLines[i].qty * Invoice.productLines[i].product.unitPrice;
+  for (let i = 0; i < results.productLines.length; i++) {
+    results.productLines[i].total =
+    results.productLines[i].qty * results.productLines[i].product.unitPrice;
   }
-  let totalAmt = 0;
-  for (let i = 0; i < Invoice.payments.length; i++) {
-    totalAmt += Invoice.payments[i].amount;
-  }
-  Invoice.totalPaid = totalAmt;
-  Invoice.amountDue = Invoice.amount - Invoice.totalPaid;
+  // if(payment.length){
+  //   results[j].totalPaid = results[0].totalPaid
+  //   results[j].amountDue = results[j].amount - results[0].totalPaid
+  // }
+  // else{
+  //   results[j].totalPaid = 0;
+  //   results[j].amountDue = results[j].amount
+  // }
   for (let i = 0; i < results.length; i++) {
-    if (Invoice[i].amount < 0) {
+    if (results[i].amount < 0) {
       message = "amount must be greater than 0";
       return res.status(400).json({ message });
     }
-    if (Invoice[i].amountDue < 0) {
+    if (results[i].amountDue < 0) {
       message = "amount Due must be greater than 0";
       return res.status(400).json({ message });
     }
-    if (Invoice[i].totalPaid < 0) {
+    if (results[i].totalPaid < 0) {
       message = "total Paid must be greater than 0";
       return res.status(400).json({ message });
     }
@@ -343,7 +344,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
     // }
   }
 
-  res.status(200).json({ Invoice });
+  res.status(200).json({ results });
 });
 const getInvByUserId = catchAsync(async (req, res, next) => {
   let { id } = req.params;
