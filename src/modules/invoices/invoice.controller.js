@@ -12,7 +12,6 @@ const createInvoice = catchAsync(async (req, res, next) => {
     return res.status(400).json({ message });
   }
 
-  
   let addedInvoice = await newInvoice.save();
   addedInvoice.productLines.map((element) => {
     element.invoiceId = addedInvoice._id;
@@ -137,23 +136,19 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
     });
   }
 
-
   for (let j = 0; j < results.length; j++) {
-
-    let payment = await paymentModel
-    .aggregate([
+    let payment = await paymentModel.aggregate([
       { $match: { invoice: new mongoose.Types.ObjectId(results[j]._id) } },
-      { $group: { _id: null, totalPaid: { $sum: "$amount" } } }
-  ])
-  if(payment.length){
-    results[j].totalPaid = payment[0].totalPaid
-    results[j].amountDue = results[j].amount - payment[0].totalPaid
-  }
-  else{
-    results[j].totalPaid = 0;
-    results[j].amountDue = results[j].amount
-  }
-  console.log(payment, "payment");
+      { $group: { _id: null, totalPaid: { $sum: "$amount" } } },
+    ]);
+    if (payment.length) {
+      results[j].totalPaid = payment[0].totalPaid;
+      results[j].amountDue = results[j].amount - payment[0].totalPaid;
+    } else {
+      results[j].totalPaid = 0;
+      results[j].amountDue = results[j].amount;
+    }
+    console.log(payment, "payment");
     for (let i = 0; i < results[j].productLines.length; i++) {
       if (results[j].productLines[i].product) {
         results[j].productLines[i].total =
@@ -161,9 +156,8 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
           results[j].productLines[i].product.unitPrice;
       }
     }
-    
   }
-let message = ""
+  let message = "";
   if (!ApiFeat) {
     return res.status(404).json({
       message: "No Invoice was found!",
@@ -183,8 +177,6 @@ let message = ""
     //   message = "total Paid must be greater than 0";
     //   return res.status(400).json({ message });
     // }
-
-
   }
   res.json({
     message: "done",
@@ -204,12 +196,14 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
 
   ApiFeat = new ApiFeature(
-    invoiceModel.find().populate("pharmacy productLines.product company"),
+    invoiceModel
+      .find()
+      .populate("pharmacy productLines.product company createdBy medicalRep"),
     req.query
   )
     .pagination()
-    .sort()
-    .search(req.query.key)
+    // .sort()
+    .search(req.query.key);
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
@@ -218,27 +212,38 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
 
   if (filterType && filterValue) {
     results = results.filter(function (item) {
-      // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue);
+        return item.company.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "createdBy") {
-        return item.createdBy.name.toLowerCase().includes(filterValue);
+        return item.createdBy.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue);
+        return item.medicalRep.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.date == filterValue;
       }
       if (filterType == "location") {
-        return item.pharmacy.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "type") {
-        return item.invoiceType.toLowerCase().includes(filterValue);
+        return item.invoiceType
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
     });
   }
@@ -302,7 +307,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
   let results = await invoiceModel
     .findById(id)
     .populate("productLines.product");
-    results = JSON.stringify(results);
+  results = JSON.stringify(results);
   results = JSON.parse(results);
 
   if (!results) {
@@ -311,7 +316,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
 
   for (let i = 0; i < results.productLines.length; i++) {
     results.productLines[i].total =
-    results.productLines[i].qty * results.productLines[i].product.unitPrice;
+      results.productLines[i].qty * results.productLines[i].product.unitPrice;
   }
   // if(payment.length){
   //   results[j].totalPaid = results[0].totalPaid
