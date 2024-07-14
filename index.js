@@ -27,5 +27,5 @@ init(app);
 app.listen(process.env.PORT || 8008, () =>
   console.log(`Server is running on port ${process.env.PORT || 8008}!`)
 );
-// httpServer.listen(8001);
+httpServer.listen(8002);
 export const sio = io;
