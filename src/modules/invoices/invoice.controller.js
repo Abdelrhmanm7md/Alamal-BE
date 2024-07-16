@@ -198,7 +198,7 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
   ApiFeat = new ApiFeature(
     invoiceModel
       .find()
-      .populate("pharmacy productLines.product company createdBy medicalRep"),
+      .populate("pharmacy productLines.product company createdBy medicalRep driver"),
     req.query
   )
     .pagination()
@@ -306,7 +306,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
 
   let results = await invoiceModel
     .findById(id)
-    .populate("pharmacy productLines.product company createdBy medicalRep");
+    .populate("pharmacy productLines.product company createdBy medicalRep driver");
   results = JSON.stringify(results);
   results = JSON.parse(results);
 
@@ -356,8 +356,8 @@ const getInvByUserId = catchAsync(async (req, res, next) => {
 
   let Invoice = await invoiceModel
     .find({ createdBy: id })
-    .populate("productLines.product");
-  Invoice = JSON.stringify(Invoice);
+    .populate("pharmacy productLines.product company createdBy medicalRep driver")
+    Invoice = JSON.stringify(Invoice);
   Invoice = JSON.parse(Invoice);
 
   if (!Invoice) {
