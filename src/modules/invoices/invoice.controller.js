@@ -306,7 +306,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
 
   let results = await invoiceModel
     .findById(id)
-    .populate("productLines.product");
+    .populate("pharmacy productLines.product company createdBy medicalRep");
   results = JSON.stringify(results);
   results = JSON.parse(results);
 
