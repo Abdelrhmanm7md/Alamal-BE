@@ -21,19 +21,59 @@ const createUser = catchAsync(async (req, res, next) => {
     addedUser,
   });
 });
-const createPhoto = catchAsync(async (req, res, next) => {
-  if (req.file) req.body.profilePic = req.file.filename;
+// const createPhoto = catchAsync(async (req, res, next) => {
+//   if (req.file) req.body.profilePic = req.file.filename;
+//   let profilePic = "";
+//   if (req.body.profilePic) {
+//     profilePic = req.body.profilePic;
+//   }
+//   if (!req.body.profilePic) {
+//     return res.status(404).json({ message: "Couldn't update!  not found!" });
+//   }
+//   res.status(200).json({
+//     message: "Photo updated successfully!",
+//     profilePic: `${process.env.BASE_URL}invoices/${profilePic}`,
+//   });
+// });
+const addPhotos = catchAsync(async (req, res, next) => {
   let profilePic = "";
+  req.body.profilePic =
+    req.files.profilePic &&
+    req.files.profilePic.map(
+      (file) =>
+        `${process.env.BASE_URL}profilePic/${file.filename.split(" ").join("")}`
+    );
+
+  const directoryPath = path.join(profilePic, "uploads/profilePic");
+
+  fsExtra.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return console.error("Unable to scan directory: " + err);
+    }
+
+    files.forEach((file) => {
+      const oldPath = path.join(directoryPath, file);
+      const newPath = path.join(directoryPath, file.replace(/\s+/g, ""));
+
+      fsExtra.rename(oldPath, newPath, (err) => {
+        if (err) {
+          console.error("Error renaming file: ", err);
+        } 
+      });
+    });
+  });
+
   if (req.body.profilePic) {
     profilePic = req.body.profilePic;
   }
-  if (!req.body.profilePic) {
-    return res.status(404).json({ message: "Couldn't update!  not found!" });
-  }
+  if(profilePic !== ""){
   res.status(200).json({
-    message: "Photo updated successfully!",
-    profilePic: `${process.env.BASE_URL}invoices/${profilePic}`,
+    message: "Photo created successfully!",
+    profilePic,
   });
+}else {
+  res.status(400).json({ message: 'File upload failed.'});
+}
 });
 
 const getAllUsers = catchAsync(async (req, res, next) => {
@@ -228,5 +268,6 @@ export {
   getAllDriver,
   getAllSaleManger,
   getAllSuper,
-  createPhoto,
+  // createPhoto,
+  addPhotos,
 };

@@ -11,21 +11,62 @@ const createCompany = catchAsync(async (req, res, next) => {
     savedCompany,
   });
 });
-const createPhoto = catchAsync(async (req, res, next) => {
-  if (req.file) req.body.logo = req.file.filename;
+// const createPhoto = catchAsync(async (req, res, next) => {
+//   if (req.file) req.body.logo = req.file.filename;
+//   let logo = "";
+//   if (req.body.logo) {
+//     logo = req.body.logo;
+//   }
+
+//   if (!req.body.logo) {
+//     return res.status(404).json({ message: "Logo not found!" });
+//   }
+//   res.status(200).json({
+//     message: "Photo uploaded successfully!",
+//     logo: `${process.env.BASE_URL}invoices/${logo}`,
+//   });
+// });
+const addPhotos = catchAsync(async (req, res, next) => {
   let logo = "";
+  req.body.logo =
+    req.files.logo &&
+    req.files.logo.map(
+      (file) =>
+        `${process.env.BASE_URL}logo/${file.filename.split(" ").join("")}`
+    );
+
+  const directoryPath = path.join(logo, "uploads/logo");
+
+  fsExtra.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return console.error("Unable to scan directory: " + err);
+    }
+
+    files.forEach((file) => {
+      const oldPath = path.join(directoryPath, file);
+      const newPath = path.join(directoryPath, file.replace(/\s+/g, ""));
+
+      fsExtra.rename(oldPath, newPath, (err) => {
+        if (err) {
+          console.error("Error renaming file: ", err);
+        } 
+      });
+    });
+  });
+
   if (req.body.logo) {
     logo = req.body.logo;
   }
-
-  if (!req.body.logo) {
-    return res.status(404).json({ message: "Logo not found!" });
-  }
+  if(logo !== ""){
   res.status(200).json({
-    message: "Photo uploaded successfully!",
-    logo: `${process.env.BASE_URL}invoices/${logo}`,
+    message: "Photo created successfully!",
+    logo,
   });
+}else {
+  res.status(400).json({ message: 'File upload failed.'});
+}
 });
+
 const getAllCompany = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(companyModel.find(), req.query)
     .pagination()
@@ -83,5 +124,6 @@ export {
   editCompany,
   deleteCompany,
   getAllCompany,
-  createPhoto,
+  // createPhoto,
+  addPhotos,
 };

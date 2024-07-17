@@ -24,8 +24,48 @@ const createPhoto = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({
     message: "Photo updated successfully!",
-    pic: `${process.env.BASE_URL}invoices/${pic}`,
+    pic: `${process.env.BASE_URL}Product/${pic}`,
   });
+});
+const addPhotos = catchAsync(async (req, res, next) => {
+  let pic = "";
+  req.body.pic =
+    req.files.pic &&
+    req.files.pic.map(
+      (file) =>
+        `${process.env.BASE_URL}Product/${file.filename.split(" ").join("")}`
+    );
+
+  const directoryPath = path.join(pic, "uploads/Product");
+
+  fsExtra.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return console.error("Unable to scan directory: " + err);
+    }
+
+    files.forEach((file) => {
+      const oldPath = path.join(directoryPath, file);
+      const newPath = path.join(directoryPath, file.replace(/\s+/g, ""));
+
+      fsExtra.rename(oldPath, newPath, (err) => {
+        if (err) {
+          console.error("Error renaming file: ", err);
+        } 
+      });
+    });
+  });
+
+  if (req.body.pic) {
+    pic = req.body.pic;
+  }
+  if(pic !== ""){
+  res.status(200).json({
+    message: "Photo created successfully!",
+    pic,
+  });
+}else {
+  res.status(400).json({ message: 'File upload failed.'});
+}
 });
 
 const getAllProductByAdmin = catchAsync(async (req, res, next) => {
@@ -216,7 +256,8 @@ export {
   getProductById,
   deleteProduct,
   updateProduct,
-  createPhoto,
+  // createPhoto,
+  addPhotos,
   getAllProductByCompanyWithPagination,
   getAllProductByCompanyWithoutPagination,
   getProductlineById,

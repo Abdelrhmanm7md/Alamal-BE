@@ -2,7 +2,7 @@ import express from "express";
 const productRouter = express.Router();
 
 import * as productController from "./product.controller.js";
-import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
+import { fileSizeLimitErrorHandler, uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 productRouter.get("/", productController.getAllProductByAdmin);
 productRouter.get(
@@ -20,8 +20,10 @@ productRouter.put("/:id", productController.updateProduct);
 productRouter.post("/", productController.createProduct);
 productRouter.post(
   "/photo",
-  uploadSingleFile("photo", "pic"),
-  productController.createPhoto
+  uploadMixFile("Product", [
+    { name: "pic", maxCount: 1},
+  ]),fileSizeLimitErrorHandler,
+  productController.addPhotos
 );
 
 export default productRouter;

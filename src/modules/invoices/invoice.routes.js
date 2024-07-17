@@ -2,7 +2,7 @@ import express from "express";
 const invoiceRouter = express.Router();
 
 import * as invoiceController from "./invoice.controller.js";
-import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
+import { fileSizeLimitErrorHandler, uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
 
 invoiceRouter.get("/user/:id", invoiceController.getAllInvoiceByUser);
 invoiceRouter.get("/", invoiceController.getAllInvoiceByAdmin);
@@ -15,8 +15,10 @@ invoiceRouter.put("/:id", invoiceController.updateInvoice);
 invoiceRouter.post("/", invoiceController.createInvoice);
 invoiceRouter.post(
   "/photo",
-  uploadSingleFile("invoices", "image"),
-  invoiceController.createPhoto
+  uploadMixFile("invoices", [
+    { name: "image", maxCount: 1},
+  ]),fileSizeLimitErrorHandler,
+  invoiceController.addPhotos
 );
 
 export default invoiceRouter;

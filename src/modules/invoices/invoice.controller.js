@@ -63,22 +63,63 @@ const deleteProductLines = catchAsync(async (req, res, next) => {
     message: "product lines has been deleted successfully!",
   });
 });
-const createPhoto = catchAsync(async (req, res, next) => {
-  // console.log(req, "ddddd");
+// const createPhoto = catchAsync(async (req, res, next) => {
+//   // console.log(req, "ddddd");
 
-  if (req.file) req.body.image = req.file.filename;
+//   if (req.file) req.body.image = req.file.filename;
+//   let image = "";
+//   if (req.body.image) {
+//     image = req.body.image;
+//   }
+
+//   if (!req.body.image) {
+//     return res.status(404).json({ message: "Couldn't update!  not found!" });
+//   }
+//   res.status(200).json({
+//     message: "Photo updated successfully!",
+//     image: `${process.env.BASE_URL}invoices/${image}`,
+//   });
+// });
+
+const addPhotos = catchAsync(async (req, res, next) => {
   let image = "";
+  req.body.image =
+    req.files.image &&
+    req.files.image.map(
+      (file) =>
+        `${process.env.BASE_URL}invoices/${file.filename.split(" ").join("")}`
+    );
+
+  const directoryPath = path.join(image, "uploads/image");
+
+  fsExtra.readdir(directoryPath, (err, files) => {
+    if (err) {
+      return console.error("Unable to scan directory: " + err);
+    }
+
+    files.forEach((file) => {
+      const oldPath = path.join(directoryPath, file);
+      const newPath = path.join(directoryPath, file.replace(/\s+/g, ""));
+
+      fsExtra.rename(oldPath, newPath, (err) => {
+        if (err) {
+          console.error("Error renaming file: ", err);
+        } 
+      });
+    });
+  });
+
   if (req.body.image) {
     image = req.body.image;
   }
-
-  if (!req.body.image) {
-    return res.status(404).json({ message: "Couldn't update!  not found!" });
-  }
+  if(image !== ""){
   res.status(200).json({
-    message: "Photo updated successfully!",
-    image: `${process.env.BASE_URL}invoices/${image}`,
+    message: "Photo created successfully!",
+    image,
   });
+}else {
+  res.status(400).json({ message: 'File upload failed.'});
+}
 });
 
 const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
@@ -413,7 +454,8 @@ export {
   getInvoiceById,
   deleteInovice,
   updateInvoice,
-  createPhoto,
+  // createPhoto,
+  addPhotos,
   getInvByUserId,
   createProductLines,
   deleteProductLines,

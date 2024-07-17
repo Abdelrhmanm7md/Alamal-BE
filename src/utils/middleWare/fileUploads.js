@@ -1,6 +1,13 @@
 import multer from "multer";
 import AppError from "../appError.js";
 
+export const fileSizeLimitErrorHandler = (err, req, res, next) => {
+  if (err) {
+    res.status(400).json({ message: "There is File more than 5 mb" });
+  } else {
+    next();
+  }
+};
 let options = (folderName) => {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -19,7 +26,9 @@ let options = (folderName) => {
     }
   }
 
-  return multer({ storage, fileFilter });
+  return multer({ storage,limits: {
+    fileSize: 5000000 // 1MB
+  }, fileFilter });
 };
 
 export const uploadSingleFile = (folderName, fieldName) =>
