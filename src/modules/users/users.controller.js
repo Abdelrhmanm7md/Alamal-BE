@@ -3,7 +3,8 @@ import { userModel } from "../../../database/models/user.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 import AppError from "../../utils/appError.js";
-
+import path from "path";
+import fsExtra from "fs-extra";
 const createUser = catchAsync(async (req, res, next) => {
   let userExists = await userModel.findOne({ email: req.body.email });
 

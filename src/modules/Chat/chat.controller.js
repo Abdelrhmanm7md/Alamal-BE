@@ -1,7 +1,8 @@
 import { companyModel } from "../../../database/models/company.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
-
+import path from "path";
+import fsExtra from "fs-extra";
 const createCompany = catchAsync(async (req, res, next) => {
   const newCompany = new companyModel(req.body);
   const savedCompany = await newCompany.save();

@@ -2,7 +2,8 @@ import { invoiceModel } from "../../../database/models/invoice.model.js";
 import { productModel } from "../../../database/models/product.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
-
+import path from "path";
+import fsExtra from "fs-extra";
 const createProduct = catchAsync(async (req, res, next) => {
   let newProduct = new productModel(req.body);
   let addedProduct = await newProduct.save();

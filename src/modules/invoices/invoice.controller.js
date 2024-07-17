@@ -3,7 +3,8 @@ import { invoiceModel } from "../../../database/models/invoice.model.js";
 import { paymentModel } from "../../../database/models/payments.model.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
-
+import path from "path";
+import fsExtra from "fs-extra";
 const createInvoice = catchAsync(async (req, res, next) => {
   var message = "";
   let newInvoice = new invoiceModel(req.body);
@@ -77,7 +78,7 @@ const deleteProductLines = catchAsync(async (req, res, next) => {
 //   }
 //   res.status(200).json({
 //     message: "Photo updated successfully!",
-//     image: `${process.env.BASE_URL}invoices/${image}`,
+//     image: `${process.env.BASE_URL}image/${image}`,
 //   });
 // });
 
@@ -90,7 +91,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
         `${process.env.BASE_URL}invoices/${file.filename.split(" ").join("")}`
     );
 
-  const directoryPath = path.join(image, "uploads/image");
+  const directoryPath = path.join(image, "uploads/invoices");
 
   fsExtra.readdir(directoryPath, (err, files) => {
     if (err) {
