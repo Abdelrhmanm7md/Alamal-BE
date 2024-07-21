@@ -68,6 +68,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
     profilePic = req.body.profilePic;
   }
   if(profilePic !== ""){
+    profilePic=profilePic[0]
   res.status(200).json({
     message: "Photo created successfully!",
     profilePic,

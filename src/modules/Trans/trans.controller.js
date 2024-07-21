@@ -38,13 +38,13 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "sender") {
-        return item.sender.name.toLowerCase().includes(filterValue);
+        return item.sender.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "receiver") {
-        return item.receiver.name.toLowerCase().includes(filterValue);
+        return item.receiver.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "confirmed") {
-        return item.confirmed.toLowerCase().includes(filterValue);
+        return item.confirmed.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }
@@ -79,13 +79,13 @@ const getAllTransByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "sender") {
-        return item.sender.name.toLowerCase().includes(filterValue);
+        return item.sender.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "receiver") {
-        return item.receiver.name.toLowerCase().includes(filterValue);
+        return item.receiver.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "confirmed") {
-        return item.confirmed.toLowerCase().includes(filterValue);
+        return item.confirmed.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }

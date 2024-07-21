@@ -122,25 +122,25 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "rep") {
-        return item.rep.name.toLowerCase().includes(filterValue);
+        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "driver") {
-        return item.driver.name.toLowerCase().includes(filterValue);
+        return item.driver.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue);
+        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "location") {
-        return item.location.toLowerCase().includes(filterValue);
+        return item.location.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "status") {
-        return item.status.toLowerCase().includes(filterValue);
+        return item.status.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "hasPayment") {
-        return item.hasPayment.toLowerCase().includes(filterValue);
+        return item.hasPayment.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }

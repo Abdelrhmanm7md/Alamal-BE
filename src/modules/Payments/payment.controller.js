@@ -47,22 +47,22 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "rep") {
-        return item.rep.name.toLowerCase().includes(filterValue);
+        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue);
+        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "createdBy") {
-        return item.createdBy.name.toLowerCase().includes(filterValue);
+        return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharmacy.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }
@@ -104,22 +104,22 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "rep") {
-        return item.rep.name.toLowerCase().includes(filterValue);
+        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue);
+        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "createdBy") {
-        return item.createdBy.name.toLowerCase().includes(filterValue);
+        return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharmacy.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }
@@ -169,22 +169,22 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue);
+        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "rep") {
-        return item.rep.name.toLowerCase().includes(filterValue);
+        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue);
+        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "createdBy") {
-        return item.createdBy.name.toLowerCase().includes(filterValue);
+        return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharmacy.location.toLowerCase().includes(filterValue);
+        return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }

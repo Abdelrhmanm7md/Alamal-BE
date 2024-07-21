@@ -86,10 +86,10 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "name") {
-        return item.name.toLowerCase().includes(filterValue);
+        return item.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue);
+        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }
@@ -122,10 +122,10 @@ const getAllProductByCompanyWithoutPagination = catchAsync(
     if (filterType && filterValue) {
       results = results.filter(function (item) {
         if (filterType == "name") {
-          return item.name.toLowerCase().includes(filterValue);
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue);
+          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
         }
       });
     }
@@ -163,10 +163,10 @@ const getAllProductByCompanyWithPagination = catchAsync(
     if (filterType && filterValue) {
       results = results.filter(function (item) {
         if (filterType == "name") {
-          return item.name.toLowerCase().includes(filterValue);
+          return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue);
+          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
         }
       });
     }
