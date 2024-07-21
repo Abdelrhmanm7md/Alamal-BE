@@ -203,7 +203,6 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
 
 const searchpayment = catchAsync(async (req, res, next) => {
   let { paymentTitle } = req.params;
-  console.log(req.query.p);
   const page = req.query.p - 1 || 0;
   const numOfpaymentPerPage = req.query.n || 5;
   let payment = await paymentModel
