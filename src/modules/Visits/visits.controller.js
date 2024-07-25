@@ -140,7 +140,7 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
         return item.status.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "hasPayment") {
-        return item.hasPayment.toLowerCase().includes(filterValue.toLowerCase());
+        return item.hasPayment.includes(filterValue.toLowerCase());
       }
     });
   }
