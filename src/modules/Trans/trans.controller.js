@@ -65,7 +65,7 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
 const getAllTransByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
 
-  ApiFeat = new ApiFeature(transModel.find().populate("receiver"), req.query)
+  ApiFeat = new ApiFeature(transModel.find().populate("receiver").populate("sender"), req.query)
     .pagination()
     .sort()
     .search(req.query.key)
@@ -79,10 +79,14 @@ const getAllTransByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "sender") {
+        if(item.sender){
         return item.sender.name.toLowerCase().includes(filterValue.toLowerCase());
+        }
       }
       if (filterType == "receiver") {
-        return item.receiver.name.toLowerCase().includes(filterValue.toLowerCase());
+        if(item.receiver){
+          return item.receiver.name.toLowerCase().includes(filterValue.toLowerCase());
+        }
       }
       if (filterType == "confirmed") {
         return item.confirmed.toLowerCase().includes(filterValue.toLowerCase());
