@@ -1,87 +1,108 @@
-import { chatModel } from "../../../database/models/chat.model.js";
+import { messageModel } from "../../../database/models/message.model.js";
+import { sio } from "../../../server.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
+import path from "path";
+import fsExtra from "fs-extra";
 
-const createchat = catchAsync(async (req, res, next) => {
-  const newchat = new chatModel(req.body);
-  const savedchat = await newchat.save();
+const createmessage = catchAsync(async (req, res, next) => {
+  function formatAMPM(date) {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    let strTime = hours + ":" + minutes + " " + ampm;
+    return strTime;
+  }
+  let currentTime = new Date();
+  let createdAt = formatAMPM(currentTime);
+  req.body.date = createdAt;
+  let content = req.body.content;
+  let sender = req.body.sender;
+  let senderName = req.body.senderName;
+  let docs = [];
+  if (req.body.docs) {
+    docs = req.body.docs;
+  }
+  const newmessage = new messageModel(req.body);
+  const savedmessage = await newmessage.save();
+
+  sio.emit(
+    `message_${req.body.taskId}`,
+    { createdAt },
+    { content },
+    { sender },
+    { senderName },
+    { docs }
+  );
 
   res.status(201).json({
-    message: "chat created successfully!",
-    savedchat,
+    message: "message created successfully!",
+    savedmessage,
   });
 });
-const createPhoto = catchAsync(async (req, res, next) => {
-  if (req.file) req.body.logo = req.file.filename;
-  let logo = "";
-  if (req.body.logo) {
-    logo = req.body.logo;
+const addPhotos = catchAsync(async (req, res, next) => {
+  let docs = "";
+  req.body.docs =
+    req.files.docs &&
+    req.files.docs.map(
+      (file) =>
+        `https://tchatpro.com/image/${file.filename.split(" ").join("")}`
+    );
+
+  const directoryPathh = path.join(docs, "uploads/image");
+
+  fsExtra.readdir(directoryPathh, (err, files) => {
+    if (err) {
+      return console.error("Unable to scan directory: " + err);
+    }
+
+    files.forEach((file) => {
+      const oldPath = path.join(directoryPathh, file);
+      const newPath = path.join(directoryPathh, file.replace(/\s+/g, ""));
+
+      fsExtra.rename(oldPath, newPath, (err) => {
+        if (err) {
+          console.error("Error renaming file: ", err);
+        }
+      });
+    });
+  });
+
+  if (req.body.docs !== "") {
+    docs = req.body.docs;
   }
 
-  if (!req.body.logo) {
-    return res.status(404).json({ message: "Logo not found!" });
-  }
   res.status(200).json({
-    message: "Photo uploaded successfully!",
-    logo: `${process.env.BASE_URL}invoices/${logo}`,
+    message: "Photos created successfully!",
+    docs,
   });
 });
-const getAllchat = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(chatModel.find(), req.query)
-    .pagination()
-    .sort()
-    .search()
-    .fields();
+
+const getAllmessageByTask = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(
+    messageModel.find({ taskId: req.params.id }),
+    req.query
+  );
+  // .sort({ $natural: -1 })  for latest message
+  // .pagination()
 
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
-  res.json({
-    message: "done",
-    page: ApiFeat.page,
-    count: await chatModel.countDocuments(),
-    results,
-  });
-  if (!ApiFeat) {
+  if (!ApiFeat || !results) {
     return res.status(404).json({
-      message: "No chat was found!",
+      message: "No message was found!",
     });
   }
-});
-
-const editchat = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const updatedchat = await chatModel.findByIdAndUpdate(id, req.body, {
-    new: true,
-  });
-
-  if (!updatedchat) {
-    return res.status(404).json({ message: "chat not found!" });
-  }
-
-  res.status(200).json({
-    message: "chat updated successfully!",
-    updatedchat,
+  res.json({
+    message: "done",
+    // page: ApiFeat.page,
+    // count: await messageModel.countDocuments({ taskId: req.params.id }),
+    results,
   });
 });
 
-const deletechat = catchAsync(async (req, res, next) => {
-  const { id } = req.params;
-
-  const deletedchat = await chatModel.findByIdAndDelete(id);
-
-  if (!deletedchat) {
-    return res.status(404).json({ message: "chat not found!" });
-  }
-
-  res.status(200).json({ message: "chat deleted successfully!" });
-});
-
-export {
-  createchat,
-  editchat,
-  deletechat,
-  getAllchat,
-  createPhoto,
-};
+export { createmessage, addPhotos, getAllmessageByTask };

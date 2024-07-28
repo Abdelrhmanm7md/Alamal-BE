@@ -1,18 +1,18 @@
 import express from "express";
-import * as companyController from "./company.controller.js";
-import { uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
+import * as messageController from "./message.controller.js";
+import { fileSizeLimitErrorHandler, uploadMixFile } from "../../utils/middleWare/fileUploads.js";
 
-const companyRouter = express.Router();
+const messageRouter = express.Router();
 
-companyRouter.post("/", companyController.createCompany);
-companyRouter.get("/", companyController.getAllCompany);
-companyRouter.get("/user/:id", companyController.getAllCompany);
-companyRouter.put("/:id", companyController.editCompany);
-companyRouter.delete("/:id", companyController.deleteCompany);
-companyRouter.post(
-  "/photo",
-  uploadSingleFile("photo", "logo"),
-  companyController.createPhoto
+messageRouter.post("/", messageController.createmessage);
+messageRouter.get("/:id", messageController.getAllmessageByTask);
+
+messageRouter.post(
+  "/images",
+  uploadMixFile("image", [
+    { name: "docs" },
+  ]),fileSizeLimitErrorHandler,
+  messageController.addPhotos
 );
 
-export default companyRouter;
+export default messageRouter;

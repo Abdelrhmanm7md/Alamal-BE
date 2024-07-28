@@ -105,7 +105,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
       fsExtra.rename(oldPath, newPath, (err) => {
         if (err) {
           console.error("Error renaming file: ", err);
-        } 
+        }
       });
     });
   });
@@ -113,14 +113,15 @@ const addPhotos = catchAsync(async (req, res, next) => {
   if (req.body.image) {
     image = req.body.image;
   }
-  if(image !== ""){
-  res.status(200).json({
-    message: "Photo created successfully!",
-    image,
-  });
-}else {
-  res.status(400).json({ message: 'File upload failed.'});
-}
+  if (image !== "") {
+    image = image[0];
+    res.status(200).json({
+      message: "Photo created successfully!",
+      image,
+    });
+  } else {
+    res.status(400).json({ message: "File upload failed." });
+  }
 });
 
 const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
@@ -132,7 +133,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
           $or: [
             { createdBy: req.params.id },
             { pharmacy: req.params.id },
-            { medicalRep: req.params.id },
+            { rep: req.params.id },
             { driver: req.params.id },
           ],
         })
@@ -155,25 +156,35 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        return item.pharmacy.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        return item.company.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "createdBy") {
-        return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
+        return item.createdBy.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name.toLowerCase().includes(filterValue.toLowerCase());
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.date == filterValue;
       }
       if (filterType == "location") {
-        return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
+        return item.pharmacy.location
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "type") {
-        return item.invoiceType.toLowerCase().includes(filterValue.toLowerCase());
+        return item.invoiceType
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
     });
   }
@@ -227,7 +238,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
       $or: [
         { createdBy: req.params.id },
         { pharmacy: req.params.id },
-        { medicalRep: req.params.id },
+        { rep: req.params.id },
         { driver: req.params.id },
       ],
     }),
@@ -240,7 +251,7 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
   ApiFeat = new ApiFeature(
     invoiceModel
       .find()
-      .populate("pharmacy productLines.product company createdBy medicalRep driver"),
+      .populate("pharmacy productLines.product company createdBy rep driver"),
     req.query
   )
     .pagination()
@@ -269,10 +280,8 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
           .toLowerCase()
           .includes(filterValue.toLowerCase());
       }
-      if (filterType == "medicalRep") {
-        return item.medicalRep.name
-          .toLowerCase()
-          .includes(filterValue.toLowerCase());
+      if (filterType == "rep") {
+        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.date == filterValue;
@@ -348,7 +357,7 @@ const getInvoiceById = catchAsync(async (req, res, next) => {
 
   let results = await invoiceModel
     .findById(id)
-    .populate("pharmacy productLines.product company createdBy medicalRep driver");
+    .populate("pharmacy productLines.product company createdBy rep driver");
   results = JSON.stringify(results);
   results = JSON.parse(results);
 
@@ -398,8 +407,8 @@ const getInvByUserId = catchAsync(async (req, res, next) => {
 
   let Invoice = await invoiceModel
     .find({ createdBy: id })
-    .populate("pharmacy productLines.product company createdBy medicalRep driver")
-    Invoice = JSON.stringify(Invoice);
+    .populate("pharmacy productLines.product company createdBy rep driver");
+  Invoice = JSON.stringify(Invoice);
   Invoice = JSON.parse(Invoice);
 
   if (!Invoice) {

@@ -51,7 +51,7 @@ const invoiceSchema = mongoose.Schema(
       required: true,
     },
     image: String,
-    medicalRep: {
+    rep: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,

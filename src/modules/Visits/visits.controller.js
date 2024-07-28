@@ -122,16 +122,22 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
+        if(item.pharmacy){
         return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        }
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "driver") {
-        return item.driver.name.toLowerCase().includes(filterValue.toLowerCase());
+        if(item.driver){
+          return item.driver.name.toLowerCase().includes(filterValue.toLowerCase());
+        }
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if(item.company){
+          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        }
       }
       if (filterType == "location") {
         return item.location.toLowerCase().includes(filterValue.toLowerCase());

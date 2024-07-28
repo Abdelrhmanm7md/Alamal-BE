@@ -59,6 +59,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
     logo = req.body.logo;
   }
   if(logo !== ""){
+    logo = logo[0]
   res.status(200).json({
     message: "Photo created successfully!",
     logo,

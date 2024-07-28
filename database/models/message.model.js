@@ -2,25 +2,36 @@ import mongoose from "mongoose";
 
 const messageSchema = mongoose.Schema(
   {
-    kText: {
-      type: String,
+    taskId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "task",
       required: true,
     },
-    kSentAtMsSinceEpoch: {
-        type: Number,
-        required: true,
+    content: {
+      type: String,
+      default: " ",
+      required: true,
     },
-    kReceivedAtMsSinceEpoch: {
-        type: Number,
-        required: true,
+    isSender: {
+      type: Boolean,
+      default: false,
+      required: true,
     },
-    kSenderUserId: {
-        type: Number,
-        required: true,
+    date: {
+      type: String,
+      default: "",
     },
-    kReceiverUserId: {
-        type: Number,
-        required: true,
+    docs: {
+      type: [String],
+    },
+    sender: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    senderName: {
+      type: String,
+      required: true,
     },
   },
   { timestamps: true }
