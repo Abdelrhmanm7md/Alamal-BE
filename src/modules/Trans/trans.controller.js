@@ -48,7 +48,7 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
       }
     });
   }
-  if (!ApiFeat) {
+  if (!ApiFeat || !results) {
     return res.status(404).json({
       message: "No Transction was found!",
     });
@@ -93,7 +93,7 @@ const getAllTransByAdmin = catchAsync(async (req, res, next) => {
       }
     });
   }
-  if (!ApiFeat) {
+  if (!ApiFeat || !results) {
     return res.status(404).json({
       message: "No Transction was found!",
     });

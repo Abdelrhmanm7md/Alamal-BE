@@ -79,17 +79,17 @@ const getAllCompany = catchAsync(async (req, res, next) => {
   let results = await ApiFeat.mongooseQuery;
   results = JSON.stringify(results);
   results = JSON.parse(results);
+  if (!ApiFeat || !results) {
+    return res.status(404).json({
+      message: "No Company was found!",
+    });
+  }
   res.json({
     message: "done",
     page: ApiFeat.page,
     count: await companyModel.countDocuments(),
     results,
   });
-  if (!ApiFeat) {
-    return res.status(404).json({
-      message: "No Company was found!",
-    });
-  }
 });
 
 const editCompany = catchAsync(async (req, res, next) => {

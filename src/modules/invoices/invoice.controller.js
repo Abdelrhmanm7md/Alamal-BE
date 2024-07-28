@@ -211,7 +211,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
     }
   }
   let message = "";
-  if (!ApiFeat) {
+  if (!ApiFeat ) {
     return res.status(404).json({
       message: "No Invoice was found!",
     });
