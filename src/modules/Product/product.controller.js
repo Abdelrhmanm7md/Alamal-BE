@@ -89,7 +89,9 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
         return item.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if(item.company){
+          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        }
       }
     });
   }
@@ -125,7 +127,9 @@ const getAllProductByCompanyWithoutPagination = catchAsync(
           return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+          if(item.company){
+            return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+          }
         }
       });
     }
@@ -166,7 +170,9 @@ const getAllProductByCompanyWithPagination = catchAsync(
           return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+          if(item.company){
+            return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+          }
         }
       });
     }
