@@ -60,6 +60,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
     pic = req.body.pic;
   }
   if(pic !== ""){
+    pic = pic[0];
   res.status(200).json({
     message: "Photo created successfully!",
     pic,

@@ -21,7 +21,7 @@ productRouter.post("/", productController.createProduct);
 productRouter.post(
   "/photo",
   uploadMixFile("Product", [
-    { name: "pic", maxCount: 1},
+    { name: "pic"},
   ]),fileSizeLimitErrorHandler,
   productController.addPhotos
 );
