@@ -22,6 +22,7 @@ export const signUp = catchAsync(async (req, res, next) => {
   } else {
     return res.status(409).json({ message: "this email is not valid" });
   }
+  req.body.profilePic="http://194.164.72.211:8008/profilePic/avatar.png";
   let results = new userModel(req.body);
   await results.save();
   res.json({ message: "added", results });
@@ -39,7 +40,6 @@ export const signIn = catchAsync(async (req, res, next) => {
         { name: isFound.name, userId: isFound._id },
         process.env.JWT_SECRET_KEY
       );
-      req.body.profilePic="http://194.164.72.211:8008/profilePic/avatar.png";
       return res.json({ message: "success", token, isFound });
     }
     return res.status(401).json({ message: "worng email or password" });
