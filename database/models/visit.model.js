@@ -2,14 +2,10 @@ import mongoose from "mongoose";
 
 const visitSchema = mongoose.Schema(
   {
-    status: {
+    type: {
       type: String,
       enum: ["single", "double"],
       default: "single",
-      required: true,
-    },
-    type: {
-      type: String,
       required: true,
     },
     hasPayment: {

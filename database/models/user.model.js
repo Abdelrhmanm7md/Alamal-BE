@@ -46,10 +46,6 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    verified: {
-      type: Boolean,
-      default: false,
-    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "company",
