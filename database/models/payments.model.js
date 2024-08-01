@@ -7,8 +7,7 @@ const paymentSchema = mongoose.Schema(
       required: true,
     },
     status: {
-      type: Boolean,
-      default: false,
+      type: String,
       required: true,
     },
     invoice: {
