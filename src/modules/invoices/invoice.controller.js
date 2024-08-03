@@ -48,7 +48,7 @@ const createProductLines = catchAsync(async (req, res, next) => {
 const deleteProductLines = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let deletedInvoice = await invoiceModel.Update(
+  let deletedInvoice = await invoiceModel.findOneAndUpdate(
     { _id: id },
     { $pull: { productLines: { _id: req.body.line_id } } },
     false,
