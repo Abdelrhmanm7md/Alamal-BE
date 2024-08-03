@@ -61,6 +61,7 @@ const deleteProductLines = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     message: "product lines has been deleted successfully!",
+    deletedInvoice
   });
 });
 // const createPhoto = catchAsync(async (req, res, next) => {
