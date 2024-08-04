@@ -46,14 +46,13 @@ const createProductLines = catchAsync(async (req, res, next) => {
   });
 });
 const deleteProductLines = catchAsync(async (req, res, next) => {
-  let { id } = req.params;
+  let { invId,lineId } = req.params;
 
   let deletedInvoice = await invoiceModel.findOneAndUpdate(
-    { _id: id },
-    { $pull: { productLines: { _id: req.body.productLines } } },
-    {
-      new: true,
-    }
+    { _id: invId },
+    { $pull: { productLines: { _id: lineId } } },
+    false,
+    true
   );
 
   if (!deletedInvoice) {
@@ -62,6 +61,7 @@ const deleteProductLines = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     message: "product lines has been deleted successfully!",
+    deletedInvoice
   });
 });
 // const createPhoto = catchAsync(async (req, res, next) => {
