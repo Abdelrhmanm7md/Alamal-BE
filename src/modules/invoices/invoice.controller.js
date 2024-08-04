@@ -418,12 +418,12 @@ const getInvByUserId = catchAsync(async (req, res, next) => {
     Invoice.productLines[i].total =
       Invoice.productLines[i].qty * Invoice.productLines[i].product.unitPrice;
   }
-  let totalAmt = 0;
-  for (let i = 0; i < Invoice.payments.length; i++) {
-    totalAmt += Invoice.payments[i].amount;
-  }
-  Invoice.totalPaid = totalAmt;
-  Invoice.amountDue = Invoice.amount - Invoice.totalPaid;
+  // let totalAmt = 0;
+  // for (let i = 0; i < Invoice.payments.length; i++) {
+  //   totalAmt += Invoice.payments[i].amount;
+  // }
+  // Invoice.totalPaid = totalAmt;
+  // Invoice.amountDue = Invoice.amount - Invoice.totalPaid;
 
   res.status(200).json({ Invoice });
 });

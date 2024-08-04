@@ -102,7 +102,6 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
   let { filterType, filterValue } = req.query;
   if (filterType && filterValue) {
     results = results.filter(function (item) {
-      // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
         if(item.pharmacy){
           return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
