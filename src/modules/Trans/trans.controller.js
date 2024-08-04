@@ -21,7 +21,7 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
     ApiFeat = new ApiFeature(
       transModel
         .find({ $or: [{ receiver: req.params.id }, { sender: req.params.id }] })
-        .populate("receiver"),
+        .populate("receiver").populate("sender"),
       req.query
     )
       .pagination()
