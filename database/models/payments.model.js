@@ -31,7 +31,7 @@ const paymentSchema = mongoose.Schema(
       required: true,
     },
     paymentDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     company: {
