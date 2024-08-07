@@ -71,9 +71,8 @@ const addPhotos = catchAsync(async (req, res, next) => {
 });
 
 const getAllProductByAdmin = catchAsync(async (req, res, next) => {
-  let ApiFeat = null;
 
-  ApiFeat = new ApiFeature(productModel.find().populate("company"), req.query)
+  let ApiFeat = new ApiFeature(productModel.find().populate("company"), req.query)
     .pagination()
     .sort()
     .search(req.query.key)
@@ -83,6 +82,11 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
   results = JSON.stringify(results);
   results = JSON.parse(results);
 
+  if (!ApiFeat || !results) {
+    return res.status(404).json({
+      message: "No Product was found!",
+    });
+  }
   let { filterType, filterValue } = req.query;
   if (filterType && filterValue) {
     results = results.filter(function (item) {
@@ -102,11 +106,7 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
     count: await productModel.countDocuments(),
     results,
   });
-  if (!ApiFeat) {
-    return res.status(404).json({
-      message: "No Product was found!",
-    });
-  }
+
 });
 const getAllProductByCompanyWithoutPagination = catchAsync(
   async (req, res, next) => {
