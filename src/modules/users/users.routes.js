@@ -2,7 +2,7 @@ import express from "express";
 const usersRouter = express.Router();
 
 import * as usersController from "./users.controller.js";
-import { fileSizeLimitErrorHandler, uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
+import { fileFilterHandler, fileSizeLimitErrorHandler, uploadMixFile } from "../../utils/middleWare/fileUploads.js";
 
 usersRouter.get("/", usersController.getAllUsers);
 usersRouter.get("/pharmacy", usersController.getAllPharm);
@@ -16,8 +16,8 @@ usersRouter.post("/", usersController.createUser);
 usersRouter.post(
   "/photo",
   uploadMixFile("profilePic", [
-    { name: "profilePic", maxCount: 1},
-  ]),fileSizeLimitErrorHandler,
+    { name: "profilePic"},
+  ]),fileFilterHandler,fileSizeLimitErrorHandler,
   usersController.addPhotos
 );
 usersRouter.get("/:id", usersController.getUserById);
