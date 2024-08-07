@@ -137,7 +137,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
             { driver: req.params.id },
           ],
         })
-        .populate("pharmacy productLines.product company"),
+        .populate("pharmacy productLines.product company createdBy rep"),
       req.query
     )
       .pagination()
