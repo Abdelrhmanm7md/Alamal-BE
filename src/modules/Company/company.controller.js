@@ -50,7 +50,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
       fsExtra.rename(oldPath, newPath, (err) => {
         if (err) {
           console.error("Error renaming file: ", err);
-        } 
+        }
       });
     });
   });
@@ -58,15 +58,15 @@ const addPhotos = catchAsync(async (req, res, next) => {
   if (req.body.logo) {
     logo = req.body.logo;
   }
-  if(logo !== ""){
-    logo = logo[0]
-  res.status(200).json({
-    message: "Photo created successfully!",
-    logo,
-  });
-}else {
-  res.status(400).json({ message: 'File upload failed.'});
-}
+  if (logo !== "") {
+    logo = logo[0];
+    res.status(200).json({
+      message: "Photo created successfully!",
+      logo,
+    });
+  } else {
+    res.status(400).json({ message: "File upload failed." });
+  }
 });
 
 const getAllCompany = catchAsync(async (req, res, next) => {
@@ -85,7 +85,7 @@ const getAllCompany = catchAsync(async (req, res, next) => {
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await companyModel.countDocuments(),
     results,

@@ -2,8 +2,6 @@ import { messageModel } from "../../../database/models/message.model.js";
 import { sio } from "../../../server.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
-import path from "path";
-import fsExtra from "fs-extra";
 
 const createmessage = catchAsync(async (req, res, next) => {
   function formatAMPM(date) {
@@ -21,69 +19,32 @@ const createmessage = catchAsync(async (req, res, next) => {
   req.body.date = createdAt;
   let content = req.body.content;
   let sender = req.body.sender;
-  let senderName = req.body.senderName;
-  let docs = [];
-  if (req.body.docs) {
-    docs = req.body.docs;
-  }
+  let reciver = req.body.reciver;
+
   const newmessage = new messageModel(req.body);
   const savedmessage = await newmessage.save();
 
-  sio.emit(
-    `message_${req.body.taskId}`,
-    { createdAt },
-    { content },
-    { sender },
-    { senderName },
-    { docs }
-  );
+  // sio.on("connection", (socket) => {
+  //   console.log(`User Connected: ${socket.id}`);
+  //   socket.on("disconnect", () => {
+  //     console.log("User Disconnected", socket.id);
+  //   });
+  //   socket.on("newMessage", (data) => {
+  //     console.log(data);
+  //     socket.broadcast.emit("replay", data);
+  //   });
+  // });
 
+  sio.emit(`message_${req.body._id}`, { createdAt }, { content }, { sender },{reciver});
   res.status(201).json({
     message: "message created successfully!",
     savedmessage,
   });
 });
-const addPhotos = catchAsync(async (req, res, next) => {
-  let docs = "";
-  req.body.docs =
-    req.files.docs &&
-    req.files.docs.map(
-      (file) =>
-        `https://tchatpro.com/image/${file.filename.split(" ").join("")}`
-    );
-
-  const directoryPathh = path.join(docs, "uploads/image");
-
-  fsExtra.readdir(directoryPathh, (err, files) => {
-    if (err) {
-      return console.error("Unable to scan directory: " + err);
-    }
-
-    files.forEach((file) => {
-      const oldPath = path.join(directoryPathh, file);
-      const newPath = path.join(directoryPathh, file.replace(/\s+/g, ""));
-
-      fsExtra.rename(oldPath, newPath, (err) => {
-        if (err) {
-          console.error("Error renaming file: ", err);
-        }
-      });
-    });
-  });
-
-  if (req.body.docs !== "") {
-    docs = req.body.docs;
-  }
-
-  res.status(200).json({
-    message: "Photos created successfully!",
-    docs,
-  });
-});
 
 const getAllmessageByTask = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(
-    messageModel.find({ taskId: req.params.id }),
+    messageModel.find({ chatId: req.params.id }),
     req.query
   );
   // .sort({ $natural: -1 })  for latest message
@@ -98,11 +59,9 @@ const getAllmessageByTask = catchAsync(async (req, res, next) => {
     });
   }
   res.json({
-    message: "done",
-    // page: ApiFeat.page,
-    // count: await messageModel.countDocuments({ taskId: req.params.id }),
+    message: "Done",
     results,
   });
 });
 
-export { createmessage, addPhotos, getAllmessageByTask };
+export { createmessage, getAllmessageByTask };

@@ -3,7 +3,6 @@ import * as companyController from "./company.controller.js";
 import {
   fileSizeLimitErrorHandler,
   uploadMixFile,
-  uploadSingleFile,
 } from "../../utils/middleWare/fileUploads.js";
 
 const companyRouter = express.Router();
@@ -15,7 +14,7 @@ companyRouter.put("/:id", companyController.editCompany);
 companyRouter.delete("/:id", companyController.deleteCompany);
 companyRouter.post(
   "/photo",
-  uploadMixFile("photo", [{ name: "logo", maxCount: 1 }]),
+  uploadMixFile("photo", [{ name: "logo",}]),
   fileSizeLimitErrorHandler,
   companyController.addPhotos
 );

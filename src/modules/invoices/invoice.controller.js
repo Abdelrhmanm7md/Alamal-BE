@@ -46,7 +46,7 @@ const createProductLines = catchAsync(async (req, res, next) => {
   });
 });
 const deleteProductLines = catchAsync(async (req, res, next) => {
-  let { invId,lineId } = req.params;
+  let { invId, lineId } = req.params;
 
   let deletedInvoice = await invoiceModel.findOneAndUpdate(
     { _id: invId },
@@ -61,7 +61,7 @@ const deleteProductLines = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     message: "product lines has been deleted successfully!",
-    deletedInvoice
+    deletedInvoice,
   });
 });
 // const createPhoto = catchAsync(async (req, res, next) => {
@@ -155,35 +155,47 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        if(item.pharmacy){
-          return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "company") {
-        if(item.company){
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "createdBy") {
-        if(item.createdBy){
-          return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.createdBy) {
+          return item.createdBy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "rep") {
-        if(item.rep){
-          return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.rep) {
+          return item.rep.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "date") {
         return item.date == filterValue;
       }
       if (filterType == "location") {
-        if(item.pharmacy){
-          return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.location
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "type") {
-        return item.invoiceType.toLowerCase().includes(filterValue.toLowerCase());
+        return item.invoiceType
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
     });
   }
@@ -210,7 +222,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
     }
   }
   let message = "";
-  if (!ApiFeat ) {
+  if (!ApiFeat) {
     return res.status(404).json({
       message: "No Invoice was found!",
     });
@@ -231,7 +243,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
     // }
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await invoiceModel.countDocuments({
       $or: [
@@ -265,35 +277,47 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        if(item.pharmacy){
-          return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "company") {
-        if(item.company){
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "createdBy") {
-        if(item.createdBy){
-          return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.createdBy) {
+          return item.createdBy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "rep") {
-        if(item.rep){
-          return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.rep) {
+          return item.rep.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "date") {
         return item.date == filterValue;
       }
       if (filterType == "location") {
-        if(item.pharmacy){
-          return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.location
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "type") {
-        return item.invoiceType.toLowerCase().includes(filterValue.toLowerCase());
+        return item.invoiceType
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
     });
   }
@@ -343,7 +367,7 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
     // }
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await invoiceModel.countDocuments(),
     results,

@@ -21,7 +21,8 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
     ApiFeat = new ApiFeature(
       transModel
         .find({ $or: [{ receiver: req.params.id }, { sender: req.params.id }] })
-        .populate("receiver").populate("sender"),
+        .populate("receiver")
+        .populate("sender"),
       req.query
     )
       .pagination()
@@ -38,13 +39,17 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "sender") {
-        if(item.sender){
-          return item.sender.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.sender) {
+          return item.sender.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "receiver") {
-        if(item.receiver){
-          return item.receiver.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.receiver) {
+          return item.receiver.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "confirmed") {
@@ -58,7 +63,7 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await transModel.countDocuments({
       $or: [{ receiver: req.params.id }, { sender: req.params.id }],
@@ -69,7 +74,10 @@ const getAllTransByUser = catchAsync(async (req, res, next) => {
 const getAllTransByAdmin = catchAsync(async (req, res, next) => {
   let ApiFeat = null;
 
-  ApiFeat = new ApiFeature(transModel.find().populate("receiver").populate("sender"), req.query)
+  ApiFeat = new ApiFeature(
+    transModel.find().populate("receiver").populate("sender"),
+    req.query
+  )
     .pagination()
     .sort()
     .search(req.query.key)
@@ -83,13 +91,17 @@ const getAllTransByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "sender") {
-        if(item.sender){
-        return item.sender.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.sender) {
+          return item.sender.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "receiver") {
-        if(item.receiver){
-          return item.receiver.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.receiver) {
+          return item.receiver.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "confirmed") {
@@ -103,7 +115,7 @@ const getAllTransByAdmin = catchAsync(async (req, res, next) => {
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await transModel.countDocuments(),
     results,

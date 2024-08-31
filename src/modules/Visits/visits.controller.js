@@ -91,7 +91,7 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await visitModel.countDocuments({ createdBy: req.params.id }),
     results,
@@ -122,21 +122,27 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        if(item.pharmacy){
-        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "driver") {
-        if(item.driver){
-          return item.driver.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.driver) {
+          return item.driver.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "company") {
-        if(item.company){
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "location") {
@@ -151,7 +157,7 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await visitModel.countDocuments(),
     results,

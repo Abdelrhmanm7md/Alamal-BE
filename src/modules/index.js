@@ -1,4 +1,5 @@
 import AppError from "../utils/appError.js";
+import chatRouter from "./Chat/chat.routes.js";
 import companyRouter from "./Company/company.routes.js";
 import notiticationRouter from "./Notification/notification.routes.js";
 import paymentRouter from "./Payments/payment.routes.js";
@@ -19,13 +20,14 @@ export function init(app) {
   app.use("/visit", visitRouter);
   app.use("/product", productRouter);
   app.use("/company", companyRouter);
+  app.use("/chat", chatRouter);
 
   app.use("/", (req, res, next) => {
-    res.send("Hello world");
+    res.send("Page Not Found");
   });
 
   app.all("*", (req, res, next) => {
-    next(new AppError(`Not found `, 404));
+    next(new AppError(`Not Found `, 404));
   });
 
   // app.use((err, req, res, next) => {

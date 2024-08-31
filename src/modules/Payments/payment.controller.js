@@ -47,27 +47,35 @@ const getAllpaymentByUser = catchAsync(async (req, res, next) => {
     results = results.filter(function (item) {
       // if(filterType.("pharmacy")){
       if (filterType == "pharmacy") {
-        return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        return item.pharmacy.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "rep") {
         return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        return item.company.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "createdBy") {
-        return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
+        return item.createdBy.name
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
       if (filterType == "date") {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
+        return item.pharmacy.location
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
       }
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await paymentModel.countDocuments({
       $or: [
@@ -103,37 +111,47 @@ const getAllpaymentByAdmin = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        if(item.pharmacy){
-          return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "rep") {
-        if(item.rep){
-          return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.rep) {
+          return item.rep.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "company") {
-        if(item.company){
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "createdBy") {
-        if(item.createdBy){
-          return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.createdBy) {
+          return item.createdBy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "date") {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        if(item.pharmacy){
-          return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.location
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await paymentModel.countDocuments(),
     results,
@@ -177,37 +195,47 @@ const getAllpaymentByInvoice = catchAsync(async (req, res, next) => {
   if (filterType && filterValue) {
     results = results.filter(function (item) {
       if (filterType == "pharmacy") {
-        if(item.pharmacy){
-          return item.pharmacy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "rep") {
-        if(item.rep){
-          return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.rep) {
+          return item.rep.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "company") {
-        if(item.company){
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "createdBy") {
-        if(item.createdBy){
-          return item.createdBy.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.createdBy) {
+          return item.createdBy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
       if (filterType == "date") {
         return item.paymentDate == filterValue;
       }
       if (filterType == "location") {
-        if(item.pharmacy){
-          return item.pharmacy.location.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.pharmacy) {
+          return item.pharmacy.location
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await paymentModel.countDocuments({ invoice: req.params.id }),
     results,

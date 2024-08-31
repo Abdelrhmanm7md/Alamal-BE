@@ -2,11 +2,6 @@ import mongoose from "mongoose";
 
 const messageSchema = mongoose.Schema(
   {
-    taskId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "task",
-      required: true,
-    },
     content: {
       type: String,
       default: " ",
@@ -18,19 +13,17 @@ const messageSchema = mongoose.Schema(
       required: true,
     },
     date: {
-      type: String,
-      default: "",
-    },
-    docs: {
-      type: [String],
+      type: Date,
+      default: Date.now,
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
     },
-    senderName: {
-      type: String,
+    reciver: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
       required: true,
     },
   },

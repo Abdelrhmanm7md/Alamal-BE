@@ -51,7 +51,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
       fsExtra.rename(oldPath, newPath, (err) => {
         if (err) {
           console.error("Error renaming file: ", err);
-        } 
+        }
       });
     });
   });
@@ -59,20 +59,22 @@ const addPhotos = catchAsync(async (req, res, next) => {
   if (req.body.pic) {
     pic = req.body.pic;
   }
-  if(pic !== ""){
+  if (pic !== "") {
     pic = pic[0];
-  res.status(200).json({
-    message: "Photo created successfully!",
-    pic,
-  });
-}else {
-  res.status(400).json({ message: 'File upload failed.'});
-}
+    res.status(200).json({
+      message: "Photo created successfully!",
+      pic,
+    });
+  } else {
+    res.status(400).json({ message: "File upload failed." });
+  }
 });
 
 const getAllProductByAdmin = catchAsync(async (req, res, next) => {
-
-  let ApiFeat = new ApiFeature(productModel.find().populate("company"), req.query)
+  let ApiFeat = new ApiFeature(
+    productModel.find().populate("company"),
+    req.query
+  )
     .pagination()
     .sort()
     .search(req.query.key)
@@ -94,19 +96,20 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
         return item.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
-        if(item.company){
-          return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
         }
       }
     });
   }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await productModel.countDocuments(),
     results,
   });
-
 });
 const getAllProductByCompanyWithoutPagination = catchAsync(
   async (req, res, next) => {
@@ -128,14 +131,16 @@ const getAllProductByCompanyWithoutPagination = catchAsync(
           return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
-          if(item.company){
-            return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+          if (item.company) {
+            return item.company.name
+              .toLowerCase()
+              .includes(filterValue.toLowerCase());
           }
         }
       });
     }
     res.json({
-      message: "done",
+      message: "Done",
       page: ApiFeat.page,
       count: await productModel.countDocuments({ company: req.params.id }),
       results,
@@ -171,14 +176,16 @@ const getAllProductByCompanyWithPagination = catchAsync(
           return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
-          if(item.company){
-            return item.company.name.toLowerCase().includes(filterValue.toLowerCase());
+          if (item.company) {
+            return item.company.name
+              .toLowerCase()
+              .includes(filterValue.toLowerCase());
           }
         }
       });
     }
     res.json({
-      message: "done",
+      message: "Done",
       page: ApiFeat.page,
       count: await productModel.countDocuments({ company: req.params.id }),
       results,

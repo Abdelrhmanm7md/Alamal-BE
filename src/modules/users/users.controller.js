@@ -59,7 +59,7 @@ const addPhotos = catchAsync(async (req, res, next) => {
       fsExtra.rename(oldPath, newPath, (err) => {
         if (err) {
           console.error("Error renaming file: ", err);
-        } 
+        }
       });
     });
   });
@@ -67,15 +67,15 @@ const addPhotos = catchAsync(async (req, res, next) => {
   if (req.body.profilePic) {
     profilePic = req.body.profilePic;
   }
-  if(profilePic !== ""){
-    profilePic=profilePic[0]
-  res.status(200).json({
-    message: "Photo created successfully!",
-    profilePic,
-  });
-}else {
-  res.status(400).json({ message: 'File upload failed.'});
-}
+  if (profilePic !== "") {
+    profilePic = profilePic[0];
+    res.status(200).json({
+      message: "Photo created successfully!",
+      profilePic,
+    });
+  } else {
+    res.status(400).json({ message: "File upload failed." });
+  }
 });
 
 const getAllUsers = catchAsync(async (req, res, next) => {
@@ -101,7 +101,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   //   });
   // }
   res.json({
-    message: "done",
+    message: "Done",
     page: ApiFeat.page,
     count: await userModel.countDocuments(),
     results,
@@ -113,10 +113,7 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   }
 });
 const getAllRep = catchAsync(async (req, res, next) => {
-  let ApiFeat = new ApiFeature(
-    userModel.find({ role: "rep" }),
-    req.query
-  )
+  let ApiFeat = new ApiFeature(userModel.find({ role: "rep" }), req.query)
     .pagination()
     .sort()
     .search()
@@ -239,7 +236,7 @@ const updateUser = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
   let results = await userModel.findByIdAndUpdate(id, req.body, { new: true });
-  !results && res.status(404).json({ message: "User Not Found!" })  ;
+  !results && res.status(404).json({ message: "User Not Found!" });
   results && res.json({ message: "updatedd", results });
 });
 

@@ -72,6 +72,13 @@ const invoiceSchema = mongoose.Schema(
       ref: "company",
       required: true,
     },
+    resources: [
+      {
+        lng: { type: String },
+        lat: { type: String },
+        name: { type: String },
+      },
+    ],
     productLines: {
       type: [
         {
