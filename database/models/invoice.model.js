@@ -74,9 +74,9 @@ const invoiceSchema = mongoose.Schema(
     },
     resources: [
       {
-        lng: { type: String },
-        lat: { type: String },
-        name: { type: String },
+        lng: { type: String ,required: true,},
+        lat: { type: String ,required: true,},
+        name: { type: String ,required: true,},
       },
     ],
     productLines: {
