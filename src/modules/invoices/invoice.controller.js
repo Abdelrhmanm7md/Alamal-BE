@@ -241,17 +241,7 @@ const getAllInvoiceByUser = catchAsync(async (req, res, next) => {
     //   message = "total Paid must be greater than 0";
     //   return res.status(400).json({ message });
     // }
-    let payment = await paymentModel.aggregate([
-      { $match: { invoice: new mongoose.Types.ObjectId(results[j]._id) } },
-      { $group: { _id: null, totalPaid: { $sum: "$amount" } } },
-    ]);
-    if (payment.length) {
-      results[j].totalPaid = payment[0].totalPaid;
-      results[j].amountDue = results[j].amount - payment[0].totalPaid;
-    } else {
-      results[j].totalPaid = 0;
-      results[j].amountDue = results[j].amount;
-    }
+
   }
   res.json({
     message: "Done",
@@ -341,12 +331,18 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
           results[j].productLines[i].product.unitPrice;
       }
     }
-    // let totalAmt = 0;
-    // for (let i = 0; i < results[j].payments.length; i++) {
-    //   totalAmt += results[j].payments[i].amount;
-    // }
-    // results[j].totalPaid = totalAmt;
-    // results[j].amountDue = results[j].amount - results[j].totalPaid;
+
+    let payment = await paymentModel.aggregate([
+      { $match: { invoice: new mongoose.Types.ObjectId(results[j]._id) } },
+      { $group: { _id: null, totalPaid: { $sum: "$amount" } } },
+    ]);
+    if (payment.length) {
+      results[j].totalPaid = payment[0].totalPaid;
+      results[j].amountDue = results[j].amount - payment[0].totalPaid;
+    } else {
+      results[j].totalPaid = 0;
+      results[j].amountDue = results[j].amount;
+    }
   }
 
   if (!ApiFeat) {

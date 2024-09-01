@@ -2,7 +2,7 @@ import express from "express";
 const invoiceRouter = express.Router();
 
 import * as invoiceController from "./invoice.controller.js";
-import { fileSizeLimitErrorHandler, uploadMixFile, uploadSingleFile } from "../../utils/middleWare/fileUploads.js";
+import { fileSizeLimitErrorHandler, uploadMixFile } from "../../utils/middleWare/fileUploads.js";
 
 invoiceRouter.get("/user/:id", invoiceController.getAllInvoiceByUser);
 invoiceRouter.get("/", invoiceController.getAllInvoiceByAdmin);
