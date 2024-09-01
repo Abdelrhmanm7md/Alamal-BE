@@ -27,12 +27,6 @@ const invoiceSchema = mongoose.Schema(
       ref: "user",
       required: true,
     },
-    locationX: {
-      type: String,
-    },
-    locationY: {
-      type: String,
-    },
     invoiceStatus: {
       type: String,
       enum: ["notPaid", "partiallyPaid", "totallyPaid"],
@@ -59,10 +53,10 @@ const invoiceSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    dropStatus: {
-      type: String,
-      required: true,
-    },
+    // dropStatus: {
+    //   type: String,
+    //   required: true,
+    // },
     // payments: {
     //   type: [mongoose.Schema.Types.ObjectId],
     //   ref: "payment",
