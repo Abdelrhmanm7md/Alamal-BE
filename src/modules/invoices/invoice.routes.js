@@ -6,7 +6,7 @@ import { fileSizeLimitErrorHandler, uploadMixFile } from "../../utils/middleWare
 
 invoiceRouter.get("/user/:id", invoiceController.getAllInvoiceByUser);
 invoiceRouter.get("/", invoiceController.getAllInvoiceByAdmin);
-invoiceRouter.get("/:id", invoiceController.getInvoiceById);
+// invoiceRouter.get("/:id", invoiceController.getInvoiceById);
 invoiceRouter.get("/:id", invoiceController.getInvByUserId);
 invoiceRouter.post("/product/:id", invoiceController.createProductLines);
 invoiceRouter.delete("/:invId/line/:lineId", invoiceController.deleteProductLines);

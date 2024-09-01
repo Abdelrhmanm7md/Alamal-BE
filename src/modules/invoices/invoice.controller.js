@@ -64,23 +64,6 @@ const deleteProductLines = catchAsync(async (req, res, next) => {
     deletedInvoice,
   });
 });
-// const createPhoto = catchAsync(async (req, res, next) => {
-//   // console.log(req, "ddddd");
-
-//   if (req.file) req.body.image = req.file.filename;
-//   let image = "";
-//   if (req.body.image) {
-//     image = req.body.image;
-//   }
-
-//   if (!req.body.image) {
-//     return res.status(404).json({ message: "Couldn't update!  not found!" });
-//   }
-//   res.status(200).json({
-//     message: "Photo updated successfully!",
-//     image: `${process.env.BASE_URL}image/${image}`,
-//   });
-// });
 
 const addPhotos = catchAsync(async (req, res, next) => {
   let image = "";
@@ -379,59 +362,58 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
     count: await invoiceModel.countDocuments(),
     results,
   });
-  // count: await invoiceModel.countDocuments({ company: req.params.id }),
 });
 
-const getInvoiceById = catchAsync(async (req, res, next) => {
-  let { id } = req.params;
+// const getInvoiceById = catchAsync(async (req, res, next) => {
+//   let { id } = req.params;
 
-  let results = await invoiceModel
-    .findById(id)
-    .populate("pharmacy productLines.product company createdBy rep driver");
-  results = JSON.stringify(results);
-  results = JSON.parse(results);
+//   let results = await invoiceModel
+//     .findById(id)
+//     .populate("pharmacy productLines.product company createdBy rep driver");
+//   results = JSON.stringify(results);
+//   results = JSON.parse(results);
 
-  if (!results) {
-    return res.status(404).json({ message: "Invoice not found!" });
-  }
+//   if (!results) {
+//     return res.status(404).json({ message: "Invoice not found!" });
+//   }
 
-  for (let i = 0; i < results.productLines.length; i++) {
-    results.productLines[i].total =
-      results.productLines[i].qty * results.productLines[i].product.unitPrice;
-  }
-  // if(payment.length){
-  //   results[j].totalPaid = results[0].totalPaid
-  //   results[j].amountDue = results[j].amount - results[0].totalPaid
-  // }
-  // else{
-  //   results[j].totalPaid = 0;
-  //   results[j].amountDue = results[j].amount
-  // }
-  for (let i = 0; i < results.length; i++) {
-    if (results[i].amount < 0) {
-      message = "amount must be greater than 0";
-      return res.status(400).json({ message });
-    }
-    if (results[i].amountDue < 0) {
-      message = "amount Due must be greater than 0";
-      return res.status(400).json({ message });
-    }
-    if (results[i].totalPaid < 0) {
-      message = "total Paid must be greater than 0";
-      return res.status(400).json({ message });
-    }
+//   for (let i = 0; i < results.productLines.length; i++) {
+//     results.productLines[i].total =
+//       results.productLines[i].qty * results.productLines[i].product.unitPrice;
+//   }
+//   // if(payment.length){
+//   //   results[j].totalPaid = results[0].totalPaid
+//   //   results[j].amountDue = results[j].amount - results[0].totalPaid
+//   // }
+//   // else{
+//   //   results[j].totalPaid = 0;
+//   //   results[j].amountDue = results[j].amount
+//   // }
+//   for (let i = 0; i < results.length; i++) {
+//     if (results[i].amount < 0) {
+//       message = "amount must be greater than 0";
+//       return res.status(400).json({ message });
+//     }
+//     if (results[i].amountDue < 0) {
+//       message = "amount Due must be greater than 0";
+//       return res.status(400).json({ message });
+//     }
+//     if (results[i].totalPaid < 0) {
+//       message = "total Paid must be greater than 0";
+//       return res.status(400).json({ message });
+//     }
 
-    // for (let index = 0; index < Invoice[i].payments.length; index++) {
-    //   if (Invoice[index].payments[index].amount < 0) {
-    //     return res
-    //       .status(400)
-    //       .json({ message: "amount must be greater than 0" });
-    //   }
-    // }
-  }
+//     // for (let index = 0; index < Invoice[i].payments.length; index++) {
+//     //   if (Invoice[index].payments[index].amount < 0) {
+//     //     return res
+//     //       .status(400)
+//     //       .json({ message: "amount must be greater than 0" });
+//     //   }
+//     // }
+//   }
 
-  res.status(200).json({ results });
-});
+//   res.status(200).json({ results });
+// });
 const getInvByUserId = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
@@ -491,7 +473,7 @@ const deleteInovice = catchAsync(async (req, res, next) => {
 export {
   createInvoice,
   getAllInvoiceByUser,
-  getInvoiceById,
+  // getInvoiceById,
   deleteInovice,
   updateInvoice,
   // createPhoto,
