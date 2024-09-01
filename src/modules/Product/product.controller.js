@@ -5,6 +5,13 @@ import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 import path from "path";
 import fsExtra from "fs-extra";
 const createProduct = catchAsync(async (req, res, next) => {
+  const { name } = req.body;
+  const existingDocument = await productModel.findOne({ name: name.toLowerCase() });
+  const existingDocument2 = await productModel.findOne({ name: name.toUpperCase() });
+
+  if (existingDocument || existingDocument2) {
+    return res.status(400).json({ error: 'Name must be unique' });
+  }
   let newProduct = new productModel(req.body);
   let addedProduct = await newProduct.save();
 
@@ -13,21 +20,7 @@ const createProduct = catchAsync(async (req, res, next) => {
     addedProduct,
   });
 });
-const createPhoto = catchAsync(async (req, res, next) => {
-  if (req.file) req.body.pic = req.file.filename;
-  let pic = "";
-  if (req.body.pic) {
-    pic = req.body.pic;
-  }
 
-  if (!req.body.pic) {
-    return res.status(404).json({ message: "Couldn't update!  not found!" });
-  }
-  res.status(200).json({
-    message: "Photo updated successfully!",
-    pic: `${process.env.BASE_URL}Product/${pic}`,
-  });
-});
 const addPhotos = catchAsync(async (req, res, next) => {
   let pic = "";
   req.body.pic =
