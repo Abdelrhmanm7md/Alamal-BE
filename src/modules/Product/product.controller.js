@@ -13,14 +13,15 @@ const createProduct = catchAsync(async (req, res, next) => {
   }
   else{
     let newProduct = new productModel(req.body);
-    await newProduct.save();
+    let addedProduct = await newProduct.save();
+    res.status(201).json({
+      message: "Product has been created successfully!",
+      addedProduct,
+    });
   }
 
 
-  res.status(201).json({
-    message: "Product has been created successfully!",
-    addedProduct,
-  });
+  
 });
 
 const addPhotos = catchAsync(async (req, res, next) => {
