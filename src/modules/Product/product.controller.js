@@ -7,13 +7,15 @@ import fsExtra from "fs-extra";
 const createProduct = catchAsync(async (req, res, next) => {
   const { name } = req.body;
   const existingDocument = await productModel.findOne({ name: name.toLowerCase() });
-  const existingDocument2 = await productModel.findOne({ name: name.toUpperCase() });
 
-  if (existingDocument || existingDocument2) {
+  if (existingDocument) {
     return res.status(400).json({ error: 'Name must be unique' });
   }
-  let newProduct = new productModel(req.body);
-  let addedProduct = await newProduct.save();
+  else{
+    let newProduct = new productModel(req.body);
+    await newProduct.save();
+  }
+
 
   res.status(201).json({
     message: "Product has been created successfully!",

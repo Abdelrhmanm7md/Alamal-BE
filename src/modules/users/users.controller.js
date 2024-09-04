@@ -235,9 +235,8 @@ const getUserById = catchAsync(async (req, res, next) => {
 const getUserRelations = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
-  let results = await userModel.findById(id);
-  console.log(results)
-  // !results && next(new AppError(`not found `, 404));
+  let results = await userModel.findById(id).populate("relations");
+  !results && next(new AppError(`not found `, 404));
   results = results.relations
   results && res.json({ message: "done", results });
 });
