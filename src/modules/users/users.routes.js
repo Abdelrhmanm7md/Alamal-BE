@@ -21,8 +21,8 @@ usersRouter.post(
   usersController.addPhotos
 );
 usersRouter.get("/:id", usersController.getUserById);
-usersRouter.get("relations/:id", usersController.getUserRelations);
-usersRouter.post("relations/add/:id", usersController.addUserRelations);
+usersRouter.get("/relations/:id", usersController.getUserRelations);
+usersRouter.post("/relations/add/:id", usersController.addUserRelations);
 usersRouter.put("/:id", usersController.updateUser);
 usersRouter.delete("/:id", usersController.deleteUser);
 
