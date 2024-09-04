@@ -242,16 +242,22 @@ const getUserRelations = catchAsync(async (req, res, next) => {
 });
 
 const addUserRelations = catchAsync(async (req, res, next) => {
-  let { id } = req.params;
-
-  let results = userModel.findByIdAndUpdate(
+  // let { id } = req.params;
+  console.log('Helooooo')
+  // let results = userModel.findOne(
+  //   { _id: req.params.id },
+  // );
+  let results = await userModel.findOneAndUpdate(
     { _id: req.params.id },
     { $push: { relations: req.body.relations } },
+    // {relations: ["test"] },
     { new: true },
   );
+  console.log(results);
   !results && next(new AppError(`not found `, 404));
   results = results.relations
   results && res.json({ message: "done", results });
+
 });
 
 const updateUser = catchAsync(async (req, res, next) => {
