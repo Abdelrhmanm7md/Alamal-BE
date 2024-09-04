@@ -6,7 +6,7 @@ import path from "path";
 import fsExtra from "fs-extra";
 const createProduct = catchAsync(async (req, res, next) => {
   const { name } = req.body;
-  const existingDocument = await productModel.findOne({ name: name.toLowerCase() });
+  const existingDocument = await productModel.findOne({ name: {$regex: name, $options: 'i'}  });
 
   if (existingDocument) {
     return res.status(400).json({ error: 'Name must be unique' });
