@@ -232,6 +232,15 @@ const getUserById = catchAsync(async (req, res, next) => {
   results && res.json({ message: "done", results });
 });
 
+const getUserRelations = catchAsync(async (req, res, next) => {
+  let { id } = req.params;
+
+  let results = await userModel.findById(id);
+  !results && next(new AppError(`not found `, 404));
+  results = results.relations
+  results && res.json({ message: "done", results });
+});
+
 const updateUser = catchAsync(async (req, res, next) => {
   let { id } = req.params;
 
@@ -258,6 +267,7 @@ export {
   createUser,
   getAllUsers,
   getUserById,
+  getUserRelations,
   updateUser,
   deleteUser,
   getAllPharm,

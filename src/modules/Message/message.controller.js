@@ -19,7 +19,7 @@ const createmessage = catchAsync(async (req, res, next) => {
   req.body.date = createdAt;
   let content = req.body.content;
   let sender = req.body.sender;
-  let reciver = req.body.reciver;
+  let receiver = req.body.receiver;
 
   const newmessage = new messageModel(req.body);
   const savedmessage = await newmessage.save();
@@ -35,7 +35,8 @@ const createmessage = catchAsync(async (req, res, next) => {
   //   });
   // });
 
-  sio.emit(`message_${req.body._id}`, { createdAt }, { content }, { sender },{reciver});
+  // sio.emit(`message_${req.body._id}`, { createdAt }, { content }, { sender },{reciver});
+  sio.emit(`message_${req.body.sender}_${req.body.receiver}`, { createdAt }, { content }, { sender }, { receiver });
   res.status(201).json({
     message: "message created successfully!",
     savedmessage,

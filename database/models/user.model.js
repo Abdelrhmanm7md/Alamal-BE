@@ -52,6 +52,11 @@ const userSchema = mongoose.Schema(
       ref: "company",
       required: true,
     },
+    relations: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      // required: true,
+    }],
   },
   { timestamps: true }
 );
