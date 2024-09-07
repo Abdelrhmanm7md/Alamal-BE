@@ -7,6 +7,10 @@ const messageSchema = mongoose.Schema(
       default: " ",
       required: true,
     },
+    senderName: {
+      type: String,
+      required: true,
+    },
     isSender: {
       type: Boolean,
       default: false,
