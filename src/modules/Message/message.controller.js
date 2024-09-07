@@ -37,7 +37,7 @@ const createmessage = catchAsync(async (req, res, next) => {
   // });
 
   // sio.emit(`message_${req.body._id}`, { createdAt }, { content }, { sender },{reciver});
-  senderName = await userModel.findOne({_id: req.body.sender })
+  var senderName = await userModel.findOne({_id: req.body.sender })
   senderName = senderName.name
   sio.emit(`message_${req.body.sender}_${req.body.receiver}`, { createdAt }, { content }, { sender }, { receiver }, {senderName});
   res.status(201).json({
