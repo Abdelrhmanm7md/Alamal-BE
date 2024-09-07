@@ -45,7 +45,7 @@ const createmessage = catchAsync(async (req, res, next) => {
 
 const getAllmessageBySenderOrReciever = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(
-    messageModel.find({$or:[ {'sender': {$or: [req.query.sender,req.query.receiver]}}, {'receiver': {$or: [req.query.sender,req.query.receiver]}}]}),
+    messageModel.find({$or:[ {'sender': req.query.sender},{'sender': req.query.receiver}, {'receiver': req.query.sender}, {'receiver': req.query.receiver}]}),
     req.query
   );
   // .sort({ $natural: -1 })  for latest message
