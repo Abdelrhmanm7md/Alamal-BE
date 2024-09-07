@@ -12,10 +12,10 @@ const messageSchema = mongoose.Schema(
       default: false,
       required: true,
     },
-    date: {
-      type: Date,
-      default: Date.now,
-    },
+    // date: {
+    //   type: Date,
+    //   default: Date.now,
+    // },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",

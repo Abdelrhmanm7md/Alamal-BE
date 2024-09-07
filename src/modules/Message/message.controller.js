@@ -1,5 +1,5 @@
 import { messageModel } from "../../../database/models/message.model.js";
-import { sio } from "../../../server.js";
+import { sio } from "../../../index.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 
@@ -43,9 +43,9 @@ const createmessage = catchAsync(async (req, res, next) => {
   });
 });
 
-const getAllmessageByTask = catchAsync(async (req, res, next) => {
+const getAllmessageBySenderOrReciever = catchAsync(async (req, res, next) => {
   let ApiFeat = new ApiFeature(
-    messageModel.find({ chatId: req.params.id }),
+    messageModel.find({$or:[ {'sender': {$or: [req.query.sender,req.query.receiver]}}, {'receiver': {$or: [req.query.sender,req.query.receiver]}}]}),
     req.query
   );
   // .sort({ $natural: -1 })  for latest message
@@ -65,4 +65,4 @@ const getAllmessageByTask = catchAsync(async (req, res, next) => {
   });
 });
 
-export { createmessage, getAllmessageByTask };
+export { createmessage, getAllmessageBySenderOrReciever };
