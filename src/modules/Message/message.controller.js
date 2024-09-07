@@ -2,6 +2,7 @@ import { messageModel } from "../../../database/models/message.model.js";
 import { sio } from "../../../index.js";
 import ApiFeature from "../../utils/apiFeature.js";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
+import { userModel } from "../../../database/models/user.model.js";
 
 const createmessage = catchAsync(async (req, res, next) => {
   function formatAMPM(date) {
