@@ -9,7 +9,7 @@ const createProduct = catchAsync(async (req, res, next) => {
   const existingDocument = await productModel.findOne({ name: {$regex: name, $options: 'i'}  });
 
   if (existingDocument) {
-    return res.status(400).json({ error: 'Name must be unique' });
+    return res.status(400).json({ message: 'Name must be unique' });
   }
   else{
     let newProduct = new productModel(req.body);
@@ -19,9 +19,6 @@ const createProduct = catchAsync(async (req, res, next) => {
       addedProduct,
     });
   }
-
-
-  
 });
 
 const addPhotos = catchAsync(async (req, res, next) => {
