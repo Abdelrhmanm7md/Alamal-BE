@@ -120,7 +120,7 @@ const getAllProductByCompanyWithoutPagination = catchAsync(
     let { filterType, filterValue } = req.query;
     if (filterType && filterValue) {
       results = results.filter(function (item) {
-        if (filterType == "name") {
+        if (filterType == "productName") {
           return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
@@ -165,7 +165,7 @@ const getAllProductByCompanyWithPagination = catchAsync(
     let { filterType, filterValue } = req.query;
     if (filterType && filterValue) {
       results = results.filter(function (item) {
-        if (filterType == "name") {
+        if (filterType == "productName") {
           return item.name.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "company") {
