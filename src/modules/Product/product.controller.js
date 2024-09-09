@@ -85,7 +85,7 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
   let { filterType, filterValue } = req.query;
   if (filterType && filterValue) {
     results = results.filter(function (item) {
-      if (filterType == "name") {
+      if (filterType == "productName") {
         return item.name.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "company") {
