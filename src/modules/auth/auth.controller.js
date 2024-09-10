@@ -37,11 +37,11 @@ export const signIn = catchAsync(async (req, res, next) => {
     if (!isFound) return res.status(404).json({ message: "Email Not Found" });
     const match = await bcrypt.compare(password, isFound.password);
     if (match && isFound) {
-      isFound.verificationCode = generateUniqueId({
-        length: 6,
-        useLetters: false,
-      });
-      sendEmail(isFound.email, isFound.verificationCode);
+      // isFound.verificationCode = generateUniqueId({
+      //   length: 6,
+      //   useLetters: false,
+      // });
+      // sendEmail(isFound.email, isFound.verificationCode);
       await isFound.save();
       let token = jwt.sign(
         { name: isFound.name, userId: isFound._id },
