@@ -11,14 +11,12 @@ const createProduct = catchAsync(async (req, res, next) => {
   if (existingDocument) {
     return res.status(400).json({ message: 'Name must be unique' });
   }
-  else{
     let newProduct = new productModel(req.body);
     let addedProduct = await newProduct.save();
     res.status(201).json({
       message: "Product has been created successfully!",
       addedProduct,
     });
-  }
 });
 
 const addPhotos = catchAsync(async (req, res, next) => {

@@ -33,9 +33,15 @@ export const signIn = catchAsync(async (req, res, next) => {
   if (req.body.email !== "" && req.body.email.match(emailFormat)) {
     let { email, password } = req.body;
     let isFound = await userModel.findOne({ email });
-    if (!isFound) return res.status(404).json({ message: "User Not Found" });
+    if (!isFound) return res.status(404).json({ message: "Email Not Found" });
     const match = await bcrypt.compare(password, isFound.password);
     if (match && isFound) {
+      isFound.verificationCode = generateUniqueId({
+        length: 6,
+        useLetters: false,
+      });
+      sendEmail(isFound.email, isFound.verificationCode);
+      await isFound.save();
       let token = jwt.sign(
         { name: isFound.name, userId: isFound._id },
         process.env.JWT_SECRET_KEY
@@ -44,6 +50,22 @@ export const signIn = catchAsync(async (req, res, next) => {
     }
     return res.status(401).json({ message: "worng email or password" });
   } else {
+    return res.status(409).json({ message: "this email is not valid" });
+  }
+});
+export const forgetPassword = catchAsync(async (req, res, next) => {
+  let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  if (req.body.email !== "" && req.body.email.match(emailFormat)) {
+    let { email } = req.body;
+    let isFound = await userModel.findOne({ email });
+    if (!isFound) return res.status(404).json({ message: "Email Not Found" });
+      sendEmail(isFound.email, isFound.verificationCode);
+      await isFound.save();
+      let verificationCode = isFound.verificationCode
+      let id = isFound._id
+      return res.json({ message: "Verification Code",verificationCode ,id });
+    
+    }else{
     return res.status(409).json({ message: "this email is not valid" });
   }
 });

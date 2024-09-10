@@ -347,18 +347,123 @@ const getAllInvoiceByAdmin = catchAsync(async (req, res, next) => {
       message = "total Paid must be greater than 0";
       return res.status(400).json({ message });
     }
-
-    // for (let index = 0; index < results[i].payments.length; index++) {
-    //   if (results[index].payments[index].amount < 0) {
-    //     return res
-    //       .status(400)
-    //       .json({ message: "amount must be greater than 0" });
-    //   }
-    // }
   }
   res.json({
     message: "Done",
     page: ApiFeat.page,
+    count: await invoiceModel.countDocuments(),
+    results,
+  });
+});
+const getAllInvoiceByAdminWithoutPagination = catchAsync(async (req, res, next) => {
+  let ApiFeat = null;
+
+  ApiFeat = new ApiFeature(
+    invoiceModel
+      .find()
+      .populate("pharmacy productLines.product company createdBy rep driver"),
+    req.query
+  )
+    // .sort()
+    .search(req.query.key);
+
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+  let { filterType, filterValue } = req.query;
+
+  if (filterType && filterValue) {
+    results = results.filter(function (item) {
+      if (filterType == "pharmacy") {
+        if (item.pharmacy) {
+          return item.pharmacy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+      }
+      if (filterType == "company") {
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+      }
+      if (filterType == "createdBy") {
+        if (item.createdBy) {
+          return item.createdBy.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+      }
+      if (filterType == "rep") {
+        if (item.rep) {
+          return item.rep.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+      }
+      if (filterType == "date") {
+        return item.date == filterValue;
+      }
+      if (filterType == "location") {
+        if (item.pharmacy) {
+          return item.pharmacy.location
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+      }
+      if (filterType == "type") {
+        return item.invoiceType
+          .toLowerCase()
+          .includes(filterValue.toLowerCase());
+      }
+    });
+  }
+
+  for (let j = 0; j < results.length; j++) {
+    for (let i = 0; i < results[j].productLines.length; i++) {
+      if (results[j].productLines[i].product) {
+        results[j].productLines[i].total =
+          results[j].productLines[i].qty *
+          results[j].productLines[i].product.unitPrice;
+      }
+    }
+
+    let payment = await paymentModel.aggregate([
+      { $match: { invoice: new mongoose.Types.ObjectId(results[j]._id) } },
+      { $group: { _id: null, totalPaid: { $sum: "$amount" } } },
+    ]);
+    if (payment.length) {
+      results[j].totalPaid = payment[0].totalPaid;
+      results[j].amountDue = results[j].amount - payment[0].totalPaid;
+    } else {
+      results[j].totalPaid = 0;
+      results[j].amountDue = results[j].amount;
+    }
+  }
+
+  if (!ApiFeat) {
+    return res.status(404).json({
+      message: "No Invoice was found!",
+    });
+  }
+
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].amount < 0) {
+      message = "amount must be greater than 0";
+      return res.status(400).json({ message });
+    }
+    if (results[i].amountDue < 0) {
+      message = "amountDue must be greater than 0";
+      return res.status(400).json({ message });
+    }
+    if (results[i].totalPaid < 0) {
+      message = "total Paid must be greater than 0";
+      return res.status(400).json({ message });
+    }
+  }
+  res.json({
+    message: "Done",
     count: await invoiceModel.countDocuments(),
     results,
   });
@@ -482,4 +587,5 @@ export {
   createProductLines,
   deleteProductLines,
   getAllInvoiceByAdmin,
+  getAllInvoiceByAdminWithoutPagination,
 };
