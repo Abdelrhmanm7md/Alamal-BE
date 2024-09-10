@@ -42,14 +42,14 @@ export const signIn = catchAsync(async (req, res, next) => {
       //   useLetters: false,
       // });
       // sendEmail(isFound.email, isFound.verificationCode);
-      await isFound.save();
+      // await isFound.save();
       let token = jwt.sign(
         { name: isFound.name, userId: isFound._id },
         process.env.JWT_SECRET_KEY
       );
       return res.json({ message: "success", token, isFound });
     }
-    return res.status(401).json({ message: "worng email or password" });
+    // return res.status(401).json({ message: "worng email or password" });
   } else {
     return res.status(409).json({ message: "this email is not valid" });
   }
