@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import catchAsync from "../../utils/middleWare/catchAsyncError.js";
 import AppError from "../../utils/appError.js";
 import { userModel } from "../../../database/models/user.model.js";
+import { sendEmail } from "../../email/sendEmail.js";
 
 export const signUp = catchAsync(async (req, res, next) => {
   let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -60,7 +61,7 @@ export const forgetPassword = catchAsync(async (req, res, next) => {
     let isFound = await userModel.findOne({ email });
     if (!isFound) return res.status(404).json({ message: "Email Not Found" });
       sendEmail(isFound.email, isFound.verificationCode);
-      await isFound.save();
+      // await isFound.save();
       let verificationCode = isFound.verificationCode
       let id = isFound._id
       return res.json({ message: "Verification Code",verificationCode ,id });
