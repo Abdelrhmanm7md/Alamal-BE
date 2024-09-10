@@ -102,6 +102,45 @@ const getAllProductByAdmin = catchAsync(async (req, res, next) => {
     results,
   });
 });
+const getAllProductByAdminWithoutPagination = catchAsync(async (req, res, next) => {
+  let ApiFeat = new ApiFeature(
+    productModel.find().populate("company"),
+    req.query
+  )
+    .sort()
+    .search(req.query.key)
+    .fields();
+
+  let results = await ApiFeat.mongooseQuery;
+  results = JSON.stringify(results);
+  results = JSON.parse(results);
+
+  if (!ApiFeat || !results) {
+    return res.status(404).json({
+      message: "No Product was found!",
+    });
+  }
+  let { filterType, filterValue } = req.query;
+  if (filterType && filterValue) {
+    results = results.filter(function (item) {
+      if (filterType == "productName") {
+        return item.name.toLowerCase().includes(filterValue.toLowerCase());
+      }
+      if (filterType == "company") {
+        if (item.company) {
+          return item.company.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+      }
+    });
+  }
+  res.json({
+    message: "Done",
+    count: await productModel.countDocuments(),
+    results,
+  });
+});
 const getAllProductByCompanyWithoutPagination = catchAsync(
   async (req, res, next) => {
     let ApiFeat = null;
@@ -267,4 +306,5 @@ export {
   getAllProductByCompanyWithPagination,
   getAllProductByCompanyWithoutPagination,
   getProductlineById,
+  getAllProductByAdminWithoutPagination,
 };

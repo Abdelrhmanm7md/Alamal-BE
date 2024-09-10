@@ -5,6 +5,7 @@ import * as productController from "./product.controller.js";
 import { fileSizeLimitErrorHandler, uploadMixFile } from "../../utils/middleWare/fileUploads.js";
 
 productRouter.get("/", productController.getAllProductByAdmin);
+productRouter.get("/admin", productController.getAllProductByAdminWithoutPagination);
 productRouter.get(
   "/user/:id",
   productController.getAllProductByCompanyWithPagination
