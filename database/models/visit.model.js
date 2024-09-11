@@ -27,7 +27,7 @@ const visitSchema = mongoose.Schema(
     },
     comment: {
       type: String,
-      required: true,
+      // required: true,
     },
     pharmacy: {
       type: mongoose.Schema.Types.ObjectId,

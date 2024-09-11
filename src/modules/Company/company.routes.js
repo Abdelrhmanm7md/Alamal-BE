@@ -1,13 +1,13 @@
-import express from "express";
-import * as companyController from "./company.controller.js";
-import {
-  fileSizeLimitErrorHandler,
-  uploadMixFile,
-} from "../../utils/middleWare/fileUploads.js";
+  import express from "express";
+  import * as companyController from "./company.controller.js";
+  import {
+    fileSizeLimitErrorHandler,
+    uploadMixFile,
+  } from "../../utils/middleWare/fileUploads.js";
 
-const companyRouter = express.Router();
+  const companyRouter = express.Router();
 
-companyRouter.post("/", companyController.createCompany);
+  companyRouter.post("/", companyController.createCompany);
 companyRouter.get("/", companyController.getAllCompany);
 companyRouter.get("/user/:id", companyController.getAllCompany);
 companyRouter.put("/:id", companyController.editCompany);
