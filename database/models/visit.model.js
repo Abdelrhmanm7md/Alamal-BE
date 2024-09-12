@@ -9,7 +9,8 @@ const visitSchema = mongoose.Schema(
       required: true,
     },
     hasPayment: {
-      type: Boolean,
+      type: String,
+      enum: ["yes", "no"],
       required: true,
     },
     payment: {

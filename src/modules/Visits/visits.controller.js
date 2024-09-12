@@ -86,7 +86,7 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
         return item.type.toLowerCase().includes(filterValue);
       }
       if (filterType == "hasPayment") {
-        return item.hasPayment.toLowerCase().includes(filterValue);
+        return item.hasPayment.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }
@@ -152,7 +152,7 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
         return item.type.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "hasPayment") {
-        return item.hasPayment.includes(filterValue.toLowerCase());
+        return item.hasPayment.toLowerCase().includes(filterValue.toLowerCase());
       }
     });
   }
@@ -222,7 +222,7 @@ const getAllVisitsByAdminWithoutPagination = catchAsync(
           return item.type.toLowerCase().includes(filterValue.toLowerCase());
         }
         if (filterType == "hasPayment") {
-          return item.hasPayment.includes(filterValue.toLowerCase());
+          return item.hasPayment.toLowerCase().includes(filterValue.toLowerCase());
         }
       });
     }
