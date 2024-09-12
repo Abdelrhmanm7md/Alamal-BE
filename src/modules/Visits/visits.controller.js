@@ -82,8 +82,8 @@ const getAllVisitsByUser = catchAsync(async (req, res, next) => {
       if (filterType == "location") {
         return item.location.toLowerCase().includes(filterValue);
       }
-      if (filterType == "status") {
-        return item.status.toLowerCase().includes(filterValue);
+      if (filterType == "type") {
+        return item.type.toLowerCase().includes(filterValue);
       }
       if (filterType == "hasPayment") {
         return item.hasPayment.toLowerCase().includes(filterValue);
@@ -148,8 +148,8 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
       if (filterType == "location") {
         return item.location.toLowerCase().includes(filterValue.toLowerCase());
       }
-      if (filterType == "status") {
-        return item.status.toLowerCase().includes(filterValue.toLowerCase());
+      if (filterType == "type") {
+        return item.type.toLowerCase().includes(filterValue.toLowerCase());
       }
       if (filterType == "hasPayment") {
         return item.hasPayment.includes(filterValue.toLowerCase());
@@ -163,70 +163,76 @@ const getAllVisitsByAdmin = catchAsync(async (req, res, next) => {
     results,
   });
 });
-const getAllVisitsByAdminWithoutPagination = catchAsync(async (req, res, next) => {
-  let ApiFeat = null;
+const getAllVisitsByAdminWithoutPagination = catchAsync(
+  async (req, res, next) => {
+    let ApiFeat = null;
 
-  ApiFeat = new ApiFeature(
-    visitModel.find().populate("pharmacy rep driver company"),
-    req.query
-  )
-    .sort()
-    .search(req.query.key)
-    .fields();
+    ApiFeat = new ApiFeature(
+      visitModel.find().populate("pharmacy rep driver company"),
+      req.query
+    )
+      .sort()
+      .search(req.query.key)
+      .fields();
 
-  if (!ApiFeat) {
-    return res.status(404).json({
-      message: "No visits was found!",
+    if (!ApiFeat) {
+      return res.status(404).json({
+        message: "No visits was found!",
+      });
+    }
+    let results = await ApiFeat.mongooseQuery;
+    results = JSON.stringify(results);
+    results = JSON.parse(results);
+
+    let { filterType, filterValue } = req.query;
+    if (filterType && filterValue) {
+      results = results.filter(function (item) {
+        if (filterType == "pharmacy") {
+          if (item.pharmacy) {
+            return item.pharmacy.name
+              .toLowerCase()
+              .includes(filterValue.toLowerCase());
+          }
+        }
+        if (filterType == "rep") {
+          return item.rep.name
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+        if (filterType == "driver") {
+          if (item.driver) {
+            return item.driver.name
+              .toLowerCase()
+              .includes(filterValue.toLowerCase());
+          }
+        }
+        if (filterType == "company") {
+          if (item.company) {
+            return item.company.name
+              .toLowerCase()
+              .includes(filterValue.toLowerCase());
+          }
+        }
+        if (filterType == "location") {
+          return item.location
+            .toLowerCase()
+            .includes(filterValue.toLowerCase());
+        }
+        if (filterType == "type") {
+          return item.type.toLowerCase().includes(filterValue.toLowerCase());
+        }
+        if (filterType == "hasPayment") {
+          return item.hasPayment.includes(filterValue.toLowerCase());
+        }
+      });
+    }
+    res.json({
+      message: "Done",
+      count: await visitModel.countDocuments(),
+      results,
     });
   }
-  let results = await ApiFeat.mongooseQuery;
-  results = JSON.stringify(results);
-  results = JSON.parse(results);
-
-  let { filterType, filterValue } = req.query;
-  if (filterType && filterValue) {
-    results = results.filter(function (item) {
-      if (filterType == "pharmacy") {
-        if (item.pharmacy) {
-          return item.pharmacy.name
-            .toLowerCase()
-            .includes(filterValue.toLowerCase());
-        }
-      }
-      if (filterType == "rep") {
-        return item.rep.name.toLowerCase().includes(filterValue.toLowerCase());
-      }
-      if (filterType == "driver") {
-        if (item.driver) {
-          return item.driver.name
-            .toLowerCase()
-            .includes(filterValue.toLowerCase());
-        }
-      }
-      if (filterType == "company") {
-        if (item.company) {
-          return item.company.name
-            .toLowerCase()
-            .includes(filterValue.toLowerCase());
-        }
-      }
-      if (filterType == "location") {
-        return item.location.toLowerCase().includes(filterValue.toLowerCase());
-      }
-      if (filterType == "status") {
-        return item.status.toLowerCase().includes(filterValue.toLowerCase());
-      }
-      if (filterType == "hasPayment") {
-        return item.hasPayment.includes(filterValue.toLowerCase());
-      }
-    });
-  }
-  res.json({
-    message: "Done",
-    count: await visitModel.countDocuments(),
-    results,
-  });
-});
+);
 
 export {
   createVisit,
