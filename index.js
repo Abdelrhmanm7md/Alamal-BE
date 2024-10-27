@@ -22,7 +22,12 @@ app.use(express.json());
 app.use(cors());
 
 dbConnection();
-
+app.use((err, req, res, next) => {
+  if (err.code === 'ENOTFOUND') {
+    return res.status(500).send('Network error, please try again later.');
+  }
+  res.status(500).send('Something went wrong.');
+});
 init(app);
 
 app.use(globalError);
