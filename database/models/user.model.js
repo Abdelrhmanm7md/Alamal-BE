@@ -52,17 +52,19 @@ const userSchema = mongoose.Schema(
       ref: "company",
       required: true,
     },
-    relations: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "user",
-      // required: true,
-    }],
+    relations: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user",
+        // required: true,
+      },
+    ],
     verificationCode: {
       type: String,
       // required:true
     },
   },
-  { timestamps: true }
+  { timestamps: true, strict: true }
 );
 
 // userSchema.post("init", (doc) => {
@@ -70,11 +72,17 @@ const userSchema = mongoose.Schema(
 // });
 
 userSchema.pre("save", function () {
-  this.password = bcrypt.hashSync(this.password, Number(process.env.SALTED_VALUE));
+  this.password = bcrypt.hashSync(
+    this.password,
+    Number(process.env.SALTED_VALUE)
+  );
 });
 userSchema.pre("findOneAndUpdate", function () {
   if (this._update.password) {
-    this._update.password = bcrypt.hashSync(this._update.password, Number(process.env.SALTED_VALUE));
+    this._update.password = bcrypt.hashSync(
+      this._update.password,
+      Number(process.env.SALTED_VALUE)
+    );
   }
 });
 
