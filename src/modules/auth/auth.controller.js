@@ -6,7 +6,7 @@ import { userModel } from "../../../database/models/user.model.js";
 import { sendEmail } from "../../email/sendEmail.js";
 
 export const signUp = catchAsync(async (req, res, next) => {
-  let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  let emailFormat = /^[a-zA-Z0-9_.+-]+(\.[a-zA-Z0-9_.+-]+)*@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   if (req.body.email !== "" && req.body.email.match(emailFormat)) {
     let existUser = await userModel.findOne({ email: req.body.email });
     if (existUser) {
@@ -30,7 +30,7 @@ export const signUp = catchAsync(async (req, res, next) => {
 });
 
 export const signIn = catchAsync(async (req, res, next) => {
-  let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  let emailFormat = /^[a-zA-Z0-9_.+-]+(\.[a-zA-Z0-9_.+-]+)*@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
   if (req.body.email !== "" && req.body.email.match(emailFormat)) {
     let { email, password } = req.body;
     let isFound = await userModel.findOne({ email });
