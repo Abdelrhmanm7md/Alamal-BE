@@ -10,6 +10,7 @@ import authRouter from "./auth/auth.routes.js";
 import invoiceRouter from "./invoices/invoice.routes.js";
 import messageRouter from "./Message/message.routes.js";
 import usersRouter from "./users/users.routes.js";
+import returnInvoiceRouter from "./Return Invoice/returnInvoice.routes.js";
 
 export function init(app) {
   app.use("/users", usersRouter);
@@ -23,6 +24,7 @@ export function init(app) {
   app.use("/company", companyRouter);
   app.use("/chat", chatRouter);
   app.use("/message", messageRouter);
+  app.use("/returnInvoice", returnInvoiceRouter);
 
   app.use("/", (req, res, next) => {
     res.send("Page Not Found");
