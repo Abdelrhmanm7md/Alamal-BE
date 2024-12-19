@@ -46,6 +46,10 @@ const returnInvoiceSchema = mongoose.Schema(
       type:Boolean,
       default:false,
     },
+    isAcceptedByRep:{
+      type:Boolean,
+      default:false,
+    },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "company",
